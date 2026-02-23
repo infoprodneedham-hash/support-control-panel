@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Worker Control Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/your-code.js" crossorigin="anonymous"></script>
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#resume">Resume</a></li>
+                <li><a href="#reminders">Reminders</a></li>
+                <li><a href="#bookings">Bookings</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <section class="content-box">
+            <h1>Support Worker Control Panel</h1>
+            <p class="subtitle">Streamlining Care, Empowering Support.</p>
+            
+            <div class="intro-text">
+                <p>Welcome to your central command center. This hub is specifically designed for dedicated support workers who need rapid access to their professional documentation and essential client-support tools.</p>
+                
+                <p>Manage your career and daily tasks with ease through our integrated suite of apps:</p>
+                
+                <ul class="feature-list">
+                    <li><strong>Resume Builder:</strong> Generate professional, NDIS-ready resumes and download them instantly as PDFs.</li>
+                    <li><strong>Accreditation Tracker:</strong> Never miss a renewal. Set reminders for First Aid, CPR, and Police Checks.</li>
+                    <li><strong>Shift Manager:</strong> A centralized booking form to track shifts across multiple clients and agencies.</li>
+                    <li><strong>Resource Library:</strong> Access curated YouTube tutorials and industry-leading links to stay informed on best practices.</li>
+                </ul>
+                
+                <button class="cta-button">Explore My Tools</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
