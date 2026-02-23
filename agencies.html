@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency Directory | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="clients.html">Clients</a></li>
+                <li><a href="agencies.html" class="active">Agencies</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero" style="align-items: flex-start; padding-top: 40px;">
+        <section class="content-box" style="width: 100%; max-width: 1000px;">
+            <div class="section-header">
+                <div>
+                    <h1>Agency Directory</h1>
+                    <p class="subtitle" style="margin-bottom: 0;">Keep track of provider details, coordinators, and after-hours numbers.</p>
+                </div>
+            </div>
+            
+            <hr>
+
+            <div class="card shift-form-card" style="margin-bottom: 40px;">
+                <h3>Add New Agency</h3>
+                <form id="form-add-agency" class="shift-grid">
+                    <div class="input-group">
+                        <label>Agency / Provider Name</label>
+                        <input type="text" id="agency-name" required placeholder="e.g. CarePlus Support">
+                    </div>
+                    <div class="input-group">
+                        <label>Key Contact Person</label>
+                        <input type="text" id="agency-contact" placeholder="e.g. Jessica (Scheduler)">
+                    </div>
+                    <div class="input-group">
+                        <label>Office Phone</label>
+                        <input type="text" id="agency-phone" placeholder="1300 000 000">
+                    </div>
+                    <div class="input-group">
+                        <label>After Hours / On-Call Phone</label>
+                        <input type="text" id="agency-afterhours" placeholder="0400 000 000">
+                    </div>
+                    <div class="input-group shift-notes">
+                        <label>Email Address</label>
+                        <input type="email" id="agency-email" placeholder="contact@agency.com">
+                    </div>
+                    <div class="input-group shift-notes">
+                        <label>Portal URL or Notes</label>
+                        <input type="text" id="agency-notes" placeholder="Timesheet link or general info...">
+                    </div>
+                    <div class="shift-action">
+                        <button type="submit" class="cta-button" style="margin-top: 0;">Save Agency</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="agency-list-container" class="contact-grid">
+                </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><strong>🔒 Privacy & Data Storage Notice:</strong> This application does <strong>not</strong> collect or transmit any data. All information is stored entirely <strong>locally on your specific device and browser</strong>.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
