@@ -281,3 +281,63 @@ input:focus, textarea:focus {
         transform: none;
     }
 }
+
+/* =========================================
+   9. REMINDERS & TRACKER SPECIFICS
+   ========================================= */
+.reminder-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-left: 6px solid var(--accent);
+    transition: transform 0.2s;
+}
+
+.reminder-card:hover {
+    transform: translateY(-2px);
+}
+
+.reminder-inputs {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    align-items: end;
+}
+
+.rem-validity {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+}
+
+.reminder-status {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid #eee;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Status Colors */
+.status-badge.pending { background: #dfe6e9; color: #636e72; }
+.status-badge.good { background: #dff9fb; color: #00b894; border: 1px solid #00b894; }
+.status-badge.warning { background: #fef0cd; color: #f39c12; border: 1px solid #f39c12; }
+.status-badge.expired { background: #ff7675; color: #fff; }
+
+@media (max-width: 768px) {
+    .reminder-inputs { grid-template-columns: 1fr; gap: 10px; }
+    .reminder-status { justify-content: center; }
+}
