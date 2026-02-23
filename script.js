@@ -190,15 +190,33 @@ function setupContactForm() {
     
     if (!form) return;
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault(); // Stop page refresh
         
-        // Hide form, show success banner
-        form.style.display = 'none';
-        successBanner.style.display = 'block';
+        // Gather the data from the form
+        const formData = new FormData(form);
 
-        // Optional: Reset form in the background
-        form.reset();
+        try {
+            // Send to your Formspree endpoint
+            const response = await fetch('https://formspree.io/f/xjgepyel', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                // Hide form, show success banner
+                form.style.display = 'none';
+                successBanner.style.display = 'block';
+                form.reset(); // Clear the fields
+            } else {
+                alert("Oops! There was a problem submitting your form. Please try again.");
+            }
+        } catch (error) {
+            alert("Network error. Please check your internet connection and try again.");
+        }
     });
 }
 
@@ -218,3 +236,4 @@ window.onload = () => {
     setupShiftManager();   // Bookings
     setupContactForm();    // Contact Form
 };
+
