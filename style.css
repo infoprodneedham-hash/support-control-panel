@@ -180,3 +180,9 @@ h1 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent); }
     .resume-container { grid-template-columns: 1fr; }
     .resume-paper { transform: scale(0.9); width: 95%; padding: 10mm; }
 }
+
+.main-nav a.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 5px;
+}
