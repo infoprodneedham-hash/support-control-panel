@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accreditation Reminders | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html" class="active">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero" style="align-items: flex-start; padding-top: 40px;">
+        <section class="content-box" style="width: 100%; max-width: 900px;">
+            <div class="section-header">
+                <div>
+                    <h1>Compliance Tracker</h1>
+                    <p class="subtitle" style="margin-bottom: 0;">Monitor your essential accreditations and renewals.</p>
+                </div>
+                <button type="button" class="add-btn" id="btnAddReminder" title="Add New Reminder">+</button>
+            </div>
+            
+            <hr style="border: 1px solid #eee; margin: 20px 0 30px 0;">
+
+            <div id="reminders-container" class="dynamic-container" style="gap: 20px;">
+                <div class="reminder-card card">
+                    <div class="reminder-inputs">
+                        <div class="input-group">
+                            <label>Accreditation Name</label>
+                            <input type="text" class="rem-name" placeholder="e.g. First Aid & CPR" oninput="calculateExpiry(this)">
+                        </div>
+                        <div class="input-group">
+                            <label>Date Obtained</label>
+                            <input type="date" class="rem-date" onchange="calculateExpiry(this)">
+                        </div>
+                        <div class="input-group">
+                            <label>Valid For</label>
+                            <select class="rem-validity" onchange="calculateExpiry(this)">
+                                <option value="12">1 Year</option>
+                                <option value="36" selected>3 Years</option>
+                                <option value="60">5 Years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="reminder-status">
+                        <span class="status-badge pending">Awaiting Date...</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
