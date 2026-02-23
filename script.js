@@ -47,3 +47,34 @@ function downloadPDF() {
     // Run the conversion
     html2pdf().set(opt).from(element).save();
 }
+
+// Function to highlight the current page in the Nav Bar
+function highlightActivePage() {
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll('.main-nav a');
+    
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// Theme Switcher Logic
+function setTheme(themeName) {
+    document.body.className = themeName;
+    localStorage.setItem('userTheme', themeName);
+}
+
+// Run on every page load
+window.onload = () => {
+    highlightActivePage();
+    
+    const savedTheme = localStorage.getItem('userTheme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    }
+};
