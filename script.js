@@ -1,129 +1,115 @@
+/**
+ * SupportHub Global JavaScript
+ */
+
+// 1. Theme Management
 function setTheme(themeName) {
     document.body.className = themeName;
-    // Optional: Save to local storage so it persists
     localStorage.setItem('userTheme', themeName);
 }
 
-// Load saved theme on startup
-window.onload = () => {
-    const savedTheme = localStorage.getItem('userTheme');
-    if (savedTheme) {
-        setTheme(savedTheme);
-    }
-
-};
-
-// Live Update Function
-function updatePreview() {
-    document.getElementById('outName').innerText = document.getElementById('inName').value || "Your Name";
-    document.getElementById('outBio').innerText = document.getElementById('inBio').value || "Summary info...";
-    document.getElementById('outExp').innerText = document.getElementById('inExp').value || "Experience info...";
-
-    // Handle Skills List
-    const skillsInput = document.getElementById('inSkills').value;
-    const skillsList = document.getElementById('outSkills');
-    skillsList.innerHTML = ""; // Clear current
-    
-    if(skillsInput) {
-        skillsInput.split(',').forEach(skill => {
-            let li = document.createElement('li');
-            li.innerText = skill.trim();
-            skillsList.appendChild(li);
-        });
-    }
-}
-
-// PDF Download Function
-function downloadPDF() {
-    const element = document.getElementById('resume-content');
-    const opt = {
-        margin:       0,
-        filename:     'Support_Worker_Resume.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // Run the conversion
-    html2pdf().set(opt).from(element).save();
-}
-
-// Function to highlight the current page in the Nav Bar
+// 2. Active Nav Highlighting
 function highlightActivePage() {
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     const navLinks = document.querySelectorAll('.main-nav a');
     
     navLinks.forEach(link => {
-        const linkPage = link.getAttribute('href');
-        if (linkPage === currentPage) {
+        if (link.getAttribute('href') === currentPage) {
             link.classList.add('active');
-        } else {
-            link.classList.remove('active');
         }
     });
 }
 
-// Theme Switcher Logic
-function setTheme(themeName) {
-    document.body.className = themeName;
-    localStorage.setItem('userTheme', themeName);
-}
-
-// Run on every page load
-window.onload = () => {
-    highlightActivePage();
-    
-    const savedTheme = localStorage.getItem('userTheme');
-    if (savedTheme) {
-        setTheme(savedTheme);
-    }
-};
-
+// 3. Resume Live Preview Logic
 function updatePreview() {
     // Basic Details
-    document.getElementById('outName').innerText = document.getElementById('inName').value || "Your Name";
-    document.getElementById('outEmail').innerText = document.getElementById('inEmail').value || "Email";
-    document.getElementById('outPhone').innerText = document.getElementById('inPhone').value || "Phone";
-    document.getElementById('outBio').innerText = document.getElementById('inBio').value || "Summary...";
+    document.getElementById('outName').innerText = (document.getElementById('inName').value || "Your Name").toUpperCase();
+    document.getElementById('outEmail').innerText = document.getElementById('inEmail').value || "email@example.com";
+    document.getElementById('outPhone').innerText = document.getElementById('inPhone').value || "0400 000 000";
+    document.getElementById('outBio').innerText = document.getElementById('inBio').value || "Summary details will appear here...";
 
-    // Accreditations
-    const accInputs = document.querySelectorAll('.acc-in');
+    // Accreditations (Loop through all 7)
     const accList = document.getElementById('outAccreds');
     accList.innerHTML = "";
-    accInputs.forEach(input => {
-        if(input.value) {
-            let li = document.createElement('li');
-            li.innerText = input.value;
+    document.querySelectorAll('.acc-in').forEach(input => {
+        if (input.value.trim() !== "") {
+            const li = document.createElement('li');
+            li.textContent = input.value;
             accList.appendChild(li);
         }
     });
 
-    // Qualifications
-    const qualInputs = document.querySelectorAll('.qual-in');
+    // Qualifications (Loop through all 3)
     const qualList = document.getElementById('outQuals');
     qualList.innerHTML = "";
-    qualInputs.forEach(input => {
-        if(input.value) {
-            let li = document.createElement('li');
-            li.innerText = input.value;
+    document.querySelectorAll('.qual-in').forEach(input => {
+        if (input.value.trim() !== "") {
+            const li = document.createElement('li');
+            li.textContent = input.value;
             qualList.appendChild(li);
         }
     });
 
-    // Experience Blocks
-    const expBlocks = document.querySelectorAll('.exp-entry');
+    // Experience (Loop through up to 5 blocks)
     const expOutput = document.getElementById('outExp');
     expOutput.innerHTML = "";
-    expBlocks.forEach(block => {
+    document.querySelectorAll('.exp-entry').forEach(block => {
         const dates = block.querySelector('.exp-dates').value;
         const employer = block.querySelector('.exp-employer').value;
         const desc = block.querySelector('.exp-desc').value;
 
-        if(dates || employer) {
-            let div = document.createElement('div');
-            div.className = "res-exp-item";
-            div.innerHTML = `<strong>${dates}</strong> - <strong>${employer}</strong><p>${desc}</p>`;
-            expOutput.appendChild(div);
+        if (dates || employer) {
+            const item = document.createElement('div');
+            item.className = "res-exp-item";
+            item.innerHTML = `
+                <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                    <span>${employer || 'Employer'}</span>
+                    <span>${dates || 'Dates'}</span>
+                </div>
+                <p>${desc || ''}</p>
+            `;
+            expOutput.appendChild(item);
         }
     });
 }
+
+// 4. PDF Generation
+function downloadPDF() {
+    const element = document.getElementById('resume-content');
+    
+    // Temporarily remove transform for a clean capture
+    element.style.transform = "scale(1)";
+    
+    const opt = {
+        margin:       0,
+        filename:     'Support_Worker_Resume.pdf',
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+        // Reset scale back to screen-friendly size
+        if (window.innerWidth > 1024) {
+            element.style.transform = "scale(0.65)";
+        } else {
+            element.style.transform = "scale(1)";
+        }
+    });
+}
+
+// Initialize on Load
+window.onload = () => {
+    highlightActivePage();
+    
+    // Apply saved theme
+    const savedTheme = localStorage.getItem('userTheme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    }
+    
+    // If we are on the resume page, run the preview once to clear placeholders
+    if(document.getElementById('inName')) {
+        updatePreview();
+    }
+};
