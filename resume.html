@@ -59,7 +59,7 @@
 
             <div class="section-header">
                 <h3>Accreditations</h3>
-                <button type="button" class="add-btn" onclick="addEntry('acc-inputs', 'acc-in', 'e.g. NDIS Worker Screening Check')">+</button>
+                <button type="button" class="add-btn" id="btnAddAcc">+</button>
             </div>
             <div id="acc-inputs" class="dynamic-container">
                 <input type="text" class="acc-in" placeholder="e.g. First Aid & CPR (HLTAID011)" oninput="updatePreview()">
@@ -67,7 +67,7 @@
 
             <div class="section-header">
                 <h3>Qualifications</h3>
-                <button type="button" class="add-btn" onclick="addEntry('qual-inputs', 'qual-in', 'e.g. Certificate IV in Disability')">+</button>
+                <button type="button" class="add-btn" id="btnAddQual">+</button>
             </div>
             <div id="qual-inputs" class="dynamic-container">
                 <input type="text" class="qual-in" placeholder="e.g. Certificate IV in Disability" oninput="updatePreview()">
@@ -75,7 +75,7 @@
 
             <div class="section-header">
                 <h3>Recent Experience</h3>
-                <button type="button" class="add-btn" onclick="addExperienceEntry()">+</button>
+                <button type="button" class="add-btn" id="btnAddExp">+</button>
             </div>
             <div id="exp-inputs" class="dynamic-container">
                 <div class="exp-entry">
