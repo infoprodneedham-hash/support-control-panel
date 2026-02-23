@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Builder | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="invoice.html" class="active">Invoices</a></li>
+                <li><a href="clients.html">Clients</a></li>
+                <li><a href="agencies.html">Agencies</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="resume-container">
+        <section class="resume-form card">
+            <h2>Invoice Details</h2>
+            
+            <div style="display: flex; gap: 10px;">
+                <div class="input-group" style="flex: 1;">
+                    <label>Invoice Number</label>
+                    <input type="text" id="inv-num" placeholder="INV-0001" oninput="updateInvoicePreview()">
+                </div>
+                <div class="input-group" style="flex: 1;">
+                    <label>Date</label>
+                    <input type="date" id="inv-date" onchange="updateInvoicePreview()">
+                </div>
+            </div>
+
+            <h3>Provider Info</h3>
+            <div class="input-group">
+                <label>Your Name / Business</label>
+                <input type="text" id="inv-provider-name" placeholder="Damien Smith Support Services" oninput="updateInvoicePreview()">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="input-group" style="flex: 1;">
+                    <label>ABN</label>
+                    <input type="text" id="inv-abn" placeholder="11 222 333 444" oninput="updateInvoicePreview()">
+                </div>
+            </div>
+
+            <h3>Client Info</h3>
+            <div class="input-group">
+                <label>Bill To (Client/Plan Manager)</label>
+                <input type="text" id="inv-client-name" placeholder="Client Name" oninput="updateInvoicePreview()">
+            </div>
+            <div class="input-group">
+                <label>Client NDIS Number</label>
+                <input type="text" id="inv-client-ndis" placeholder="430 000 000" oninput="updateInvoicePreview()">
+            </div>
+
+            <div class="section-header">
+                <h3>Line Items (Shifts)</h3>
+                <button type="button" class="add-btn" id="btnAddInvItem">+</button>
+            </div>
+            <div id="inv-items-container" class="dynamic-container">
+                <div class="exp-entry inv-item-row">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" class="inv-item-date" placeholder="Date (e.g. 15/05/26)" oninput="updateInvoicePreview()">
+                        <input type="text" class="inv-item-code" placeholder="NDIS Item Code" oninput="updateInvoicePreview()">
+                    </div>
+                    <input type="text" class="inv-item-desc" placeholder="Support Category / Description" oninput="updateInvoicePreview()" style="margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <input type="number" class="inv-item-qty" placeholder="Hours" step="0.25" oninput="updateInvoicePreview()">
+                        <input type="number" class="inv-item-rate" placeholder="Rate ($)" step="0.01" oninput="updateInvoicePreview()">
+                    </div>
+                </div>
+            </div>
+
+            <h3>Payment Details</h3>
+            <div class="input-group">
+                <label>Bank Account Info</label>
+                <textarea id="inv-bank" rows="3" placeholder="Account Name:&#10;BSB:&#10;Account Number:" oninput="updateInvoicePreview()"></textarea>
+            </div>
+
+            <button onclick="downloadInvoicePDF()" class="cta-button">Download PDF Invoice</button>
+        </section>
+
+        <section class="resume-preview-wrapper">
+            <div id="invoice-content" class="resume-paper" style="color: #333;">
+                
+                <header style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--accent); padding-bottom: 20px; margin-bottom: 20px;">
+                    <div>
+                        <h1 id="out-inv-provider-name" style="margin: 0; font-size: 1.8rem; color: var(--accent);">Your Business Name</h1>
+                        <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #666;">ABN: <span id="out-inv-abn">00 000 000 000</span></p>
+                    </div>
+                    <div style="text-align: right;">
+                        <h1 style="margin: 0; font-size: 2.2rem; text-transform: uppercase; color: #2d3436;">TAX INVOICE</h1>
+                        <p style="margin: 5px 0 0 0; font-weight: bold;">Invoice #: <span id="out-inv-num">INV-0000</span></p>
+                        <p style="margin: 0;">Date: <span id="out-inv-date">DD/MM/YYYY</span></p>
+                    </div>
+                </header>
+
+                <section style="margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 5px; color: #666; font-size: 1rem;">Bill To:</h3>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.1rem;" id="out-inv-client-name">Client Name</p>
+                    <p style="margin: 0; font-size: 0.95rem;">NDIS Number: <span id="out-inv-client-ndis">Not Provided</span></p>
+                </section>
+
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Date</th>
+                            <th style="width: 20%;">Item Code</th>
+                            <th style="width: 35%;">Description</th>
+                            <th style="width: 10%; text-align: center;">Hours</th>
+                            <th style="width: 10%; text-align: right;">Rate</th>
+                            <th style="width: 10%; text-align: right;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="out-inv-items">
+                        </tbody>
+                </table>
+
+                <div class="invoice-total-box">
+                    <strong>Total Amount Due:</strong> <span id="out-inv-total" style="color: var(--accent); font-size: 1.4rem; margin-left: 10px;">$0.00</span>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <h3 style="font-size: 1rem; color: #666; margin-bottom: 5px;">Payment Details</h3>
+                    <p id="out-inv-bank" style="white-space: pre-line; margin: 0; font-size: 0.9rem;">Please enter bank details on the left.</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
