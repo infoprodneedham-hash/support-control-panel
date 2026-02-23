@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Directory | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="clients.html" class="active">Clients</a></li>
+                <li><a href="agencies.html">Agencies</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero" style="align-items: flex-start; padding-top: 40px;">
+        <section class="content-box" style="width: 100%; max-width: 1000px;">
+            <div class="section-header">
+                <div>
+                    <h1>Client Directory</h1>
+                    <p class="subtitle" style="margin-bottom: 0;">Manage NDIS numbers, contact details, and care notes securely on your device.</p>
+                </div>
+            </div>
+            
+            <hr>
+
+            <div class="card shift-form-card" style="margin-bottom: 40px;">
+                <h3>Add New Client</h3>
+                <form id="form-add-client" class="shift-grid">
+                    <div class="input-group">
+                        <label>Client Name / Initials</label>
+                        <input type="text" id="client-name" required placeholder="e.g. Sarah M.">
+                    </div>
+                    <div class="input-group">
+                        <label>NDIS Number</label>
+                        <input type="text" id="client-ndis" placeholder="e.g. 430 000 000">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="client-phone" placeholder="0400 000 000">
+                    </div>
+                    <div class="input-group">
+                        <label>Emergency Contact</label>
+                        <input type="text" id="client-emergency" placeholder="Name & Phone">
+                    </div>
+                    <div class="input-group shift-notes">
+                        <label>Address / Key Location</label>
+                        <input type="text" id="client-address" placeholder="123 Example St...">
+                    </div>
+                    <div class="input-group shift-notes">
+                        <label>Care Notes / Triggers / Preferences</label>
+                        <textarea id="client-notes" rows="2" placeholder="Important care details..."></textarea>
+                    </div>
+                    <div class="shift-action">
+                        <button type="submit" class="cta-button" style="margin-top: 0;">Save Client</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="client-list-container" class="contact-grid">
+                </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><strong>🔒 Privacy & Data Storage Notice:</strong> This application does <strong>not</strong> collect or transmit any data. All information is stored entirely <strong>locally on your specific device and browser</strong>.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
