@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Bookings | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html" class="active">Bookings</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero" style="align-items: flex-start; padding-top: 40px;">
+        <section class="content-box" style="width: 100%; max-width: 1000px;">
+            <div class="section-header">
+                <div>
+                    <h1>Shift Manager</h1>
+                    <p class="subtitle" style="margin-bottom: 0;">Log upcoming shifts, track hours, and manage client details.</p>
+                </div>
+            </div>
+            
+            <hr style="border: 1px solid #eee; margin: 20px 0 30px 0;">
+
+            <div class="card shift-form-card">
+                <h3>Log a New Shift</h3>
+                <form id="form-add-shift" class="shift-grid">
+                    <div class="input-group">
+                        <label>Client Name / Identifier</label>
+                        <input type="text" id="shift-client" required placeholder="e.g. John D.">
+                    </div>
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" id="shift-date" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Start Time</label>
+                        <input type="time" id="shift-start" required>
+                    </div>
+                    <div class="input-group">
+                        <label>End Time</label>
+                        <input type="time" id="shift-end" required>
+                    </div>
+                    <div class="input-group">
+                        <label>NDIS Item Code / Category</label>
+                        <input type="text" id="shift-code" placeholder="e.g. 01_011_0107_1_1">
+                    </div>
+                    <div class="input-group shift-notes">
+                        <label>Notes / Location</label>
+                        <input type="text" id="shift-notes" placeholder="Community access, swimming, etc.">
+                    </div>
+                    <div class="shift-action">
+                        <button type="submit" class="cta-button" style="margin-top: 0;">Add Shift</button>
+                    </div>
+                </form>
+            </div>
+
+            <h3 style="margin-top: 40px;">Upcoming & Logged Shifts</h3>
+            <div class="table-responsive">
+                <table class="shift-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Client</th>
+                            <th>Time</th>
+                            <th>Total Hours</th>
+                            <th>Code/Category</th>
+                            <th>Notes</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shift-list-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
