@@ -23,7 +23,7 @@ function highlightActivePage() {
 }
 
 // =========================================
-// 2. DYNAMIC FORM INJECTION (RESUME & REMINDERS)
+// 2. DYNAMIC FORM INJECTION
 // =========================================
 function setupDynamicButtons() {
     // Resume: Accreditations
@@ -102,13 +102,33 @@ function setupDynamicButtons() {
             saveReminders();
         });
     }
+
+    // Invoice: Add Item Row
+    const btnInvItem = document.getElementById('btnAddInvItem');
+    if (btnInvItem) {
+        btnInvItem.addEventListener('click', () => {
+            const container = document.getElementById('inv-items-container');
+            container.insertAdjacentHTML('beforeend', `
+                <div class="exp-entry inv-item-row">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" class="inv-item-date" placeholder="Date (e.g. 15/05/26)" oninput="updateInvoicePreview()">
+                        <input type="text" class="inv-item-code" placeholder="NDIS Item Code" oninput="updateInvoicePreview()">
+                    </div>
+                    <input type="text" class="inv-item-desc" placeholder="Support Category / Description" oninput="updateInvoicePreview()" style="margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <input type="number" class="inv-item-qty" placeholder="Hours" step="0.25" oninput="updateInvoicePreview()">
+                        <input type="number" class="inv-item-rate" placeholder="Rate ($)" step="0.01" oninput="updateInvoicePreview()">
+                    </div>
+                </div>
+            `);
+        });
+    }
 }
 
 // =========================================
 // 3. RESUME PREVIEW & PDF
 // =========================================
 function updatePreview() {
-    // Exit if we aren't on the resume page
     if (!document.getElementById('outName')) return; 
 
     document.getElementById('outName').innerText = (document.getElementById('inName').value || "Your Name").toUpperCase();
@@ -153,7 +173,6 @@ function downloadPDF() {
     const element = document.getElementById('resume-content');
     if (!element) return;
     
-    // Reset scaling temporarily for a crisp high-res PDF
     const originalTransform = element.style.transform;
     element.style.transform = "scale(1)";
     
@@ -171,7 +190,81 @@ function downloadPDF() {
 }
 
 // =========================================
-// 4. COMPLIANCE TRACKER & REMINDERS
+// 4. INVOICE PREVIEW & PDF LOGIC
+// =========================================
+function updateInvoicePreview() {
+    if (!document.getElementById('out-inv-num')) return;
+
+    // Map basic text fields
+    document.getElementById('out-inv-num').innerText = document.getElementById('inv-num').value || "INV-0000";
+    
+    // Format Date
+    const rawDate = document.getElementById('inv-date').value;
+    document.getElementById('out-inv-date').innerText = rawDate ? new Date(rawDate).toLocaleDateString('en-AU') : "DD/MM/YYYY";
+    
+    document.getElementById('out-inv-provider-name').innerText = document.getElementById('inv-provider-name').value || "Your Business Name";
+    document.getElementById('out-inv-abn').innerText = document.getElementById('inv-abn').value || "00 000 000 000";
+    document.getElementById('out-inv-client-name').innerText = document.getElementById('inv-client-name').value || "Client Name";
+    document.getElementById('out-inv-client-ndis').innerText = document.getElementById('inv-client-ndis').value || "Not Provided";
+    document.getElementById('out-inv-bank').innerText = document.getElementById('inv-bank').value || "Please enter bank details on the left.";
+
+    // Handle Table Rows & Math
+    const tbody = document.getElementById('out-inv-items');
+    tbody.innerHTML = "";
+    let grandTotal = 0;
+
+    document.querySelectorAll('.inv-item-row').forEach(row => {
+        const date = row.querySelector('.inv-item-date').value;
+        const code = row.querySelector('.inv-item-code').value;
+        const desc = row.querySelector('.inv-item-desc').value;
+        const qty = parseFloat(row.querySelector('.inv-item-qty').value) || 0;
+        const rate = parseFloat(row.querySelector('.inv-item-rate').value) || 0;
+        
+        const lineTotal = qty * rate;
+
+        if (date || code || desc || qty || rate) {
+            grandTotal += lineTotal;
+            tbody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>${date}</td>
+                    <td>${code}</td>
+                    <td>${desc}</td>
+                    <td style="text-align: center;">${qty}</td>
+                    <td style="text-align: right;">$${rate.toFixed(2)}</td>
+                    <td style="text-align: right; font-weight: bold;">$${lineTotal.toFixed(2)}</td>
+                </tr>
+            `);
+        }
+    });
+
+    document.getElementById('out-inv-total').innerText = `$${grandTotal.toFixed(2)}`;
+}
+
+function downloadInvoicePDF() {
+    const element = document.getElementById('invoice-content');
+    if (!element) return;
+    
+    const originalTransform = element.style.transform;
+    element.style.transform = "scale(1)"; 
+    
+    const invNum = document.getElementById('inv-num').value || "Invoice";
+    const clientName = document.getElementById('inv-client-name').value || "Client";
+    
+    const opt = {
+        margin:       0,
+        filename:     `${invNum}_${clientName.replace(/\s+/g, '_')}.pdf`,
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+        element.style.transform = originalTransform; 
+    });
+}
+
+// =========================================
+// 5. COMPLIANCE TRACKER & REMINDERS
 // =========================================
 function calculateExpiry(element) {
     const card = element.closest('.reminder-card');
@@ -179,7 +272,7 @@ function calculateExpiry(element) {
     const validityMonths = parseInt(card.querySelector('.rem-validity').value);
     const statusContainer = card.querySelector('.reminder-status');
     
-    saveReminders(); // Auto-save on any change
+    saveReminders(); 
     
     if (!dateInput) return;
 
@@ -240,12 +333,11 @@ function loadReminders() {
             </div>`);
     });
     
-    // Trigger calculation to restore status badges
     document.querySelectorAll('.rem-date').forEach(d => { if (d.value) calculateExpiry(d); });
 }
 
 // =========================================
-// 5. SHIFT BOOKINGS MANAGER
+// 6. SHIFT BOOKINGS MANAGER
 // =========================================
 let shifts = JSON.parse(localStorage.getItem('supportHubShifts')) || [];
 
@@ -262,7 +354,7 @@ function setupShiftManager() {
         const startTime = new Date(`1970-01-01T${start}Z`);
         let endTime = new Date(`1970-01-01T${end}Z`);
         
-        if(endTime < startTime) endTime.setDate(endTime.getDate() + 1); // Handle midnight crossing
+        if(endTime < startTime) endTime.setDate(endTime.getDate() + 1); 
 
         shifts.push({
             id: Date.now(), 
@@ -275,7 +367,7 @@ function setupShiftManager() {
             notes: document.getElementById('shift-notes').value || '-'
         });
         
-        shifts.sort((a, b) => new Date(b.date) - new Date(a.date)); // Newest first
+        shifts.sort((a, b) => new Date(b.date) - new Date(a.date)); 
         localStorage.setItem('supportHubShifts', JSON.stringify(shifts));
         renderShifts();
         form.reset();
@@ -316,7 +408,7 @@ function deleteShift(id) {
 }
 
 // =========================================
-// 6. CONTACT DEVELOPER FORM (FORMSPREE)
+// 7. CONTACT DEVELOPER FORM (FORMSPREE)
 // =========================================
 function setupContactForm() {
     const form = document.getElementById('form-contact');
@@ -350,7 +442,7 @@ function setupContactForm() {
 }
 
 // =========================================
-// 7. CLIENT DIRECTORY MANAGER
+// 8. CLIENT DIRECTORY MANAGER
 // =========================================
 let clients = JSON.parse(localStorage.getItem('supportHubClients')) || [];
 
@@ -411,7 +503,7 @@ function deleteClient(id) {
 }
 
 // =========================================
-// 8. AGENCY DIRECTORY MANAGER
+// 9. AGENCY DIRECTORY MANAGER
 // =========================================
 let agencies = JSON.parse(localStorage.getItem('supportHubAgencies')) || [];
 
@@ -472,7 +564,7 @@ function deleteAgency(id) {
 }
 
 // =========================================
-// 9. INITIALIZATION
+// 10. INITIALIZATION
 // =========================================
 window.onload = () => {
     // Nav & Theme
@@ -484,10 +576,11 @@ window.onload = () => {
     setupDynamicButtons(); 
     
     // Page-Specific Triggers (Safely bypassed if not on the page)
-    updatePreview();       // Resume Preview
-    loadReminders();       // Compliance Tracker
-    setupShiftManager();   // Shift Bookings
-    setupContactForm();    // Dev Contact (Formspree)
-    setupClientManager();  // Client Directory
-    setupAgencyManager();  // Agency Directory
+    updatePreview();         // Resume Preview
+    updateInvoicePreview();  // Invoice Preview
+    loadReminders();         // Compliance Tracker
+    setupShiftManager();     // Shift Bookings
+    setupContactForm();      // Dev Contact (Formspree)
+    setupClientManager();    // Client Directory
+    setupAgencyManager();    // Agency Directory
 };
