@@ -78,3 +78,52 @@ window.onload = () => {
         setTheme(savedTheme);
     }
 };
+
+function updatePreview() {
+    // Basic Details
+    document.getElementById('outName').innerText = document.getElementById('inName').value || "Your Name";
+    document.getElementById('outEmail').innerText = document.getElementById('inEmail').value || "Email";
+    document.getElementById('outPhone').innerText = document.getElementById('inPhone').value || "Phone";
+    document.getElementById('outBio').innerText = document.getElementById('inBio').value || "Summary...";
+
+    // Accreditations
+    const accInputs = document.querySelectorAll('.acc-in');
+    const accList = document.getElementById('outAccreds');
+    accList.innerHTML = "";
+    accInputs.forEach(input => {
+        if(input.value) {
+            let li = document.createElement('li');
+            li.innerText = input.value;
+            accList.appendChild(li);
+        }
+    });
+
+    // Qualifications
+    const qualInputs = document.querySelectorAll('.qual-in');
+    const qualList = document.getElementById('outQuals');
+    qualList.innerHTML = "";
+    qualInputs.forEach(input => {
+        if(input.value) {
+            let li = document.createElement('li');
+            li.innerText = input.value;
+            qualList.appendChild(li);
+        }
+    });
+
+    // Experience Blocks
+    const expBlocks = document.querySelectorAll('.exp-entry');
+    const expOutput = document.getElementById('outExp');
+    expOutput.innerHTML = "";
+    expBlocks.forEach(block => {
+        const dates = block.querySelector('.exp-dates').value;
+        const employer = block.querySelector('.exp-employer').value;
+        const desc = block.querySelector('.exp-desc').value;
+
+        if(dates || employer) {
+            let div = document.createElement('div');
+            div.className = "res-exp-item";
+            div.innerHTML = `<strong>${dates}</strong> - <strong>${employer}</strong><p>${desc}</p>`;
+            expOutput.appendChild(div);
+        }
+    });
+}
