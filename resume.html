@@ -1,73 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Builder - Support Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-</head>
-<body class="theme-blue">
-
-    <header class="main-nav">
-        <div class="logo">Support<span>Hub</span></div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#" class="active">Resume</a></li>
-                <li><a href="#">Reminders</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="resume-container">
-        <section class="resume-form card">
-            <h2>Worker Details</h2>
+<main class="resume-container">
+    <section class="resume-form card">
+        <h2>Professional Profile</h2>
+        
+        <div class="input-row">
             <div class="input-group">
                 <label>Full Name</label>
-                <input type="text" id="inName" placeholder="e.g. Damien Smith" oninput="updatePreview()">
+                <input type="text" id="inName" placeholder="Damien Smith" oninput="updatePreview()">
             </div>
-            <div class="input-group">
-                <label>Professional Summary</label>
-                <textarea id="inBio" rows="4" placeholder="Briefly describe your experience..." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="input-row" style="display: flex; gap: 10px;">
+            <div class="input-group" style="flex: 1;">
+                <label>Email</label>
+                <input type="email" id="inEmail" placeholder="name@email.com" oninput="updatePreview()">
             </div>
-            <div class="input-group">
-                <label>Key Skills (Comma separated)</label>
-                <input type="text" id="inSkills" placeholder="Manual Handling, Medication Admin, NDIS Reporting" oninput="updatePreview()">
+            <div class="input-group" style="flex: 1;">
+                <label>Phone</label>
+                <input type="text" id="inPhone" placeholder="0400 000 000" oninput="updatePreview()">
             </div>
-            <div class="input-group">
-                <label>Recent Experience</label>
-                <textarea id="inExp" rows="4" placeholder="Role, Company, Dates..." oninput="updatePreview()"></textarea>
-            </div>
-            
-            <button onclick="downloadPDF()" class="cta-button">Download as PDF</button>
-        </section>
+        </div>
 
-        <section class="resume-preview-wrapper">
-            <h2>Live Preview</h2>
-            <div id="resume-content" class="resume-paper">
+        <div class="input-group">
+            <label>Professional Summary</label>
+            <textarea id="inBio" rows="3" oninput="updatePreview()"></textarea>
+        </div>
+
+        <h3>Accreditations (Safety & Compliance)</h3>
+        <div id="accreditation-inputs">
+            <input type="text" class="acc-in" placeholder="e.g. NDIS Worker Screening" oninput="updatePreview()">
+            <input type="text" class="acc-in" placeholder="e.g. First Aid & CPR" oninput="updatePreview()">
+            <input type="text" class="acc-in" placeholder="e.g. Manual Handling" oninput="updatePreview()">
+            </div>
+
+        <h3>Qualifications</h3>
+        <div id="qual-inputs">
+            <input type="text" class="qual-in" placeholder="e.g. Certificate IV in Disability" oninput="updatePreview()">
+            <input type="text" class="qual-in" placeholder="e.g. Diploma of Multimedia" oninput="updatePreview()">
+        </div>
+
+        <h3>Recent Experience</h3>
+        <div id="exp-inputs">
+            <div class="exp-entry">
+                <input type="text" class="exp-dates" placeholder="Dates (e.g. 2022 - Present)" oninput="updatePreview()">
+                <input type="text" class="exp-employer" placeholder="Employer/Agency" oninput="updatePreview()">
+                <textarea class="exp-desc" placeholder="Brief description of duties..." oninput="updatePreview()"></textarea>
+            </div>
+            <hr>
+            </div>
+
+        <button onclick="downloadPDF()" class="cta-button">Download PDF</button>
+    </section>
+
+    <section class="resume-preview-wrapper">
+        <div id="resume-content" class="resume-paper">
+            <header class="resume-header">
                 <h1 id="outName">Your Name</h1>
-                <p class="resume-tagline">Disability Support Professional</p>
-                <hr>
-                <div class="resume-section">
-                    <h3>Summary</h3>
-                    <p id="outBio">Your professional summary will appear here...</p>
+                <div class="contact-line">
+                    <span id="outEmail">email@example.com</span> | <span id="outPhone">0400 000 000</span>
                 </div>
-                <div class="resume-section">
-                    <h3>Core Competencies</h3>
-                    <ul id="outSkills">
-                        <li>Skill 1</li>
-                        <li>Skill 2</li>
-                    </ul>
+            </header>
+
+            <div class="resume-section">
+                <h3>Professional Summary</h3>
+                <p id="outBio">Summary text...</p>
+            </div>
+
+            <div class="resume-grid">
+                <div class="res-col">
+                    <h3>Accreditations</h3>
+                    <ul id="outAccreds"></ul>
                 </div>
-                <div class="resume-section">
-                    <h3>Professional Experience</h3>
-                    <p id="outExp" style="white-space: pre-line;">Experience details...</p>
+                <div class="res-col">
+                    <h3>Qualifications</h3>
+                    <ul id="outQuals"></ul>
                 </div>
             </div>
-        </section>
-    </main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+            <div class="resume-section">
+                <h3>Work History</h3>
+                <div id="outExp"></div>
+            </div>
+        </div>
+    </section>
+</main>
