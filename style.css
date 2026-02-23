@@ -636,3 +636,48 @@ input:focus, textarea:focus, select:focus {
     border-radius: 8px;
     font-size: 1.2rem;
 }
+
+/* =========================================
+   16. SUPPORT THE DEVELOPER CTA
+   ========================================= */
+.support-developer-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 40px auto;
+    padding: 25px 20px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 2px dashed #dfe6e9; /* Dashed border to separate it from core tools */
+    max-width: 500px;
+}
+
+.support-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+}
+
+.support-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFDD00; /* Distinctive BMC Yellow */
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 30px; /* Pill shape to look friendly */
+    font-size: 1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.support-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 221, 0, 0.4); /* Yellow glow on hover */
+    color: #000000;
+}
