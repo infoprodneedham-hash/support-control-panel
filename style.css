@@ -1,29 +1,43 @@
+/* =========================================
+   1. CORE VARIABLES & THEMES
+   ========================================= */
 :root {
-    --bg-color: #f8f9fa;
+    --bg-color: #f0f2f5;
     --card-bg: #ffffff;
     --text-main: #2d3436;
-    --accent: #0984e3;
-    --font-header: 'Segoe UI', Roboto, sans-serif;
+    --text-muted: #636e72;
+    --accent: #0984e3; /* Default Blue */
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --transition: all 0.3s ease;
 }
 
-/* Theme Definitions */
-.theme-blue { --accent: #0984e3; }
-.theme-green { --accent: #00b894; }
+/* Theme Classes - Triggered by JS */
+.theme-blue   { --accent: #0984e3; }
+.theme-green  { --accent: #00b894; }
 .theme-purple { --accent: #6c5ce7; }
 .theme-orange { --accent: #e17055; }
-.theme-teal { --accent: #00cec9; }
+.theme-teal   { --accent: #00cec9; }
 
+/* =========================================
+   2. GLOBAL STYLES
+   ========================================= */
 body {
     margin: 0;
-    font-family: var(--font-header);
+    padding: 0;
+    font-family: var(--font-main);
     background-color: var(--bg-color);
     color: var(--text-main);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    line-height: 1.6;
+    transition: var(--transition);
 }
 
-/* Navigation */
+* { box-sizing: border-box; }
+
+h1, h2, h3 { color: var(--text-main); margin-top: 0; }
+
+/* =========================================
+   3. RESPONSIVE NAVIGATION
+   ========================================= */
 .main-nav {
     display: flex;
     justify-content: space-between;
@@ -33,164 +47,192 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
-    z-index: 100;
-}
-
-.logo { font-weight: 800; font-size: 1.5rem; }
-.logo span { color: var(--accent); }
-
-.main-nav ul { display: flex; list-style: none; gap: 20px; }
-.main-nav a { text-decoration: none; color: var(--text-main); font-weight: 600; transition: 0.3s; }
-.main-nav a:hover { color: var(--accent); }
-
-/* Sidebar Theme Switcher */
-.theme-sidebar {
-    position: fixed;
-    right: 0;
-    top: 20%;
-    background: white;
-    padding: 10px;
-    border-radius: 10px 0 0 10px;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     z-index: 1000;
 }
 
+.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
+.logo span { color: var(--accent); }
+
+.main-nav ul { 
+    display: flex; 
+    list-style: none; 
+    gap: 25px; 
+    margin: 0; 
+    padding: 0;
+}
+
+.main-nav a { 
+    text-decoration: none; 
+    color: var(--text-main); 
+    font-weight: 600; 
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.main-nav a:hover, .main-nav a.active { 
+    color: var(--accent); 
+}
+
+.main-nav a.active {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 4px;
+}
+
+/* =========================================
+   4. THEME SIDEBAR (Right Side)
+   ========================================= */
+.theme-sidebar {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--card-bg);
+    padding: 12px;
+    border-radius: 15px 0 0 15px;
+    box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 2000;
+}
+
+.theme-sidebar p {
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+    text-align: center;
+}
+
 .theme-sidebar button {
-    width: 30px;
-    height: 30px;
-    border: none;
+    width: 28px;
+    height: 28px;
+    border: 2px solid transparent;
     border-radius: 50%;
     cursor: pointer;
+    transition: transform 0.2s;
 }
 
-.btn-blue { background: #0984e3; }
-.btn-green { background: #00b894; }
+.theme-sidebar button:hover { transform: scale(1.2); }
+
+.btn-blue   { background: #0984e3; }
+.btn-green  { background: #00b894; }
 .btn-purple { background: #6c5ce7; }
 .btn-orange { background: #e17055; }
-.btn-teal { background: #00cec9; }
+.btn-teal   { background: #00cec9; }
 
-/* Main Content */
-.hero {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
+/* =========================================
+   5. RESUME BUILDER LAYOUT
+   ========================================= */
+.resume-container {
+    display: grid;
+    grid-template-columns: 450px 1fr; /* Fixed form width, flexible preview */
+    gap: 30px;
+    padding: 30px 5%;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
-.content-box {
-    max-width: 900px;
+.card {
     background: var(--card-bg);
-    padding: 50px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-h1 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent); }
-.subtitle { font-size: 1.5rem; color: #636e72; margin-bottom: 2rem; }
+/* Form Styling */
+.input-group { margin-bottom: 15px; }
+.input-group label { 
+    display: block; 
+    font-weight: 700; 
+    margin-bottom: 5px; 
+    font-size: 0.85rem; 
+    color: var(--text-muted);
+}
 
-.intro-text p { font-size: 1.2rem; line-height: 1.8; margin-bottom: 1.5rem; }
+.input-group input, 
+.input-group textarea,
+.acc-in, .qual-in, .exp-dates, .exp-employer, .exp-desc {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
 
-.feature-list { list-style: none; padding: 0; }
-.feature-list li {
-    font-size: 1.1rem;
+.exp-entry {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
     margin-bottom: 15px;
-    padding-left: 30px;
-    position: relative;
-}
-
-.feature-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-weight: bold;
+    border-left: 4px solid var(--accent);
 }
 
 .cta-button {
     background: var(--accent);
     color: white;
     border: none;
-    padding: 15px 35px;
-    font-size: 1.1rem;
+    padding: 14px 25px;
+    font-size: 1rem;
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 20px;
-    transition: transform 0.2s;
-}
-
-.cta-button:hover { transform: translateY(-3px); opacity: 0.9; }
-
-/* Mobile View */
-@media (max-width: 768px) {
-    .main-nav { flex-direction: column; gap: 10px; }
-    .main-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 0.9rem; }
-    h1 { font-size: 2rem; }
-
-}
-
-/* Resume Specific Layout */
-.resume-container {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 30px;
-    padding: 40px 5%;
-    align-items: start;
-}
-
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.input-group { margin-bottom: 20px; }
-.input-group label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; }
-.input-group input, .input-group textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
+    transition: var(--transition);
 }
 
-/* The "Paper" Preview */
+.cta-button:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+/* =========================================
+   6. RESUME PAPER PREVIEW (A4)
+   ========================================= */
+.resume-preview-wrapper {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    padding-bottom: 50px;
+}
+
+/* This is the div targeted by html2pdf */
 .resume-paper {
     background: white;
-    width: 210mm; /* A4 Width */
+    width: 210mm;
     min-height: 297mm;
     padding: 20mm;
-    margin: 0 auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    transform: scale(0.6); /* Scale down for screen view */
+    box-shadow: 0 0 30px rgba(0,0,0,0.15);
+    transform: scale(0.75); /* Shrinks it to fit desktop screens */
     transform-origin: top center;
+    color: #333;
 }
 
-.resume-paper h1 { color: #2d3436; margin: 0; }
-.resume-tagline { color: var(--accent); font-weight: bold; font-size: 1.2rem; }
-.resume-section h3 { border-bottom: 2px solid var(--accent); padding-bottom: 5px; margin-top: 25px; }
+.resume-header { text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 15px; margin-bottom: 20px; }
+.resume-header h1 { margin: 0; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 1px; }
+.contact-line { font-size: 1rem; color: #666; margin-top: 5px; }
 
-@media (max-width: 1100px) {
-    .resume-container { grid-template-columns: 1fr; }
-    .resume-paper { transform: scale(0.9); width: 95%; padding: 10mm; }
+.resume-section h3 { 
+    font-size: 1.1rem; 
+    text-transform: uppercase; 
+    color: var(--accent); 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 5px; 
+    margin-top: 20px; 
 }
 
-.main-nav a.active {
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 5px;
-}
-
-.resume-header { text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
-.contact-line { font-size: 0.9rem; color: #555; margin-top: 5px; }
-.resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 .res-exp-item { margin-bottom: 15px; }
-.res-exp-item p { margin: 5px 0; font-size: 0.95rem; line-height: 1.4; }
-.acc-in, .qual-in { margin-bottom: 5px; width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-.exp-entry { background: #fdfdfd; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 3px solid var(--accent); }
+.res-exp-item p { font-size: 0.9rem; margin: 5px 0; }
+
+/* =========================================
+   7. MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 1024px) {
+    .resume-container { grid-template-columns: 1fr; }
+    .resume-paper { transform: scale(1); width: 100%; height: auto; padding: 10mm; }
+}
+
+@media (max-width: 768px) {
+    .main-nav { flex-direction: column; padding: 1rem; }
+    .main-nav ul { margin-top: 15px; gap: 10px; font-size: 0.85rem; flex-wrap: wrap; justify-content: center; }
+    .theme-sidebar { top: auto; bottom: 20px; flex-direction: row; border-radius: 15px; left: 50%; transform: translateX(-50%); }
+}
