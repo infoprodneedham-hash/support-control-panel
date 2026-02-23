@@ -604,3 +604,35 @@ input:focus, textarea:focus, select:focus {
     color: #d63031;
     transform: scale(1.1);
 }
+
+/* =========================================
+   15. INVOICE BUILDER SPECIFICS
+   ========================================= */
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.invoice-table th, .invoice-table td {
+    border: 1px solid #dfe6e9;
+    padding: 12px;
+    text-align: left;
+}
+
+.invoice-table th {
+    background: #f8f9fa;
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+.invoice-total-box {
+    text-align: right;
+    margin-top: 20px;
+    padding: 15px;
+    background: #fdfdfd;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
