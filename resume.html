@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Support Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="theme-blue">
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#" class="active">Resume</a></li>
+                <li><a href="#">Reminders</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="resume-container">
+        <section class="resume-form card">
+            <h2>Worker Details</h2>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="inName" placeholder="e.g. Damien Smith" oninput="updatePreview()">
+            </div>
+            <div class="input-group">
+                <label>Professional Summary</label>
+                <textarea id="inBio" rows="4" placeholder="Briefly describe your experience..." oninput="updatePreview()"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Key Skills (Comma separated)</label>
+                <input type="text" id="inSkills" placeholder="Manual Handling, Medication Admin, NDIS Reporting" oninput="updatePreview()">
+            </div>
+            <div class="input-group">
+                <label>Recent Experience</label>
+                <textarea id="inExp" rows="4" placeholder="Role, Company, Dates..." oninput="updatePreview()"></textarea>
+            </div>
+            
+            <button onclick="downloadPDF()" class="cta-button">Download as PDF</button>
+        </section>
+
+        <section class="resume-preview-wrapper">
+            <h2>Live Preview</h2>
+            <div id="resume-content" class="resume-paper">
+                <h1 id="outName">Your Name</h1>
+                <p class="resume-tagline">Disability Support Professional</p>
+                <hr>
+                <div class="resume-section">
+                    <h3>Summary</h3>
+                    <p id="outBio">Your professional summary will appear here...</p>
+                </div>
+                <div class="resume-section">
+                    <h3>Core Competencies</h3>
+                    <ul id="outSkills">
+                        <li>Skill 1</li>
+                        <li>Skill 2</li>
+                    </ul>
+                </div>
+                <div class="resume-section">
+                    <h3>Professional Experience</h3>
+                    <p id="outExp" style="white-space: pre-line;">Experience details...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
