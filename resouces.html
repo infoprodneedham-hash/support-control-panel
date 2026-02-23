@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Library | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="resources.html" class="active">Resources</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero" style="align-items: flex-start; padding-top: 40px;">
+        <section class="content-box" style="width: 100%; max-width: 1000px;">
+            <div class="section-header">
+                <div>
+                    <h1>Resource Library</h1>
+                    <p class="subtitle" style="margin-bottom: 0;">Essential industry links, guidelines, and training materials.</p>
+                </div>
+            </div>
+            
+            <hr>
+
+            <h3>Industry Portals & Guidelines</h3>
+            <div class="tools-grid" style="margin-bottom: 40px;">
+                <a href="https://www.ndiscommission.gov.au/workers" target="_blank" class="tool-card">
+                    <i class="fa-solid fa-briefcase-medical"></i>
+                    <h3>NDIS Commission</h3>
+                    <p>Code of Conduct & Worker Info</p>
+                </a>
+                
+                <a href="https://myplace.ndis.gov.au/" target="_blank" class="tool-card">
+                    <i class="fa-solid fa-laptop-medical"></i>
+                    <h3>myplace Portal</h3>
+                    <p>Manage claims and bookings</p>
+                </a>
+                
+                <a href="https://www.fairwork.gov.au/employment-conditions/awards/awards-summary/ma000100-summary" target="_blank" class="tool-card">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <h3>SCHADS Award</h3>
+                    <p>Check current pay rates & conditions</p>
+                </a>
+            </div>
+
+            <h3>Refresher Training & Tutorials</h3>
+            <div class="video-grid">
+                
+                <div class="card video-card">
+                    <h4>Manual Handling Basics</h4>
+                    <div class="video-responsive">
+                        <iframe src="https://www.youtube.com/embed/Z0oYx39_fBQ" title="Manual Handling Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="card video-card">
+                    <h4>NDIS Worker Orientation</h4>
+                    <div class="video-responsive">
+                        <iframe src="https://www.youtube.com/embed/n4PWeA2w4B0" title="NDIS Orientation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><strong>🔒 Privacy & Data Storage Notice:</strong> Your privacy and your clients' privacy are paramount. This application does <strong>not</strong> collect, transmit, or store any of your data on our backend servers. All information you input (including resumes, shifts, and client codes) is stored entirely <strong>locally on your specific device and browser</strong>. If you clear your browser cache, use an incognito window, or switch to a different device, your data will not sync and may be lost.</p>
+            
+            <p><strong>⚠️ User Responsibility & Disclaimer:</strong> SupportHub is an independent utility and is in no way affiliated with, endorsed by, or connected to the NDIS, government bodies, or any third-party healthcare agencies. Users are solely responsible for backing up their data (e.g., downloading PDFs) and ensuring the accuracy of their compliance records. The developers accept no liability for any lost data, missed shift renewals, errors in calculation, or compliance discrepancies.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
