@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Worker Control Panel</title>
+    <title>SupportHub | Control Panel</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/your-code.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="theme-blue">
 
@@ -22,12 +22,12 @@
         <div class="logo">Support<span>Hub</span></div>
         <nav>
             <ul>
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/resume.html">Resume</a></li>
-                <li><a href="/reminders.html">Reminders</a></li>
-                <li><a href="/bookings.html">Bookings</a></li>
-                <li><a href="/resources.html">Resources</a></li>
-                <li><a href="/contact.html">Contact</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -39,23 +39,51 @@
             
             <div class="intro-text">
                 <p>Welcome to your central command center. This hub is specifically designed for dedicated support workers who need rapid access to their professional documentation and essential client-support tools.</p>
+                <p style="margin-bottom: 30px;">Select a tool below to get started:</p>
+            </div>
+
+            <div class="tools-grid">
+                <a href="resume.html" class="tool-card">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <h3>Resume Builder</h3>
+                    <p>Generate NDIS-ready PDFs</p>
+                </a>
                 
-                <p>Manage your career and daily tasks with ease through our integrated suite of apps:</p>
+                <a href="reminders.html" class="tool-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Compliance</h3>
+                    <p>Track expiry dates</p>
+                </a>
                 
-                <ul class="feature-list">
-                    <li><strong>Resume Builder:</strong> Generate professional, NDIS-ready resumes and download them instantly as PDFs.</li>
-                    <li><strong>Accreditation Tracker:</strong> Never miss a renewal. Set reminders for First Aid, CPR, and Police Checks.</li>
-                    <li><strong>Shift Manager:</strong> A centralized booking form to track shifts across multiple clients and agencies.</li>
-                    <li><strong>Resource Library:</strong> Access curated YouTube tutorials and industry-leading links to stay informed on best practices.</li>
-                </ul>
+                <a href="bookings.html" class="tool-card">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <h3>Shift Manager</h3>
+                    <p>Log hours & client codes</p>
+                </a>
                 
-                <button class="cta-button">Explore My Tools</button>
+                <a href="resources.html" class="tool-card">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>Resources</h3>
+                    <p>Useful links & tutorials</p>
+                </a>
+                
+                <a href="contact.html" class="tool-card">
+                    <i class="fa-solid fa-headset"></i>
+                    <h3>Support</h3>
+                    <p>Report bugs or feedback</p>
+                </a>
             </div>
         </section>
     </main>
 
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><strong>🔒 Privacy & Data Storage Notice:</strong> Your privacy and your clients' privacy are paramount. This application does <strong>not</strong> collect, transmit, or store any of your data on our backend servers. All information you input (including resumes, shifts, and client codes) is stored entirely <strong>locally on your specific device and browser</strong>. If you clear your browser cache, use an incognito window, or switch to a different device, your data will not sync and may be lost.</p>
+            
+            <p><strong>⚠️ User Responsibility & Disclaimer:</strong> SupportHub is an independent utility and is in no way affiliated with, endorsed by, or connected to the NDIS, government bodies, or any third-party healthcare agencies. Users are solely responsible for backing up their data (e.g., downloading PDFs) and ensuring the accuracy of their compliance records. The developers accept no liability for any lost data, missed shift renewals, errors in calculation, or compliance discrepancies.</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
-
 </html>
-
