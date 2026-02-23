@@ -186,3 +186,11 @@ h1 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent); }
     border-bottom: 2px solid var(--accent);
     padding-bottom: 5px;
 }
+
+.resume-header { text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+.contact-line { font-size: 0.9rem; color: #555; margin-top: 5px; }
+.resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.res-exp-item { margin-bottom: 15px; }
+.res-exp-item p { margin: 5px 0; font-size: 0.95rem; line-height: 1.4; }
+.acc-in, .qual-in { margin-bottom: 5px; width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+.exp-entry { background: #fdfdfd; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 3px solid var(--accent); }
