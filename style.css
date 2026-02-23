@@ -422,3 +422,42 @@ input:focus, textarea:focus {
     .shift-grid { grid-template-columns: 1fr; }
     .shift-grid .shift-notes { grid-column: span 1; }
 }
+
+/* =========================================
+   12. FOOTER & DISCLAIMER
+   ========================================= */
+.site-footer {
+    background-color: #2d3436; /* Dark slate for contrast */
+    color: #b2bec3;
+    padding: 35px 5%;
+    margin-top: 60px; /* Gives breathing room after the main content */
+    font-size: 0.85rem;
+    line-height: 1.6;
+    border-top: 4px solid var(--accent);
+}
+
+.footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+.footer-content p {
+    margin-bottom: 15px;
+}
+
+.footer-content p:last-child {
+    margin-bottom: 0;
+}
+
+.footer-content strong {
+    color: #dfe6e9; /* Brighter text for emphasis */
+}
+
+/* Mobile adjustments for the footer */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 25px 20px 100px 20px; /* Extra bottom padding to clear mobile nav if needed */
+        text-align: left;
+    }
+}
