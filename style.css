@@ -341,3 +341,84 @@ input:focus, textarea:focus {
     .reminder-inputs { grid-template-columns: 1fr; gap: 10px; }
     .reminder-status { justify-content: center; }
 }
+
+/* =========================================
+   10. BOOKINGS / SHIFT MANAGER
+   ========================================= */
+.shift-form-card {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+}
+
+.shift-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    align-items: end;
+}
+
+.shift-grid .shift-notes {
+    grid-column: span 2;
+}
+
+.shift-grid .shift-action {
+    grid-column: span 1;
+}
+
+/* Shift Table */
+.table-responsive {
+    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.shift-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.shift-table th, .shift-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.shift-table th {
+    background: #f8f9fa;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.shift-table tbody tr:hover {
+    background: #fdfdfd;
+}
+
+.delete-btn {
+    background: #ff7675;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.delete-btn:hover {
+    background: #d63031;
+}
+
+@media (max-width: 1024px) {
+    .shift-grid { grid-template-columns: 1fr 1fr; }
+    .shift-grid .shift-notes { grid-column: span 2; }
+}
+
+@media (max-width: 600px) {
+    .shift-grid { grid-template-columns: 1fr; }
+    .shift-grid .shift-notes { grid-column: span 1; }
+}
