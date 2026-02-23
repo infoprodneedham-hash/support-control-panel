@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission & Terms | SupportHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-blue">
+
+    <aside class="theme-sidebar">
+        <p>Theme</p>
+        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
+        <button onclick="setTheme('theme-green')" class="btn-green"></button>
+        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
+        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
+        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
+    </aside>
+
+    <header class="main-nav">
+        <div class="logo">Support<span>Hub</span></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="reminders.html">Reminders</a></li>
+                <li><a href="bookings.html">Bookings</a></li>
+                <li><a href="invoice.html">Invoices</a></li>
+                <li><a href="clients.html">Clients</a></li>
+                <li><a href="agencies.html">Agencies</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="contact.html">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero" style="align-items: flex-start; padding-top: 40px;">
+        <section class="content-box" style="width: 100%; max-width: 900px;">
+            
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="font-size: 2.8rem; color: var(--accent);">Our Mission</h1>
+                <p class="subtitle" style="font-size: 1.3rem; max-width: 700px; margin: 0 auto;">
+                    "To empower independent disability support professionals by streamlining administration, allowing them to focus their time and energy on what truly matters: delivering exceptional, person-centered care."
+                </p>
+            </div>
+
+            <hr>
+
+            <div style="margin-top: 40px;">
+                <h2 style="margin-bottom: 20px;">Terms of Use & Disclaimer</h2>
+                <p>By utilizing the SupportHub Control Panel, you agree to the following conditions regarding data management, privacy, and liability:</p>
+                
+                <ul class="feature-list" style="margin-top: 20px;">
+                    <li><strong>100% Local Data Storage:</strong> This platform is designed as a secure, client-side application. We do not use backend databases. Everything you type (including client NDIS numbers, shift times, and bank details) is stored locally within your device's web browser using <code>localStorage</code>.</li>
+                    
+                    <li><strong>No Cloud Syncing:</strong> Because your data does not leave your device, it will not automatically sync across your phone, tablet, and desktop. If you clear your browser's cache or use Incognito mode, your saved data will be permanently lost. Please ensure you regularly export your records as PDFs.</li>
+                    
+                    <li><strong>Independent Utility:</strong> SupportHub is built by and for independent support workers. We are not affiliated with, endorsed by, or connected to the National Disability Insurance Scheme (NDIS), the NDIA, or any specific healthcare agency.</li>
+                    
+                    <li><strong>Accuracy & Liability:</strong> While we strive to provide helpful tools (such as date calculators and invoice math), you are solely responsible for ensuring the accuracy of your timesheets, claims, and compliance renewals. The developers of SupportHub accept no liability for financial loss, missed shifts, or compliance breaches resulting from the use of this software.</li>
+                    
+                    <li><strong>Respecting Privacy:</strong> As a support worker, you are bound by strict privacy guidelines. Please ensure that the device you use to access SupportHub is secured with a password or biometric lock to protect sensitive client information stored within your browser.</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="index.html" class="cta-button" style="text-decoration: none; display: inline-block;">Return to Dashboard</a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><strong>🔒 Privacy & Data Storage Notice:</strong> This application does <strong>not</strong> collect or transmit any data. All information is stored entirely <strong>locally on your specific device and browser</strong>.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
