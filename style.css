@@ -130,4 +130,53 @@ h1 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent); }
     .main-nav { flex-direction: column; gap: 10px; }
     .main-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 0.9rem; }
     h1 { font-size: 2rem; }
+
+}
+
+/* Resume Specific Layout */
+.resume-container {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 30px;
+    padding: 40px 5%;
+    align-items: start;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; }
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* The "Paper" Preview */
+.resume-paper {
+    background: white;
+    width: 210mm; /* A4 Width */
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    transform: scale(0.6); /* Scale down for screen view */
+    transform-origin: top center;
+}
+
+.resume-paper h1 { color: #2d3436; margin: 0; }
+.resume-tagline { color: var(--accent); font-weight: bold; font-size: 1.2rem; }
+.resume-section h3 { border-bottom: 2px solid var(--accent); padding-bottom: 5px; margin-top: 25px; }
+
+@media (max-width: 1100px) {
+    .resume-container { grid-template-columns: 1fr; }
+    .resume-paper { transform: scale(0.9); width: 95%; padding: 10mm; }
 }
