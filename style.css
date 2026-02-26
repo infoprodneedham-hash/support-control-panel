@@ -784,3 +784,9 @@ input:focus, textarea:focus, select:focus {
 .facebook:hover { background: #1877f2; }
 .x-corp:hover { background: #000000; }
 .copy-link.success { background: #059669; border-color: #10b981; }
+
+@media (max-width: 768px) {
+  .support-share-bar-fixed {
+    display: none; /* Hides it on mobile to save screen real estate */
+  }
+}
