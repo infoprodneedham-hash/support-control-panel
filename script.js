@@ -584,3 +584,23 @@ window.onload = () => {
     setupClientManager();    // Client Directory
     setupAgencyManager();    // Agency Directory
 };
+
+function shareSite(platform) {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent("Check out SupportHub - The free central command center for Support Workers!");
+    let shareUrl = "";
+
+    if (platform === 'linkedin') shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+    if (platform === 'facebook') shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    if (platform === 'twitter') shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+}
+
+function copySiteLink() {
+    navigator.clipboard.writeText(window.location.href);
+    const btn = document.getElementById('copyBtn');
+    const originalIcon = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-check" style="color: #00ffcc;"></i>';
+    setTimeout(() => { btn.innerHTML = originalIcon; }, 2000);
+}
