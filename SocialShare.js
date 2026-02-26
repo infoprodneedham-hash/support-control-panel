@@ -21,28 +21,28 @@ const SocialShare = ({ siteTitle = "Support Hub" }) => {
   };
 
   return (
-    <div className="support-share-bar">
-      <span className="share-label">Promote Support Hub:</span>
+  <div className="support-share-bar-fixed">
+    <span className="share-label-vertical">Promote</span>
+    
+    <div className="share-actions-vertical">
+      <button onClick={() => openPopup(shareLinks.linkedin)} title="Share on LinkedIn" className="share-icon linkedin">
+        <Linkedin size={22} />
+      </button>
       
-      <div className="share-actions">
-        <button onClick={() => openPopup(shareLinks.linkedin)} title="Share on LinkedIn" className="share-icon linkedin">
-          <Linkedin size={20} />
-        </button>
-        
-        <button onClick={() => openPopup(shareLinks.facebook)} title="Share on Facebook" className="share-icon facebook">
-          <Facebook size={20} />
-        </button>
+      <button onClick={() => openPopup(shareLinks.facebook)} title="Share on Facebook" className="share-icon facebook">
+        <Facebook size={22} />
+      </button>
 
-        <button onClick={() => openPopup(shareLinks.twitter)} title="Share on X" className="share-icon x-corp">
-          <Twitter size={20} />
-        </button>
+      <button onClick={() => openPopup(shareLinks.twitter)} title="Share on X" className="share-icon x-corp">
+        <Twitter size={22} />
+      </button>
 
-        <button onClick={handleCopy} className={`share-icon copy-link ${copied ? 'success' : ''}`}>
-          {copied ? <CheckCircle size={20} /> : <Share2 size={20} />}
-        </button>
-      </div>
+      <button onClick={handleCopy} className={`share-icon copy-link ${copied ? 'success' : ''}`} title="Copy Link">
+        {copied ? <CheckCircle size={22} /> : <Share2 size={22} />}
+      </button>
     </div>
-  );
+  </div>
+);
 };
 
 export default SocialShare;
