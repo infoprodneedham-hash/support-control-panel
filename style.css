@@ -790,3 +790,60 @@ input:focus, textarea:focus, select:focus {
     display: none; /* Hides it on mobile to save screen real estate */
   }
 }
+
+.support-share-sidebar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
+    background: #111827;
+    border: 1px solid #374151;
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+}
+
+.share-label-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: #9ca3af;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.share-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.share-icon {
+    color: white;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #1f2937;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.share-icon:hover {
+    transform: translateX(5px);
+    color: #00ffcc; /* Neon teal hover */
+}
+
+.linkedin:hover { background: #0077b5; }
+.facebook:hover { background: #1877f2; }
+.x-twitter:hover { background: #000000; }
+.copy-link:hover { background: #4b5563; }
