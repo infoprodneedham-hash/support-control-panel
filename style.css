@@ -724,3 +724,63 @@ input:focus, textarea:focus, select:focus {
 .facebook:hover { background: #1877f2; }
 .x-corp:hover { background: #000000; }
 .copy-link.success { background: #059669; border-color: #10b981; }
+
+/* Container pinned to the left center of the screen */
+.support-share-bar-fixed {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%); /* Centers it vertically */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column; /* Stack icons vertically */
+  align-items: center;
+  gap: 0; /* Icons will touch or have tight spacing */
+  background: #111827; /* Dark Slate Professional */
+  border: 1px solid #374151;
+  border-left: none; /* Seamless against the screen edge */
+  border-radius: 0 12px 12px 0; /* Rounded outer corners only */
+  padding: 15px 8px;
+  box-shadow: 4px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.share-label-vertical {
+  color: #9ca3af;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  writing-mode: vertical-rl; /* Rotates text vertically */
+  transform: rotate(180deg);
+  margin-bottom: 15px;
+  letter-spacing: 0.1em;
+}
+
+.share-actions-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.share-icon {
+  background: #1f2937;
+  border: 1px solid #4b5563;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effects */
+.share-icon:hover { 
+  transform: translateX(5px); /* Pops out slightly when hovered */
+  border-color: #60a5fa; 
+}
+
+.linkedin:hover { background: #0077b5; }
+.facebook:hover { background: #1877f2; }
+.x-corp:hover { background: #000000; }
+.copy-link.success { background: #059669; border-color: #10b981; }
