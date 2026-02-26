@@ -681,3 +681,46 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 8px 20px rgba(255, 221, 0, 0.4); /* Yellow glow on hover */
     color: #000000;
 }
+
+.support-share-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 12px 20px;
+  background: #111827; /* Dark Slate */
+  border: 1px solid #374151;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.share-label {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.share-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.share-icon {
+  background: #1f2937;
+  border: 1px solid #4b5563;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+/* Hover States */
+.share-icon:hover { transform: translateY(-2px); border-color: #60a5fa; }
+.linkedin:hover { background: #0077b5; }
+.facebook:hover { background: #1877f2; }
+.x-corp:hover { background: #000000; }
+.copy-link.success { background: #059669; border-color: #10b981; }
