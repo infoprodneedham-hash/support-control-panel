@@ -1,0 +1,6 @@
+# robots.txt for https://supportcontrolpanel.com/
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://supportcontrolpanel.com/sitemap.xml
