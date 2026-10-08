@@ -1130,7 +1130,116 @@
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
+<!-- ========================================== -->
+<!-- BACKUP & RESTORE GUIDE + FEEDBACK SECTION  -->
+<!-- ========================================== -->
+<div class="mt-6 space-y-6 text-xs text-slate-300">
 
+  <!-- 1. MANUAL BACKUP & CROSS-DEVICE RESTORE GUIDE -->
+  <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 sm:p-5 shadow-inner">
+    <div class="flex items-center gap-2 mb-3">
+      <div class="w-7 h-7 rounded-lg bg-[var(--theme-primary)]/20 text-[var(--theme-primary)] flex items-center justify-center font-bold">
+        <i class="fa-solid fa-arrows-rotate"></i>
+      </div>
+      <div>
+        <h4 class="font-bold text-slate-100 text-sm">How to Back Up & Migrate Your Data</h4>
+        <p class="text-[11px] text-slate-400">Because your data never touches a remote server, follow these simple steps to safeguard your records.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+      <!-- JSON Migration Card -->
+      <div class="bg-slate-800/80 p-3.5 rounded-lg border border-slate-700 space-y-2">
+        <div class="flex items-center gap-2 text-teal-400 font-semibold text-xs">
+          <i class="fa-solid fa-file-code"></i> JSON Full Backup & Device Migration
+        </div>
+        <p class="text-[11px] text-slate-400">Use this to move your complete setup (clients, shifts, invoices, certs) to another browser, phone, or laptop.</p>
+        <ol class="list-decimal list-inside space-y-1.5 text-[11px] text-slate-300 leading-relaxed">
+          <li>Click <strong class="text-teal-300">"JSON Backup"</strong> in the top header. A <code class="bg-slate-900 px-1 py-0.5 rounded text-slate-300">.json</code> file will immediately download to your device.</li>
+          <li>Email this downloaded file to yourself, or upload it to your Google Drive / personal cloud.</li>
+          <li>On your new computer, phone, or secondary browser, open the SupportHub web app.</li>
+          <li>Click <strong class="text-sky-300">"Restore JSON"</strong> in the top header, select your saved <code class="bg-slate-900 px-1 py-0.5 rounded text-slate-300">.json</code> file, and all your records will instantly load into place.</li>
+        </ol>
+      </div>
+
+      <!-- CSV Archival Card -->
+      <div class="bg-slate-800/80 p-3.5 rounded-lg border border-slate-700 space-y-2">
+        <div class="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
+          <i class="fa-solid fa-file-csv"></i> CSV Spreadsheet Archival
+        </div>
+        <p class="text-[11px] text-slate-400">Use this for tax time, vehicle travel audits, or long-term record-keeping in Google Sheets or Excel.</p>
+        <ol class="list-decimal list-inside space-y-1.5 text-[11px] text-slate-300 leading-relaxed">
+          <li>Click <strong class="text-emerald-300">"Export Shifts CSV"</strong> in the top header to download your entire shift log.</li>
+          <li>Save the file into your local records folder or your personal Google Drive / OneDrive.</li>
+          <li>Open <strong>Google Sheets</strong>, create a new spreadsheet, click <em>File &gt; Import &gt; Upload</em>, and select your CSV file.</li>
+          <li>Your shifts, hourly calculations, km, and totals will be formatted into a permanent, searchable spreadsheet archive.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DEVELOPER FEEDBACK & BUG REPORT (FORMSPREE WITH CAPTCHA) -->
+  <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 sm:p-5 shadow-inner">
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-[var(--theme-primary)]/20 text-[var(--theme-primary)] flex items-center justify-center font-bold">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-100 text-sm">Developer Feedback & Inquiries</h4>
+          <p class="text-[11px] text-slate-400">Report a bug, suggest an enhancement, or send a note directly to the creator.</p>
+        </div>
+      </div>
+      <span class="text-[10px] bg-slate-800 text-slate-400 border border-slate-700 px-2 py-0.5 rounded-full font-mono">Formspree Integrated</span>
+    </div>
+
+    <!-- Replace YOUR_FORMSPREE_ID_HERE with your Formspree Form ID -->
+    <form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST" class="space-y-3 mt-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[11px] font-medium text-slate-300 mb-1">Feedback Category *</label>
+          <select name="category" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]">
+            <option value="Bug Report">🐛 Bug Report</option>
+            <option value="General Feedback">💡 General Feedback / Idea</option>
+            <option value="Praise">⭐ Praise / Compliment</option>
+            <option value="General Inquiry">❓ General Inquiry</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-medium text-slate-300 mb-1">Your Email (Optional, for reply)</label>
+          <input type="email" name="_replyto" placeholder="you@example.com" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-medium text-slate-300 mb-1">Message *</label>
+        <textarea name="message" rows="3" required placeholder="Describe the issue or share your thoughts (keep it concise)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]"></textarea>
+      </div>
+
+      <!-- Human Verification / Honeypot to block automated spambots -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+        <div>
+          <label class="block text-[11px] font-medium text-amber-400 mb-1">
+            <i class="fa-solid fa-robot mr-1"></i> Human Check: What is 4 + 3? *
+          </label>
+          <input type="text" pattern="[7]|seven|Seven" required title="Please enter 7" placeholder="Answer here" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]">
+        </div>
+
+        <div class="flex items-end justify-end pt-2 sm:pt-0">
+          <!-- Honeypot anti-spam field hidden from humans -->
+          <input type="text" name="_gotcha" style="display:none">
+
+          <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-[var(--theme-primary)] hover:opacity-90 text-white font-medium rounded-lg text-xs transition flex items-center justify-center gap-1.5 shadow">
+            <i class="fa-solid fa-paper-plane"></i> Send Feedback
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+<!-- ========================================== -->
       <!-- App Explanatory Content -->
       <div class="space-y-4 text-xs text-stone-300 leading-relaxed">
         
