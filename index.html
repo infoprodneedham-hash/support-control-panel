@@ -1,139 +1,3152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SupportHub | Control Panel</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupportHub Control Panel - Support Worker Suite</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- html2pdf.js & html2canvas for PDF and Image Exports -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* CSS Variables for Dynamic Color Palettes */
+    :root[data-theme="orange"] {
+      --primary: #ea580c;
+      --primary-hover: #c2410c;
+      --primary-light: #ffedd5;
+      --primary-tint: rgba(234, 88, 12, 0.15);
+      --primary-border: rgba(234, 88, 12, 0.4);
+      --bg-base: #181514;
+      --bg-card: #231e1c;
+      --bg-elevated: #2d2624;
+      --bg-input: #141110;
+      --border-color: #3f3531;
+      --accent-badge: #ea580c;
+    }
+
+    :root[data-theme="green"] {
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-light: #d1fae5;
+      --primary-tint: rgba(5, 150, 105, 0.15);
+      --primary-border: rgba(5, 150, 105, 0.4);
+      --bg-base: #111815;
+      --bg-card: #192420;
+      --bg-elevated: #212f2a;
+      --bg-input: #0c120f;
+      --border-color: #2c423a;
+      --accent-badge: #10b981;
+    }
+
+    :root[data-theme="rose"] {
+      --primary: #e11d48;
+      --primary-hover: #be123c;
+      --primary-light: #ffe4e6;
+      --primary-tint: rgba(225, 29, 72, 0.15);
+      --primary-border: rgba(225, 29, 72, 0.4);
+      --bg-base: #191215;
+      --bg-card: #251a20;
+      --bg-elevated: #32232b;
+      --bg-input: #120d0f;
+      --border-color: #48313e;
+      --accent-badge: #f43f5e;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: #e7e5e4;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .theme-card {
+      background-color: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .theme-elevated {
+      background-color: var(--bg-elevated);
+      border-color: var(--border-color);
+    }
+
+    .theme-input {
+      background-color: var(--bg-input);
+      border-color: var(--border-color);
+    }
+
+    .theme-input:focus {
+      border-color: var(--primary);
+    }
+
+    .theme-btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+    .theme-btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .theme-text-primary {
+      color: var(--primary);
+    }
+
+    .theme-border-primary {
+      border-color: var(--primary);
+    }
+
+    .theme-tint-bg {
+      background-color: var(--primary-tint);
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Bottom Affiliate Drawer */
+    #affiliateDrawer {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer-collapsed {
+      transform: translateY(calc(100% - 46px));
+    }
+    .drawer-expanded {
+      transform: translateY(0);
+    }
+
+    /* Print & Export Document Formatting */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printArea, #printArea * {
+        visibility: visible;
+      }
+      #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        color: black !important;
+      }
+    }
+
+    .exportable-doc {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+  </style>
 </head>
-<body class="theme-blue">
-<div class="support-share-sidebar">
-    <div class="share-label-vertical">SHARE</div>
-    <div class="share-icons">
-        <a href="#" onclick="shareSite('linkedin')" title="Share on LinkedIn" class="share-icon linkedin"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="#" onclick="shareSite('facebook')" title="Share on Facebook" class="share-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
-       <a href="#" onclick="shareSite('twitter')" title="Share on X" class="share-icon x-twitter">
-    <span class="x-text">X</span>
-</a>
-        <a href="#" onclick="copySiteLink()" title="Copy Link" class="share-icon copy-link" id="copyBtn"><i class="fa-solid fa-link"></i></a>
-    </div>
-</div>
-    <aside class="theme-sidebar">
-        <p>Theme</p>
-        <button onclick="setTheme('theme-blue')" class="btn-blue"></button>
-        <button onclick="setTheme('theme-green')" class="btn-green"></button>
-        <button onclick="setTheme('theme-purple')" class="btn-purple"></button>
-        <button onclick="setTheme('theme-orange')" class="btn-orange"></button>
-        <button onclick="setTheme('theme-teal')" class="btn-teal"></button>
-    </aside>
+<body class="min-h-screen flex flex-col selection:bg-orange-500 selection:text-white pb-16">
 
-    <header class="main-nav">
-        <div class="logo">Support<span>Hub</span></div>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="resume.html">Resume</a></li>
-                <li><a href="reminders.html">Reminders</a></li>
-                <li><a href="bookings.html">Bookings</a></li>
-                <li><a href="invoice.html">Invoices</a></li>
-                <li><a href="clients.html">Clients</a></li>
-                <li><a href="agencies.html">Agencies</a></li>
-                <li><a href="resources.html">Resources</a></li>
-                <li><a href="contact.html">Support</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="hero">
-        <section class="content-box">
-            <h1>Support Worker Control Panel</h1>
-            <p class="subtitle"><strong><em>Streamlining Care, Empowering Support.</em></strong></p>
-            <p>Its important to note that the data you enter is not fed back to our server, but stored locally within your browser memory only on the specific device that you are using. If you clear your browser memory saved data will be lost.</p>
-            
-            <div class="intro-text">
-                <p>Welcome to your central command center. This hub is specifically designed for dedicated support workers who need rapid access to their professional documentation and essential client-support tools. FREE FOREVER. NO SUBSCRIPTIONS. NO PRO PLAN. JUST FREE TO USE AND SPREAD THE WORD IF YOU HAVE TIME.</p>
-                <p style="margin-bottom: 30px;">Select a tool below to get started:</p>
-            </div>
-
-            <div class="tools-grid">
-                <a href="resume.html" class="tool-card">
-                    <i class="fa-solid fa-file-pdf"></i>
-                    <h3>Resume Builder</h3>
-                    <p>Generate NDIS-ready PDFs</p>
-                </a>
-
-                <a href="invoice.html" class="tool-card">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                    <h3>Invoice Builder</h3>
-                    <p>Bill clients & generate PDFs</p>
-                </a>
-                
-                <a href="reminders.html" class="tool-card">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Compliance</h3>
-                    <p>Track expiry dates</p>
-                </a>
-                
-                <a href="bookings.html" class="tool-card">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    <h3>Shift Manager</h3>
-                    <p>Log hours & client codes</p>
-                </a>
-
-                <a href="clients.html" class="tool-card">
-                    <i class="fa-solid fa-users"></i>
-                    <h3>Clients</h3>
-                    <p>Manage NDIS numbers</p>
-                </a>
-
-                <a href="agencies.html" class="tool-card">
-                    <i class="fa-solid fa-building"></i>
-                    <h3>Agencies</h3>
-                    <p>Provider contact details</p>
-                </a>
-                
-                <a href="resources.html" class="tool-card">
-                    <i class="fa-solid fa-book-open"></i>
-                    <h3>Resources</h3>
-                    <p>Useful links & portals</p>
-                </a>
-                
-                <a href="contact.html" class="tool-card">
-                    <i class="fa-solid fa-headset"></i>
-                    <h3>Support</h3>
-                    <p>Report bugs or feedback</p>
-                </a>
-
-                <a href="mission.html" class="tool-card">
-                    <i class="fa-solid fa-handshake-angle"></i>
-                    <h3>Mission & Terms</h3>
-                    <p>Our values and usage terms</p>
-                </a>
-            </div>
-        </section>
-    </main>
-<div class="support-developer-cta">
-  <p class="support-text">Support the developer if you find these apps useful and have some spare change</p>
-  <a href="https://buy.stripe.com/4gMeVdgsI3HI2ttaYHe3e00" class="support-btn" target="_blank" rel="noopener noreferrer">
-    ☕ Buy Me A Coffee
-  </a>
-</div>
-    <footer class="site-footer">
-        <div class="footer-content">
-            <p><strong>🔒 Privacy & Data Storage Notice:</strong> This application does <strong>not</strong> collect, transmit, or store any of your data on our backend servers. All information you input is stored entirely <strong>locally on your specific device and browser</strong>.</p>
-            <p><strong>⚠️ Disclaimer:</strong> SupportHub is an independent utility. Users are solely responsible for backing up their data and ensuring the accuracy of their compliance records.</p>
+  <!-- Top Global Navigation -->
+  <header class="theme-card border-b sticky top-0 z-40 shadow-xl transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand & Status -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl theme-btn-primary flex items-center justify-center font-bold text-lg shadow-md transition-colors duration-200">
+          <i class="fa-solid fa-hands-holding-child"></i>
         </div>
-    </footer>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg tracking-tight text-white">SupportHub</h1>
+            <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded theme-tint-bg theme-text-primary border theme-border-primary">Control Panel</span>
+          </div>
+          <p class="text-[11px] text-stone-400 flex items-center gap-1.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Offline-First Local Storage Engine
+          </p>
+        </div>
+      </div>
 
-    <script src="script.js"></script>
+      <!-- Action Toolbar (Themes, Info, Social, Snapshots) -->
+      <div class="flex items-center gap-2 flex-wrap">
+        
+        <!-- Theme Selector Dropdown / Buttons -->
+        <div class="flex items-center theme-elevated border rounded-lg p-0.5 text-xs">
+          <button onclick="setAppTheme('orange')" id="theme-btn-orange" class="px-2 py-1 rounded text-[11px] font-medium transition flex items-center gap-1 text-orange-400 hover:text-white" title="Dusky Terracotta Orange">
+            <span class="w-2.5 h-2.5 rounded-full bg-orange-600 inline-block"></span> Orange
+          </button>
+          <button onclick="setAppTheme('green')" id="theme-btn-green" class="px-2 py-1 rounded text-[11px] font-medium transition flex items-center gap-1 text-emerald-400 hover:text-white" title="Sage / Forest Green">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span> Green
+          </button>
+          <button onclick="setAppTheme('rose')" id="theme-btn-rose" class="px-2 py-1 rounded text-[11px] font-medium transition flex items-center gap-1 text-rose-400 hover:text-white" title="Rose / Crimson">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-600 inline-block"></span> Rose
+          </button>
+        </div>
+
+        <!-- Info / About App Modal Trigger -->
+        <button onclick="openModal('onboardingModal')" class="px-2.5 py-1.5 text-xs font-medium rounded-lg theme-elevated hover:opacity-90 text-stone-300 border transition flex items-center gap-1.5" title="About App, Benefits & Disclaimer">
+          <i class="fa-solid fa-circle-info theme-text-primary"></i>
+          <span class="hidden sm:inline">Guide & Info</span>
+        </button>
+
+        <!-- Social Share Button -->
+        <button onclick="openModal('socialShareModal')" class="px-2.5 py-1.5 text-xs font-medium rounded-lg theme-elevated hover:opacity-90 text-stone-300 border transition flex items-center gap-1.5" title="Share with colleagues">
+          <i class="fa-solid fa-share-nodes theme-text-primary"></i>
+          <span class="hidden md:inline">Share</span>
+        </button>
+
+        <!-- JSON Backup -->
+        <button onclick="exportDataJSON()" class="px-2.5 py-1.5 text-xs font-medium rounded-lg theme-elevated hover:opacity-90 text-stone-300 border transition flex items-center gap-1.5" title="Download complete database JSON backup">
+          <i class="fa-solid fa-file-export theme-text-primary"></i>
+          <span class="hidden lg:inline">Backup</span>
+        </button>
+
+        <!-- Restore JSON -->
+        <label class="px-2.5 py-1.5 text-xs font-medium rounded-lg theme-elevated hover:opacity-90 text-stone-300 border cursor-pointer transition flex items-center gap-1.5" title="Import JSON backup file">
+          <i class="fa-solid fa-file-import text-amber-400"></i>
+          <span class="hidden lg:inline">Restore</span>
+          <input type="file" id="importJsonInput" accept=".json" class="hidden" onchange="importDataJSON(event)">
+        </label>
+
+        <!-- Shifts CSV Export -->
+        <button onclick="exportShiftsCSV()" class="px-2.5 py-1.5 text-xs font-medium rounded-lg theme-btn-primary transition flex items-center gap-1.5 shadow-sm" title="Export shifts to CSV spreadsheet">
+          <i class="fa-solid fa-file-csv"></i>
+          <span>Shifts CSV</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Navigation Tab Bar -->
+    <nav class="max-w-7xl mx-auto px-4 flex gap-1 border-t border-stone-800/80 overflow-x-auto text-xs sm:text-sm font-medium">
+      <button onclick="switchTab('tab-calendar')" id="tab-btn-calendar" class="nav-tab py-2.5 px-3.5 border-b-2 theme-border-primary theme-text-primary flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-regular fa-calendar-days"></i> Calendar & Shifts
+      </button>
+      <button onclick="switchTab('tab-clients')" id="tab-btn-clients" class="nav-tab py-2.5 px-3.5 border-b-2 border-transparent text-stone-400 hover:text-stone-200 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-user-group"></i> Client Directory
+      </button>
+      <button onclick="switchTab('tab-employers')" id="tab-btn-employers" class="nav-tab py-2.5 px-3.5 border-b-2 border-transparent text-stone-400 hover:text-stone-200 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-building-user"></i> Employers & Agencies
+      </button>
+      <button onclick="switchTab('tab-invoicing')" id="tab-btn-invoicing" class="nav-tab py-2.5 px-3.5 border-b-2 border-transparent text-stone-400 hover:text-stone-200 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-file-invoice-dollar"></i> Invoices & Archive
+      </button>
+      <button onclick="switchTab('tab-resume')" id="tab-btn-resume" class="nav-tab py-2.5 px-3.5 border-b-2 border-transparent text-stone-400 hover:text-stone-200 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-id-badge"></i> Resume Builder
+      </button>
+      <button onclick="switchTab('tab-compliance')" id="tab-btn-compliance" class="nav-tab py-2.5 px-3.5 border-b-2 border-transparent text-stone-400 hover:text-stone-200 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-certificate"></i> Compliance & Certs
+      </button>
+      <button onclick="switchTab('tab-resources')" id="tab-btn-resources" class="nav-tab py-2.5 px-3.5 border-b-2 border-transparent text-stone-400 hover:text-stone-200 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-landmark"></i> Gov & Support Resources
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Application Body -->
+  <main class="max-w-7xl mx-auto px-4 py-5 flex-1 w-full space-y-6">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: CALENDAR & SHIFTS LOGGING -->
+    <!-- ========================================== -->
+    <div id="tab-calendar" class="tab-pane space-y-6">
+      
+      <!-- Top Shift Stat Badges -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="theme-card border rounded-xl p-3.5 shadow-sm">
+          <span class="text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i class="fa-regular fa-clock theme-text-primary"></i> Total Shifts
+          </span>
+          <p id="metricTotalShifts" class="text-2xl font-bold text-white mt-1">0</p>
+          <span class="text-[11px] text-stone-500">Across all agencies & clients</span>
+        </div>
+        <div class="theme-card border rounded-xl p-3.5 shadow-sm">
+          <span class="text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-400"></i> Completed Hours
+          </span>
+          <p id="metricCompletedHours" class="text-2xl font-bold text-emerald-400 mt-1">0.0h</p>
+          <span id="metricCompletedSubtitle" class="text-[11px] text-stone-500">0 shifts marked complete</span>
+        </div>
+        <div class="theme-card border rounded-xl p-3.5 shadow-sm">
+          <span class="text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-calendar-day text-amber-400"></i> Upcoming / Booked
+          </span>
+          <p id="metricBookedHours" class="text-2xl font-bold text-amber-400 mt-1">0.0h</p>
+          <span id="metricBookedSubtitle" class="text-[11px] text-stone-500">Pending attendance</span>
+        </div>
+        <div class="theme-card border rounded-xl p-3.5 shadow-sm">
+          <span class="text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-coins theme-text-primary"></i> Gross Est. Earnings
+          </span>
+          <p id="metricTotalEarnings" class="text-2xl font-bold theme-text-primary mt-1">$0.00</p>
+          <span class="text-[11px] text-stone-500">Hourly + ATO travel rate</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Interactive Calendar -->
+        <div class="lg:col-span-5 theme-card border rounded-xl p-4 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-stone-700/60">
+              <div class="flex items-center gap-2">
+                <button onclick="prevMonth()" class="w-8 h-8 rounded-lg theme-elevated hover:opacity-80 border text-stone-300 flex items-center justify-center transition">
+                  <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextMonth()" class="w-8 h-8 rounded-lg theme-elevated hover:opacity-80 border text-stone-300 flex items-center justify-center transition">
+                  <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+                <h3 id="currentMonthYearLabel" class="font-bold text-stone-100 text-sm pl-1">Month Year</h3>
+              </div>
+              <button onclick="goToToday()" class="text-xs font-semibold px-2.5 py-1 rounded theme-elevated hover:opacity-90 theme-text-primary border transition">
+                Today
+              </button>
+            </div>
+
+            <!-- Calendar DOW Header -->
+            <div class="grid grid-cols-7 text-center text-[11px] font-semibold text-stone-400 mb-1">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span class="theme-text-primary">Sat</span><span class="theme-text-primary">Sun</span>
+            </div>
+
+            <!-- Calendar Days -->
+            <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-xs">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Calendar Legend & Filter Controls -->
+          <div class="mt-4 pt-3 border-t border-stone-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px] text-stone-400">
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Completed</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Booked</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span> Cancelled</span>
+            </div>
+            <button id="clearDateFilterBtn" onclick="clearDateFilter()" class="hidden theme-text-primary hover:underline font-semibold">
+              Show All Dates
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Shift Booking Form & Shifts Feed -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- Shift Logger Form -->
+          <div class="theme-card border rounded-xl p-4 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-stone-100 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-calendar-plus theme-text-primary"></i> Book or Log Shift
+              </h3>
+              <span id="selectedDateBadge" class="text-xs font-mono theme-text-primary theme-tint-bg px-2 py-0.5 rounded border theme-border-primary">
+                Date: Today
+              </span>
+            </div>
+
+            <form id="shiftForm" onsubmit="handleSaveShift(event)" class="space-y-3 text-xs">
+              <input type="hidden" id="shiftEditId" value="">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div>
+                  <label class="block text-stone-400 mb-1">Date</label>
+                  <input type="date" id="shiftDateInput" required class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-stone-400 mb-1">Client</label>
+                  <select id="shiftClientSelect" required class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                    <!-- Populated via JS -->
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-stone-400 mb-1">Employer / Agency</label>
+                  <select id="shiftEmployerSelect" required onchange="applyEmployerDefaultRate(this.value)" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                    <!-- Populated via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div>
+                  <label class="block text-stone-400 mb-1">Start Time</label>
+                  <input type="time" id="shiftStartTime" required value="09:00" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-stone-400 mb-1">End Time</label>
+                  <input type="time" id="shiftEndTime" required value="15:00" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-stone-400 mb-1">Rate ($/hr)</label>
+                  <input type="number" step="0.5" id="shiftHourlyRate" value="65.00" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-stone-400 mb-1">Status</label>
+                  <select id="shiftStatusSelect" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                    <option value="Booked">Booked (Upcoming)</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-stone-400 mb-1">Travel (Km) & Allowance</label>
+                  <div class="flex gap-2">
+                    <input type="number" step="0.1" id="shiftTravelKm" placeholder="Km" value="0" class="w-1/2 theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                    <input type="number" step="0.05" id="shiftTravelRate" placeholder="$/Km" value="0.96" class="w-1/2 theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none" title="ATO / NDIS per km allowance">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-stone-400 mb-1">Shift Type / Support Category</label>
+                  <input type="text" id="shiftTypeTag" placeholder="e.g. Core Support, Community Access, In-home" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block text-stone-400">Shift Notes & Handover Memo</label>
+                  <span class="text-[10px] text-stone-500">Activities, incidents, medication, meal updates</span>
+                </div>
+                <textarea id="shiftNotesMemo" rows="2" placeholder="Record handover observations or personal memos..." class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 focus:outline-none"></textarea>
+              </div>
+
+              <div class="flex items-center justify-end gap-2 pt-1">
+                <button type="button" onclick="resetShiftForm()" class="px-3 py-1.5 theme-elevated text-stone-300 font-medium rounded-lg transition border">
+                  Reset
+                </button>
+                <button type="submit" id="saveShiftBtn" class="px-4 py-1.5 theme-btn-primary font-medium rounded-lg transition shadow-md flex items-center gap-1.5">
+                  <i class="fa-solid fa-check"></i> Save Shift
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Shifts Table Listing -->
+          <div class="theme-card border rounded-xl p-4 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div class="flex items-center gap-2">
+                <h3 class="font-bold text-stone-100 text-sm">Shift Records</h3>
+                <span id="shiftFilterLabel" class="text-xs text-stone-400"></span>
+              </div>
+              <div class="flex items-center gap-2 text-xs">
+                <select id="filterEmployerSelect" onchange="filterShifts()" class="theme-input border rounded-lg px-2 py-1 text-stone-300 text-xs">
+                  <option value="ALL">All Employers</option>
+                </select>
+                <select id="filterStatusSelect" onchange="filterShifts()" class="theme-input border rounded-lg px-2 py-1 text-stone-300 text-xs">
+                  <option value="ALL">All Statuses</option>
+                  <option value="Booked">Booked</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-stone-300">
+                <thead class="theme-elevated text-stone-400 font-semibold border-b border-stone-700/60 uppercase text-[10px] tracking-wider">
+                  <tr>
+                    <th class="py-2 px-3">Date</th>
+                    <th class="py-2 px-3">Client & Employer</th>
+                    <th class="py-2 px-3">Times & Hrs</th>
+                    <th class="py-2 px-3">Gross Total</th>
+                    <th class="py-2 px-3">Status</th>
+                    <th class="py-2 px-3 text-center">Memo</th>
+                    <th class="py-2 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="shiftsTableBody" class="divide-y divide-stone-800">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: CLIENT DIRECTORY -->
+    <!-- ========================================== -->
+    <div id="tab-clients" class="tab-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Client Registration Form -->
+        <div class="lg:col-span-4 theme-card border rounded-xl p-4 shadow-sm h-fit">
+          <h2 class="text-base font-semibold text-stone-100 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-user-plus theme-text-primary"></i> Register New Client
+          </h2>
+          <form id="clientProfileForm" onsubmit="handleSaveClient(event)" class="space-y-3 text-xs">
+            <input type="hidden" id="clientEditId" value="">
+            
+            <div>
+              <label class="block text-stone-400 mb-1">Client Full Name / Initial</label>
+              <input type="text" id="clientNameInput" required placeholder="e.g. Alex M." class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-stone-400 mb-1">NDIS Number</label>
+                <input type="text" id="clientNdisInput" placeholder="430XXXXXXX" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none font-mono">
+              </div>
+              <div>
+                <label class="block text-stone-400 mb-1">Funding Type</label>
+                <select id="clientFundingType" class="w-full theme-input border rounded-lg px-2 py-2 text-stone-100 focus:outline-none">
+                  <option value="Plan-Managed">Plan-Managed</option>
+                  <option value="Self-Managed">Self-Managed</option>
+                  <option value="NDIA / Agency Managed">NDIA Managed</option>
+                  <option value="Private">Private / Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-stone-400 mb-1">Contact Phone</label>
+                <input type="tel" id="clientPhoneInput" placeholder="0400 000 000" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-stone-400 mb-1">Emergency ICE Contact</label>
+                <input type="text" id="clientEmergencyInput" placeholder="Guardian / Name & Ph" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-stone-400 mb-1">Primary Address / Key Pick-up Area</label>
+              <input type="text" id="clientAddressInput" placeholder="Street, Suburb, Postcode" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-stone-400 mb-1">Key Triggers, Sensory Needs & Routine</label>
+              <textarea id="clientSensoryInput" rows="2" placeholder="Sensory sensitivities, calming strategies, de-escalation tips..." class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-stone-400 mb-1">Care Objectives & General Notes</label>
+              <textarea id="clientCareNotesInput" rows="2" placeholder="Goals, communication protocol, meal preferences..." class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-2 theme-btn-primary font-medium rounded-lg transition shadow-md flex items-center justify-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i> Save Client Profile
+            </button>
+          </form>
+        </div>
+
+        <!-- Client Cards Grid -->
+        <div class="lg:col-span-8 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-stone-100 text-sm">Client Directory Profiles (<span id="clientListCount">0</span>)</h3>
+            <span class="text-xs text-stone-400">Stored safely on device</span>
+          </div>
+
+          <div id="clientsCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Dynamic Client Cards -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: MULTIPLE EMPLOYERS / AGENCIES -->
+    <!-- ========================================== -->
+    <div id="tab-employers" class="tab-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Add/Edit Employer Form -->
+        <div class="lg:col-span-4 theme-card border rounded-xl p-4 shadow-sm h-fit">
+          <h2 class="text-base font-semibold text-stone-100 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-building theme-text-primary"></i> Manage Employer / Agency
+          </h2>
+          <p class="text-xs text-stone-400 mb-4">Track agency contracts, direct clients, or your own sole trader business.</p>
+          
+          <form id="employerForm" onsubmit="handleSaveEmployer(event)" class="space-y-3 text-xs">
+            <input type="hidden" id="employerEditId" value="">
+
+            <div>
+              <label class="block text-stone-400 mb-1">Company / Agency Name</label>
+              <input type="text" id="empNameInput" required placeholder="e.g. Caring Hands Agency or Self-Employed" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-stone-400 mb-1">Employment Type</label>
+                <select id="empTypeSelect" class="w-full theme-input border rounded-lg px-2.5 py-2 text-stone-100 focus:outline-none">
+                  <option value="Sole Trader / Direct">Sole Trader / Direct</option>
+                  <option value="NDIS Agency">NDIS Agency</option>
+                  <option value="Casual Contract">Casual Contract</option>
+                  <option value="Permanent Part-time">Permanent Part-time</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-stone-400 mb-1">Default Base Rate ($/h)</label>
+                <input type="number" step="0.5" id="empDefaultRate" value="65.00" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-stone-400 mb-1">Contact Coordinator</label>
+                <input type="text" id="empContactName" placeholder="Manager Name" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-stone-400 mb-1">Business Phone</label>
+                <input type="tel" id="empPhone" placeholder="03 9000 0000" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-stone-400 mb-1">Payroll / Invoicing Email</label>
+                <input type="email" id="empEmail" placeholder="payroll@agency.com.au" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-stone-400 mb-1">ABN (if applicable)</label>
+                <input type="text" id="empAbn" placeholder="11 222 333 444" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none font-mono">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-stone-400 mb-1">Address / Office Location</label>
+              <input type="text" id="empAddress" placeholder="Suite, Street, City" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-stone-400 mb-1">Timesheet Notes & Submission Deadlines</label>
+              <textarea id="empNotes" rows="2" placeholder="e.g. Timesheets submitted every Monday by 10am via portal..." class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 focus:outline-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-2 theme-btn-primary font-medium rounded-lg transition shadow-md flex items-center justify-center gap-2">
+              <i class="fa-solid fa-plus"></i> Save Employer Profile
+            </button>
+          </form>
+        </div>
+
+        <!-- Employers List -->
+        <div class="lg:col-span-8 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-stone-100 text-sm">Registered Employers & Agencies (<span id="employerCountBadge">0</span>)</h3>
+            <span class="text-xs text-stone-400">Select these while logging shifts</span>
+          </div>
+
+          <div id="employersListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Dynamic Employer Cards -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 4: INDIVIDUAL CLIENT INVOICING STUDIO & ARCHIVE -->
+    <!-- ============================================================== -->
+    <div id="tab-invoicing" class="tab-pane hidden space-y-6">
+      
+      <!-- Invoicing Studio Header -->
+      <div class="theme-card border rounded-xl p-4 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-stone-700/60 pb-3">
+          <div>
+            <h2 class="text-base font-semibold text-stone-100 flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice-dollar theme-text-primary"></i> Single-Client Manual Invoicing & Archive Studio
+            </h2>
+            <p class="text-xs text-stone-400">Invoices are strictly dedicated to one participant or employer to ensure privacy and NDIS audit compliance.</p>
+          </div>
+
+          <!-- Secondary Actions -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="openModal('invoiceConfigModal')" class="px-2.5 py-1.5 theme-elevated hover:opacity-90 text-stone-300 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+              <i class="fa-solid fa-building-columns theme-text-primary"></i> Bank & ABN Details
+            </button>
+            <button onclick="toggleInvoiceMode('builder')" id="btnToggleBuilder" class="px-3 py-1.5 theme-btn-primary text-xs font-medium rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus-circle"></i> Create New Invoice
+            </button>
+            <button onclick="toggleInvoiceMode('archive')" id="btnToggleArchive" class="px-3 py-1.5 theme-elevated text-stone-300 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+              <i class="fa-solid fa-box-archive text-amber-400"></i> Invoice Archive (<span id="archiveCountBadge">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- BUILDER VIEW (Create / Edit Single Client Invoice) -->
+        <div id="invoiceBuilderSection" class="space-y-5">
+          
+          <!-- Generator Configuration Form -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs bg-black/20 p-3.5 rounded-xl border border-stone-800">
+            <div>
+              <label class="block text-stone-400 font-bold mb-1">Select Target Client (Mandatory)</label>
+              <select id="invTargetClient" onchange="onInvoiceClientChange()" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            <div>
+              <label class="block text-stone-400 mb-1">Invoice Number</label>
+              <input type="text" id="invNumberInput" value="INV-2026-001" oninput="renderLiveInvoice()" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200 font-mono">
+            </div>
+            <div>
+              <label class="block text-stone-400 mb-1">Invoice Date</label>
+              <input type="date" id="invDateInput" oninput="renderLiveInvoice()" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200">
+            </div>
+            <div>
+              <label class="block text-stone-400 mb-1">Payment Due Date</label>
+              <input type="date" id="invDueDateInput" oninput="renderLiveInvoice()" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-200">
+            </div>
+          </div>
+
+          <!-- Un-invoiced Shifts Importer & Manual Line Items Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 text-xs bg-stone-900/40 p-3 rounded-xl border border-stone-800">
+            <div class="flex items-center gap-2">
+              <button onclick="pullClientCompletedShifts()" class="px-3 py-1.5 theme-elevated hover:opacity-90 text-stone-200 rounded-lg border flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-arrows-rotate text-emerald-400"></i> Auto-Load Uninvoiced Shifts
+              </button>
+              <button onclick="addManualInvoiceItem()" class="px-3 py-1.5 theme-elevated hover:opacity-90 text-stone-200 rounded-lg border flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-plus theme-text-primary"></i> Add Custom Item / Travel
+              </button>
+            </div>
+            <div class="flex items-center gap-3">
+              <label class="flex items-center gap-1.5 cursor-pointer text-stone-400 select-none">
+                <input type="checkbox" id="invGstToggle" onchange="renderLiveInvoice()" class="rounded border-stone-700">
+                <span>Apply 10% GST (NDIS is normally GST-Free)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Dynamic Line Items Editor Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-stone-300">
+              <thead class="theme-elevated text-stone-400 font-semibold border-b border-stone-700/60 uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-2 px-2.5">Date</th>
+                  <th class="py-2 px-2.5">Item / Service Description (NDIS Support Code)</th>
+                  <th class="py-2 px-2.5 text-center w-20">Qty/Hrs</th>
+                  <th class="py-2 px-2.5 text-right w-24">Rate ($)</th>
+                  <th class="py-2 px-2.5 text-right w-24">Subtotal</th>
+                  <th class="py-2 px-2.5 text-center w-12">Action</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceLineItemsTableBody" class="divide-y divide-stone-800">
+                <!-- Dynamically populated line items -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Actions: Save to Archive & Export Downloads -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-700/60">
+            <div class="flex items-center gap-2">
+              <button onclick="archiveCurrentInvoice()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg transition shadow-md flex items-center gap-1.5">
+                <i class="fa-solid fa-box-archive"></i> Save & Archive Invoice
+              </button>
+              <span id="saveStatusNote" class="text-xs text-stone-400"></span>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="downloadInvoicePDF()" class="px-3 py-1.5 theme-btn-primary text-xs font-medium rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-file-pdf"></i> Download PDF
+              </button>
+              <button onclick="downloadInvoiceImage('png')" class="px-3 py-1.5 theme-elevated text-stone-200 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+                <i class="fa-solid fa-image text-emerald-400"></i> Export PNG
+              </button>
+              <button onclick="downloadInvoiceImage('jpeg')" class="px-3 py-1.5 theme-elevated text-stone-200 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+                <i class="fa-solid fa-file-image text-amber-400"></i> Export JPEG
+              </button>
+              <button onclick="window.print()" class="px-3 py-1.5 theme-elevated text-stone-200 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+                <i class="fa-solid fa-print text-sky-400"></i> Print
+              </button>
+            </div>
+          </div>
+
+          <!-- Printable/Exportable A4 Live Canvas View -->
+          <div class="flex justify-center overflow-x-auto py-2">
+            <div id="printableInvoice" class="bg-white text-stone-900 w-full max-w-[800px] p-8 rounded-lg shadow-xl text-xs exportable-doc font-sans">
+              <!-- Dynamically populated by renderLiveInvoice() -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ARCHIVE VIEW (Saved Past Invoices) -->
+        <div id="invoiceArchiveSection" class="hidden space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-stone-200 text-sm">Archived Invoices History</h3>
+            <span class="text-xs text-stone-400">Track sent and paid status per client</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-stone-300">
+              <thead class="theme-elevated text-stone-400 font-semibold border-b border-stone-700/60 uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="py-2.5 px-3">Inv Number</th>
+                  <th class="py-2.5 px-3">Client</th>
+                  <th class="py-2.5 px-3">Date</th>
+                  <th class="py-2.5 px-3">Due Date</th>
+                  <th class="py-2.5 px-3">Amount</th>
+                  <th class="py-2.5 px-3">Status</th>
+                  <th class="py-2.5 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceArchiveTableBody" class="divide-y divide-stone-800">
+                <!-- Dynamically populated via renderInvoiceArchive() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: RESUME BUILDER (PDF / PNG / JPEG) -->
+    <!-- ========================================== -->
+    <div id="tab-resume" class="tab-pane hidden space-y-6">
+      
+      <div class="theme-card border rounded-xl p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-stone-700/60 pb-3">
+          <div>
+            <h2 class="text-base font-semibold text-stone-100 flex items-center gap-2">
+              <i class="fa-solid fa-id-badge theme-text-primary"></i> Support Worker Resume Builder
+            </h2>
+            <p class="text-xs text-stone-400">Craft a tailored CV showcasing compliance, clearances, agency experience, and competencies.</p>
+          </div>
+
+          <!-- Resume Export Controls -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="downloadResumePDF()" class="px-3 py-1.5 theme-btn-primary text-white text-xs font-medium rounded-lg transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-file-pdf"></i> Download PDF
+            </button>
+            <button onclick="downloadResumeImage('png')" class="px-3 py-1.5 theme-elevated text-stone-200 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+              <i class="fa-solid fa-image text-emerald-400"></i> Export PNG
+            </button>
+            <button onclick="downloadResumeImage('jpeg')" class="px-3 py-1.5 theme-elevated text-stone-200 text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+              <i class="fa-solid fa-file-image text-amber-400"></i> Export JPEG
+            </button>
+            <button onclick="openModal('resumeEditModal')" class="px-3 py-1.5 theme-elevated theme-text-primary text-xs font-medium rounded-lg transition border flex items-center gap-1.5">
+              <i class="fa-solid fa-user-pen"></i> Edit CV Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Printable Resume View -->
+      <div class="flex justify-center overflow-x-auto py-2">
+        <div id="printableResume" class="bg-white text-stone-900 w-full max-w-[800px] p-8 rounded-lg shadow-xl text-xs exportable-doc font-sans leading-relaxed">
+          <!-- Rendered dynamically by renderLiveResume() -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: COMPLIANCE & CERTIFICATIONS TRACKER -->
+    <!-- ========================================== -->
+    <div id="tab-compliance" class="tab-pane hidden space-y-6">
+      
+      <div class="theme-card border rounded-xl p-5 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <div>
+            <h2 class="text-base font-semibold text-stone-100 flex items-center gap-2">
+              <i class="fa-solid fa-shield-halved theme-text-primary"></i> Mandatory Compliance & Clearance Tracker
+            </h2>
+            <p class="text-xs text-stone-400">Stay audit-ready across agencies and NDIS Quality & Safeguards Commission audits.</p>
+          </div>
+          <button onclick="addNewComplianceCheck()" class="px-3 py-1.5 text-xs theme-btn-primary rounded-lg transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> Add Clearance / Cert
+          </button>
+        </div>
+
+        <div id="complianceGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+          <!-- Dynamic Compliance Cards -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 7: HANDY RESOURCES & GOV LINKS -->
+    <!-- ========================================== -->
+    <div id="tab-resources" class="tab-pane hidden space-y-6">
+      
+      <!-- Critical Crisis Hotlines -->
+      <div class="bg-gradient-to-r from-red-950/40 via-stone-900 to-stone-900 border border-red-800/40 rounded-xl p-5 shadow-md">
+        <h2 class="text-base font-bold text-white mb-1 flex items-center gap-2">
+          <i class="fa-solid fa-phone-volume text-red-400"></i> Emergency & Crisis Escalation Hotlines
+        </h2>
+        <p class="text-xs text-stone-300 mb-4">Immediate Australian emergency services and 24/7 dedicated support phone lines.</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3 bg-red-950/40 border border-red-800/50 rounded-lg flex items-center justify-between">
+            <div>
+              <p class="font-bold text-red-200">Emergency Services</p>
+              <span class="text-stone-400 text-[11px]">Immediate Danger</span>
+            </div>
+            <a href="tel:000" class="px-3 py-1 bg-red-600 hover:bg-red-500 text-white font-mono font-bold rounded text-sm transition">000</a>
+          </div>
+
+          <div class="p-3 theme-elevated border rounded-lg flex items-center justify-between">
+            <div>
+              <p class="font-bold text-stone-200">Lifeline Support</p>
+              <span class="text-stone-400 text-[11px]">24/7 Mental Health</span>
+            </div>
+            <a href="tel:131114" class="px-2.5 py-1 bg-stone-700 hover:bg-stone-600 theme-text-primary font-mono font-bold rounded text-xs transition">13 11 14</a>
+          </div>
+
+          <div class="p-3 theme-elevated border rounded-lg flex items-center justify-between">
+            <div>
+              <p class="font-bold text-stone-200">1800RESPECT</p>
+              <span class="text-stone-400 text-[11px]">Family & Domestic Safety</span>
+            </div>
+            <a href="tel:1800737732" class="px-2.5 py-1 bg-stone-700 hover:bg-stone-600 theme-text-primary font-mono font-bold rounded text-xs transition">1800 737 732</a>
+          </div>
+
+          <div class="p-3 theme-elevated border rounded-lg flex items-center justify-between">
+            <div>
+              <p class="font-bold text-stone-200">Beyond Blue</p>
+              <span class="text-stone-400 text-[11px]">Anxiety & Depression</span>
+            </div>
+            <a href="tel:1300224636" class="px-2.5 py-1 bg-stone-700 hover:bg-stone-600 theme-text-primary font-mono font-bold rounded text-xs transition">1300 22 4636</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Government Portals & NDIS Network Links -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <!-- Category 1: NDIS & Commission -->
+        <div class="theme-card border rounded-xl p-4 flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="font-bold text-sm theme-text-primary flex items-center gap-2 mb-3">
+              <i class="fa-solid fa-landmark"></i> NDIS Portals & Guidance
+            </h3>
+            <ul class="space-y-2.5 text-xs text-stone-300">
+              <li>
+                <a href="https://www.ndis.gov.au/providers/pricing-arrangements" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>NDIS Pricing Arrangements & Limits</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ndiscommission.gov.au/" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>NDIS Quality & Safeguards Commission</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ndiscommission.gov.au/workers/worker-screening" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>NDIS Worker Screening Check (NWSC)</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://proda.humanservices.gov.au/" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>PRODA Authentication Portal</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <span class="text-[10px] text-stone-500 pt-2 border-t border-stone-800">Official Australian Government Sites</span>
+        </div>
+
+        <!-- Category 2: Support Networks & Carers -->
+        <div class="theme-card border rounded-xl p-4 flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="font-bold text-sm theme-text-primary flex items-center gap-2 mb-3">
+              <i class="fa-solid fa-users-viewfinder"></i> Support Networks & Gateways
+            </h3>
+            <ul class="space-y-2.5 text-xs text-stone-300">
+              <li>
+                <a href="https://www.carergateway.gov.au/" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>Carer Gateway (Respite & Support)</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.disabilitygateway.gov.au/" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>Disability Gateway Australia</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.healthdirect.gov.au/" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>Healthdirect (Symptom Checker)</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.myagedcare.gov.au/" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>My Aged Care Portal</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <span class="text-[10px] text-stone-500 pt-2 border-t border-stone-800">Community & Health Gateways</span>
+        </div>
+
+        <!-- Category 3: Workplace Rights & Sole Trader Tax -->
+        <div class="theme-card border rounded-xl p-4 flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="font-bold text-sm theme-text-primary flex items-center gap-2 mb-3">
+              <i class="fa-solid fa-scale-balanced"></i> Fair Work & Sole Trader Tax
+            </h3>
+            <ul class="space-y-2.5 text-xs text-stone-300">
+              <li>
+                <a href="https://www.fairwork.gov.au/find-help-for/social-community-disability-services" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>SCHADS Industry Award Details</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ato.gov.au/businesses-and-organisations/starting-registering-or-closing-a-business/starting-your-own-business" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>ATO: Starting Sole Trader Business</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/cars-transport-and-travel/motor-vehicle-and-car-expenses/cents-per-kilometre-method" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>ATO: Vehicle Per-Km Travel Rates</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.servicesaustralia.gov.au/centrelink" target="_blank" rel="noopener noreferrer" class="hover:underline transition flex items-center justify-between group">
+                  <span>Services Australia / Centrelink</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-stone-500 group-hover:text-white"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <span class="text-[10px] text-stone-500 pt-2 border-t border-stone-800">Taxation & Employment Regulatory Guides</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- SLIDE-OUT BOTTOM AFFILIATE DRAWER -->
+  <!-- ============================================================== -->
+  <aside id="affiliateDrawer" class="fixed bottom-0 left-0 right-0 z-50 theme-card border-t shadow-2xl drawer-expanded transition-all duration-300">
+    <div onclick="toggleAffiliateDrawer()" class="h-11 px-4 flex items-center justify-between cursor-pointer select-none border-b border-stone-700/60 hover:opacity-90 transition">
+      <div class="flex items-center gap-2.5 text-xs font-semibold text-stone-200">
+        <span class="w-2.5 h-2.5 rounded-full theme-btn-primary animate-pulse"></span>
+        <i class="fa-solid fa-handshake-angle theme-text-primary"></i>
+        <span>Recommended Support Worker Tools & Partner Benefits</span>
+        <span class="theme-tint-bg theme-text-primary border theme-border-primary text-[10px] px-2 py-0.5 rounded-full font-mono">4 Partners</span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-stone-400">
+        <span id="affiliateToggleText" class="hidden sm:inline">Tap to minimize partner offers</span>
+        <i id="affiliateChevron" class="fa-solid fa-chevron-up theme-text-primary rotate-180 transition-transform duration-300"></i>
+      </div>
+    </div>
+
+    <div class="p-4 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        
+        <div class="p-3 theme-elevated rounded-xl border flex flex-col justify-between space-y-2">
+          <div>
+            <div class="flex items-center justify-between theme-text-primary mb-1 font-bold">
+              <span>BizCover / Sole Trader Cover</span>
+              <span class="text-[10px] theme-tint-bg px-1.5 py-0.5 rounded border theme-border-primary">10% Off</span>
+            </div>
+            <p class="text-stone-300 text-[11px] leading-tight">Instant Public Liability & Professional Indemnity insurance certificates required for independent support contractors.</p>
+          </div>
+          <a href="#" target="_blank" class="w-full py-1.5 text-center theme-btn-primary text-white rounded font-medium transition block">
+            Compare Policies &rarr;
+          </a>
+        </div>
+
+        <div class="p-3 theme-elevated rounded-xl border flex flex-col justify-between space-y-2">
+          <div>
+            <div class="flex items-center justify-between text-amber-400 mb-1 font-bold">
+              <span>Rapid First Aid & CPR</span>
+              <span class="text-[10px] bg-amber-900/60 text-amber-200 px-1.5 py-0.5 rounded border border-amber-700/50">Partner Deal</span>
+            </div>
+            <p class="text-stone-300 text-[11px] leading-tight">Same-day accredited HLTAID011 & HLTAID009 express certification courses with pre-learning online.</p>
+          </div>
+          <a href="#" target="_blank" class="w-full py-1.5 text-center theme-elevated text-amber-300 rounded font-medium border transition block">
+            Book Renewal &rarr;
+          </a>
+        </div>
+
+        <div class="p-3 theme-elevated rounded-xl border flex flex-col justify-between space-y-2">
+          <div>
+            <div class="flex items-center justify-between text-emerald-400 mb-1 font-bold">
+              <span>Driversnote / ATO Logbook</span>
+              <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded border border-emerald-700/50">Free Trial</span>
+            </div>
+            <p class="text-stone-300 text-[11px] leading-tight">Automatic background GPS kilometer tracking with instant ATO-compliant vehicle logbook reports.</p>
+          </div>
+          <a href="#" target="_blank" class="w-full py-1.5 text-center theme-elevated text-emerald-300 rounded font-medium border transition block">
+            Start Free &rarr;
+          </a>
+        </div>
+
+        <div class="p-3 theme-elevated rounded-xl border flex flex-col justify-between space-y-2">
+          <div>
+            <div class="flex items-center justify-between text-sky-400 mb-1 font-bold">
+              <span>Rounded Accounting App</span>
+              <span class="text-[10px] bg-sky-900/60 text-sky-200 px-1.5 py-0.5 rounded border border-sky-700/50">Sole Trader</span>
+            </div>
+            <p class="text-stone-300 text-[11px] leading-tight">Simple accounting built specifically for Australian freelancers and sole traders. Track BAS, GST, and NDIS line items.</p>
+          </div>
+          <a href="#" target="_blank" class="w-full py-1.5 text-center theme-btn-primary text-white rounded font-medium transition block">
+            Learn More &rarr;
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: WELCOME, OVERVIEW & USAGE DISCLAIMER (INITIAL POP-UP) -->
+  <!-- ============================================================== -->
+  <div id="onboardingModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="theme-card border max-w-2xl w-full p-6 rounded-2xl shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-stone-700/60 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl theme-btn-primary flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-hands-holding-child"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">Welcome to SupportHub Control Panel</h2>
+            <p class="text-xs text-stone-400">Your independent disability support operational dashboard</p>
+          </div>
+        </div>
+        <button onclick="closeModal('onboardingModal')" class="text-stone-400 hover:text-stone-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- App Explanatory Content -->
+      <div class="space-y-4 text-xs text-stone-300 leading-relaxed">
+        
+        <!-- Freeware & Community Sharing Banner -->
+        <div class="p-3.5 bg-emerald-950/40 border border-emerald-800/60 rounded-xl space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-2">
+              <i class="fa-solid fa-gift text-emerald-400"></i> 100% Freeware — Free Forever
+            </h4>
+            <span class="text-[10px] uppercase font-bold font-mono px-2 py-0.5 rounded bg-emerald-900/80 text-emerald-200 border border-emerald-700">No Subscriptions • No Fees</span>
+          </div>
+          <p class="text-stone-300 text-[11px] leading-relaxed">
+            SupportHub Control Panel is <strong>expressly freeware</strong>. This web application is provided at absolutely <strong>no cost</strong>, with zero hidden paywalls, in-app purchases, or subscription fees—now or in the future.
+          </p>
+          <div class="p-2.5 theme-elevated rounded-lg border border-stone-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <p class="text-[11px] text-stone-300">
+              <i class="fa-solid fa-heart theme-text-primary mr-1"></i> If this software helps you organize your shifts, clients, and invoices, we would truly appreciate it if you <strong>share it with fellow support workers, carers, contractors, and agencies!</strong>
+            </p>
+            <button onclick="openModal('socialShareModal')" class="px-3 py-1.5 theme-btn-primary text-white text-[11px] font-bold rounded-lg transition shadow flex items-center justify-center gap-1.5 whitespace-nowrap self-end sm:self-center">
+              <i class="fa-solid fa-share-nodes"></i> Share SupportHub
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3 theme-elevated border rounded-xl space-y-1">
+            <h4 class="font-bold text-white flex items-center gap-1.5 text-xs">
+              <i class="fa-solid fa-compass theme-text-primary"></i> What is SupportHub?
+            </h4>
+            <p class="text-stone-400">An all-in-one local dashboard engineered specifically for disability support workers, independent contractors, carers, and sole traders.</p>
+          </div>
+
+          <div class="p-3 theme-elevated border rounded-xl space-y-1">
+            <h4 class="font-bold text-white flex items-center gap-1.5 text-xs">
+              <i class="fa-solid fa-bullseye text-emerald-400"></i> Who is it for?
+            </h4>
+            <p class="text-stone-400">Independent support providers, agency casuals working across multiple providers, and participants self-managing care teams.</p>
+          </div>
+        </div>
+
+        <div class="p-3.5 theme-tint-bg border theme-border-primary rounded-xl space-y-2">
+          <h4 class="font-bold text-white text-xs flex items-center gap-2">
+            <i class="fa-solid fa-lock theme-text-primary"></i> 100% Offline & Private Local Storage
+          </h4>
+          <p class="text-stone-300">
+            Unlike cloud databases that store sensitive participant details on remote third-party servers, SupportHub runs <strong>exclusively in your browser</strong>. All client rosters, emergency contacts, handover memos, and invoices remain on your physical device.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white mb-1.5 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Key Features:
+          </h4>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-stone-300">
+            <li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Interactive calendar shift logging & completion toggles</li>
+            <li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Dedicated single-client invoicing studio & archive</li>
+            <li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> PDF, PNG, and JPEG instant document downloads</li>
+            <li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Multi-employer & agency rate directory</li>
+            <li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Client sensory protocols & ICE contacts</li>
+            <li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-400"></i> Clearances & compliance expiry monitor</li>
+          </ul>
+        </div>
+
+        <!-- Prominent Disclaimer Box -->
+        <div class="p-3.5 bg-red-950/40 border border-red-800/60 rounded-xl space-y-2 text-red-200">
+          <div class="flex items-center gap-2 font-bold text-red-300 text-xs">
+            <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+            <span>Usage Disclaimer & Data Backup Responsibility</span>
+          </div>
+          <p class="text-[11px] leading-normal text-stone-300">
+            SupportHub Control Panel is provided for organizational convenience and does <strong>not</strong> warrant an official legal, medical, or tax accounting record. Use of this application is at the user's sole discretion and liability. 
+            Because data is kept purely on your local browser, <strong>it is strictly the user's responsibility to routinely download backups using the "JSON Backup" and "Shifts CSV" buttons</strong> to avoid accidental loss if browser cache is cleared.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Action Footer with "Don't show again" check -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-700/60">
+        <label class="flex items-center gap-2 text-xs text-stone-400 cursor-pointer select-none">
+          <input type="checkbox" id="dontShowAgainCheck" class="rounded border-stone-700">
+          <span>Do not show this pop-up automatically again</span>
+        </label>
+        <button onclick="dismissOnboardingModal()" class="px-5 py-2 theme-btn-primary font-bold text-xs rounded-xl transition shadow-md flex items-center gap-2">
+          <span>Get Started / I Understand</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: SHIFT MEMO VIEWER & QUICK EDIT -->
+  <div id="shiftMemoModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="theme-card border rounded-xl max-w-lg w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-stone-700/60 pb-3">
+        <h3 class="font-bold text-stone-100 text-sm flex items-center gap-2">
+          <i class="fa-regular fa-note-sticky theme-text-primary"></i> Shift Handover Memo
+        </h3>
+        <button onclick="closeModal('shiftMemoModal')" class="text-stone-400 hover:text-stone-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex items-center justify-between text-stone-400">
+          <span id="memoModalClientLabel" class="font-semibold text-stone-200">Client</span>
+          <span id="memoModalDateLabel">Date</span>
+        </div>
+        <textarea id="memoModalText" rows="6" class="w-full theme-input border rounded-lg p-3 text-stone-200 focus:outline-none leading-relaxed"></textarea>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button onclick="closeModal('shiftMemoModal')" class="px-3 py-1.5 text-xs text-stone-400 hover:text-stone-200">Close</button>
+        <button onclick="saveModalMemo()" class="px-4 py-1.5 theme-btn-primary text-white text-xs font-medium rounded-lg transition shadow-sm">Save Memo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SOCIAL SHARE -->
+  <div id="socialShareModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="theme-card border rounded-xl max-w-md w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-stone-700/60 pb-3">
+        <h3 class="font-bold text-stone-100 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-share-nodes theme-text-primary"></i> Share SupportHub Control Panel
+        </h3>
+        <button onclick="closeModal('socialShareModal')" class="text-stone-400 hover:text-stone-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-stone-300">Share this offline-friendly control panel with other independent support workers and carers:</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+        <button onclick="shareToPlatform('facebook')" class="p-3 bg-[#1877F2]/20 hover:bg-[#1877F2]/30 border border-[#1877F2]/40 rounded-xl flex items-center justify-center gap-2 text-white font-medium transition">
+          <i class="fa-brands fa-facebook text-[#1877F2] text-lg"></i> Facebook
+        </button>
+        <button onclick="shareToPlatform('twitter')" class="p-3 theme-elevated border rounded-xl flex items-center justify-center gap-2 text-white font-medium transition">
+          <i class="fa-brands fa-x-twitter text-lg"></i> X / Twitter
+        </button>
+        <button onclick="shareToPlatform('linkedin')" class="p-3 bg-[#0A66C2]/20 hover:bg-[#0A66C2]/30 border border-[#0A66C2]/40 rounded-xl flex items-center justify-center gap-2 text-white font-medium transition">
+          <i class="fa-brands fa-linkedin text-[#0A66C2] text-lg"></i> LinkedIn
+        </button>
+        <button onclick="shareToPlatform('whatsapp')" class="p-3 bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/40 rounded-xl flex items-center justify-center gap-2 text-white font-medium transition">
+          <i class="fa-brands fa-whatsapp text-[#25D366] text-lg"></i> WhatsApp
+        </button>
+        <button onclick="copyShareText('Instagram: Check out SupportHub Control Panel for support workers!')" class="p-3 bg-pink-900/20 hover:bg-pink-900/30 border border-pink-700/40 rounded-xl flex items-center justify-center gap-2 text-white font-medium transition">
+          <i class="fa-brands fa-instagram text-pink-400 text-lg"></i> Instagram
+        </button>
+        <button onclick="copyShareText('Check out SupportHub Control Panel - free NDIS shift tracker, invoicing & resume builder!')" class="p-3 bg-cyan-900/20 hover:bg-cyan-900/30 border border-cyan-700/40 rounded-xl flex items-center justify-center gap-2 text-white font-medium transition">
+          <i class="fa-brands fa-tiktok text-cyan-400 text-lg"></i> TikTok
+        </button>
+      </div>
+
+      <div class="pt-2">
+        <label class="block text-[11px] text-stone-400 mb-1">Direct Link</label>
+        <div class="flex gap-2">
+          <input type="text" id="shareUrlBox" readonly value="https://supportcontrolpanel.com/" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-xs text-stone-300 font-mono">
+          <button onclick="copyDirectUrl()" class="px-3 py-1.5 theme-btn-primary text-white text-xs rounded-lg font-medium transition whitespace-nowrap">
+            Copy Link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SENDER & BANK INVOICE CONFIG -->
+  <div id="invoiceConfigModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="theme-card border rounded-xl max-w-lg w-full p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-stone-700/60 pb-3">
+        <h3 class="font-bold text-stone-100 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-building-columns theme-text-primary"></i> Sole Trader Invoicing Profile
+        </h3>
+        <button onclick="closeModal('invoiceConfigModal')" class="text-stone-400 hover:text-stone-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="invoiceConfigForm" onsubmit="saveInvoiceProfile(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-stone-400 mb-1">Your Trading / Full Name</label>
+          <input type="text" id="invSenderName" required placeholder="e.g. Jordan Taylor (Sole Trader)" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-stone-400 mb-1">ABN</label>
+            <input type="text" id="invSenderAbn" placeholder="12 345 678 901" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 font-mono">
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">Contact Email</label>
+            <input type="email" id="invSenderEmail" placeholder="jordan@example.com" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-stone-400 mb-1">Phone Number</label>
+            <input type="tel" id="invSenderPhone" placeholder="0412 345 678" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">Business Address</label>
+            <input type="text" id="invSenderAddress" placeholder="Melbourne, VIC 3000" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+          </div>
+        </div>
+        
+        <div class="border-t border-stone-700/60 pt-3">
+          <h4 class="font-semibold text-stone-200 mb-2">Direct Deposit & Remittance</h4>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-stone-400 mb-1">Bank Name</label>
+              <input type="text" id="invBankName" placeholder="Commonwealth Bank" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-100">
+            </div>
+            <div>
+              <label class="block text-stone-400 mb-1">BSB</label>
+              <input type="text" id="invBankBsb" placeholder="063-000" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-100 font-mono">
+            </div>
+            <div>
+              <label class="block text-stone-400 mb-1">Account Number</label>
+              <input type="text" id="invBankAcc" placeholder="10293847" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-100 font-mono">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-stone-400 mb-1">Custom Payment Terms / Note</label>
+          <textarea id="invSenderNotes" rows="2" placeholder="e.g. Please include invoice number in remittance. GST Not Registered (or Included)." class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('invoiceConfigModal')" class="px-3 py-1.5 text-stone-400 hover:text-stone-200">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 theme-btn-primary font-medium rounded-lg transition">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RESUME DETAILS CONFIG -->
+  <div id="resumeEditModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="theme-card border rounded-xl max-w-xl w-full p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-stone-700/60 pb-3">
+        <h3 class="font-bold text-stone-100 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-user-pen theme-text-primary"></i> Edit Resume & Career Profile
+        </h3>
+        <button onclick="closeModal('resumeEditModal')" class="text-stone-400 hover:text-stone-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="resumeProfileForm" onsubmit="saveResumeProfile(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-stone-400 mb-1">Full Name</label>
+            <input type="text" id="resFullName" required placeholder="Jordan Taylor" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">Professional Title</label>
+            <input type="text" id="resTitle" placeholder="Independent Disability Support Worker" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-stone-400 mb-1">Email</label>
+            <input type="email" id="resEmail" placeholder="jordan@example.com" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-100">
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">Phone</label>
+            <input type="tel" id="resPhone" placeholder="0412 345 678" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-100">
+          </div>
+          <div>
+            <label class="block text-stone-400 mb-1">Location / Suburbs Serviced</label>
+            <input type="text" id="resLocation" placeholder="Geelong & Bellarine, VIC" class="w-full theme-input border rounded-lg px-2.5 py-1.5 text-stone-100">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-stone-400 mb-1">Professional Summary & Care Philosophy</label>
+          <textarea id="resSummary" rows="3" placeholder="Compassionate, certified support professional dedicated to promoting participant autonomy and community inclusion..." class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100 leading-relaxed"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-stone-400 mb-1">Core Competencies & Skills (Comma separated)</label>
+          <input type="text" id="resSkills" placeholder="Non-Verbal Communication, Hoist & Transfer (Manual Handling), Meal Preparation, Autism Spectrum Support, Seizure Management" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100">
+        </div>
+
+        <div>
+          <label class="block text-stone-400 mb-1">Education & Vocational Qualifications</label>
+          <textarea id="resEducation" rows="2" placeholder="Certificate III in Individual Support (Disability), Year 12 VCE" class="w-full theme-input border rounded-lg px-3 py-2 text-stone-100"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('resumeEditModal')" class="px-3 py-1.5 text-stone-400 hover:text-stone-200">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 theme-btn-primary font-medium rounded-lg transition">Update Resume</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ==============================================================
+    // CORE APPLICATION STATE
+    // ==============================================================
+    const STORAGE_KEY = 'supporthub_control_data_v3';
+    const THEME_KEY = 'supporthub_theme_choice';
+    const WELCOMED_KEY = 'supporthub_welcomed_flag';
+
+    let currentTheme = 'orange';
+
+    let appState = {
+      clients: [],
+      employers: [],
+      shifts: [],
+      compliance: [
+        { id: 'c1', name: 'HLTAID011 Provide First Aid', expiry: '2027-03-15', provider: 'St John Ambulance Australia', status: 'valid' },
+        { id: 'c2', name: 'HLTAID009 Provide CPR (Annual)', expiry: '2026-11-20', provider: 'Australia Wide First Aid', status: 'valid' },
+        { id: 'c3', name: 'NDIS Worker Screening Check (NWSC)', expiry: '2028-09-01', provider: 'Services VIC / NDIS Commission', status: 'valid' },
+        { id: 'c4', name: 'National Police Clearance', expiry: '2027-05-10', provider: 'AFP National Check', status: 'valid' },
+        { id: 'c5', name: 'Working with Children Check (WWCC)', expiry: '2028-01-14', provider: 'Dept of Justice', status: 'valid' },
+        { id: 'c6', name: 'Public Liability & Indemnity Insurance', expiry: '2026-12-31', provider: 'BizCover Insurance ($10M)', status: 'valid' }
+      ],
+      invoiceProfile: {
+        senderName: 'Jordan Taylor (Support Services)',
+        abn: '54 123 456 789',
+        email: 'jordan.taylor@example.com',
+        phone: '0412 345 678',
+        address: '12 Pioneer Way, Charlemont VIC 3217',
+        bankName: 'Commonwealth Bank of Australia',
+        bsb: '063-820',
+        account: '1092 8374',
+        notes: 'Payment due within 7 days. Non-registered GST (NDIS core support).'
+      },
+      archivedInvoices: [],
+      resumeProfile: {
+        fullName: 'Jordan Taylor',
+        title: 'Qualified Disability Support Professional & Mentor',
+        email: 'jordan.taylor@example.com',
+        phone: '0412 345 678',
+        location: 'Geelong & Greater Surf Coast, Victoria',
+        summary: 'Dedicated and empathetic disability support professional with over 4 years of hands-on experience supporting participants across NDIS self-managed and registered agency plans. Specializing in high-intensity personal care, behavioral de-escalation, community social inclusion, and active capacity building with dignity.',
+        skills: 'Manual Handling & Hoist Transfers, Complex Behavioral Support Plans (PBS), Non-Verbal Communication (PECS), Medication Administration, Meal Planning & Texture Modification, Hydrotherapy Support',
+        education: 'Certificate IV in Disability - Melbourne Polytechnic (2022)\nCertificate III in Individual Support (Ageing & Disability) - TAFE (2020)'
+      }
+    };
+
+    // Active In-Memory Invoice Items
+    let currentInvoiceItems = [];
+    let calendarCurrentDate = new Date();
+    let calendarSelectedDate = new Date().toISOString().split('T')[0];
+    let activeMemoShiftId = null;
+
+    // ==============================================================
+    // THEME SWITCHER ENGINE (ORANGE, GREEN, ROSE)
+    // ==============================================================
+    function setAppTheme(themeName) {
+      currentTheme = themeName;
+      document.documentElement.setAttribute('data-theme', themeName);
+      localStorage.setItem(THEME_KEY, themeName);
+
+      ['orange', 'green', 'rose'].forEach(t => {
+        const btn = document.getElementById(`theme-btn-${t}`);
+        if (btn) {
+          if (t === themeName) {
+            btn.classList.add('bg-stone-800', 'font-bold', 'border', 'border-stone-600');
+          } else {
+            btn.classList.remove('bg-stone-800', 'font-bold', 'border', 'border-stone-600');
+          }
+        }
+      });
+      renderCalendar();
+      renderLiveInvoice();
+      renderLiveResume();
+    }
+
+    // ==============================================================
+    // INITIALIZATION & MOCK SEEDING
+    // ==============================================================
+    function initApp() {
+      // 1. Theme initialization
+      const savedTheme = localStorage.getItem(THEME_KEY) || 'orange';
+      setAppTheme(savedTheme);
+
+      // 2. Data load
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          appState = { ...appState, ...parsed };
+        } catch (e) {
+          console.error("Failed to parse storage:", e);
+        }
+      } else {
+        loadDefaultSeedData();
+        saveAppState();
+      }
+
+      // 3. Dates default
+      const todayISO = new Date().toISOString().split('T')[0];
+      document.getElementById('shiftDateInput').value = todayISO;
+      document.getElementById('invDateInput').value = todayISO;
+      calendarSelectedDate = todayISO;
+
+      const invDue = new Date();
+      invDue.setDate(invDue.getDate() + 7);
+      document.getElementById('invDueDateInput').value = invDue.toISOString().split('T')[0];
+
+      // 4. Render components
+      renderEmployers();
+      renderClients();
+      renderCalendar();
+      renderShiftsTable();
+      renderComplianceGrid();
+      renderInvoiceArchive();
+      renderLiveResume();
+      updateDashboardMetrics();
+
+      // Setup initial invoice line items from first client if exists
+      if (appState.clients.length > 0) {
+        onInvoiceClientChange();
+      }
+
+      // 5. Check Welcome Onboarding Flag
+      const alreadyWelcomed = localStorage.getItem(WELCOMED_KEY);
+      if (!alreadyWelcomed) {
+        openModal('onboardingModal');
+      }
+    }
+
+    function saveAppState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    function dismissOnboardingModal() {
+      if (document.getElementById('dontShowAgainCheck').checked) {
+        localStorage.setItem(WELCOMED_KEY, 'true');
+      }
+      closeModal('onboardingModal');
+    }
+
+    function loadDefaultSeedData() {
+      appState.employers = [
+        {
+          id: 'emp_1',
+          name: 'Empower Care Disability Agency',
+          type: 'NDIS Agency',
+          rate: 58.00,
+          contact: 'Sarah Jenkins',
+          phone: '03 5211 4400',
+          email: 'payroll@empowercare.example.com',
+          abn: '32 987 654 321',
+          address: '45 Moorabool St, Geelong VIC 3220',
+          notes: 'Submit timesheets Monday 9am. Km travel claimed at $0.96/km.'
+        },
+        {
+          id: 'emp_2',
+          name: 'Taylor Direct Support (Sole Trader)',
+          type: 'Sole Trader / Direct',
+          rate: 65.00,
+          contact: 'Jordan Taylor',
+          phone: '0412 345 678',
+          email: 'jordan.taylor@example.com',
+          abn: '54 123 456 789',
+          address: 'Charlemont, Victoria',
+          notes: 'Direct self-employed contracts for plan-managed and self-managed participants.'
+        }
+      ];
+
+      appState.clients = [
+        {
+          id: 'cli_1',
+          name: 'Marcus Henderson',
+          ndis: '430882190',
+          funding: 'Plan-Managed',
+          phone: '0411 222 333',
+          emergency: 'Carol Henderson (Mother) - 0411 888 999',
+          address: '28 Surf Coast Hwy, Torquay VIC',
+          sensory: 'Sensory overload in crowded shopping centres; prefers ear defenders and quiet outdoor parks.',
+          notes: 'Focus on independent budgeting, library visits, and community access cooking routines.'
+        },
+        {
+          id: 'cli_2',
+          name: 'Elena Rostova',
+          ndis: '431902441',
+          funding: 'Self-Managed',
+          phone: '0422 444 555',
+          emergency: 'Dr. Rostova (Guardian) - 0422 999 111',
+          address: '14 Breakwater Rd, Belmont VIC',
+          sensory: 'Sensitive to sudden loud alarms. Clear communication prior to transitions.',
+          notes: 'Physical gym routine, hydrotherapy assistance, and evening meal preparation.'
+        }
+      ];
+
+      const today = new Date().toISOString().split('T')[0];
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+      appState.shifts = [
+        {
+          id: 'shf_1',
+          date: yesterday,
+          client: 'Marcus Henderson',
+          employer: 'Taylor Direct Support (Sole Trader)',
+          start: '09:00',
+          end: '13:00',
+          duration: 4.0,
+          rate: 65.00,
+          km: 18.5,
+          travelRate: 0.96,
+          total: (4.0 * 65.00) + (18.5 * 0.96),
+          status: 'Completed',
+          invoiced: false,
+          typeTag: 'Community Access & Capacity',
+          notes: 'Great session. Visited the community garden and completed weekly grocery shop under budget.'
+        },
+        {
+          id: 'shf_2',
+          date: today,
+          client: 'Elena Rostova',
+          employer: 'Empower Care Disability Agency',
+          start: '10:00',
+          end: '14:30',
+          duration: 4.5,
+          rate: 58.00,
+          km: 8.0,
+          travelRate: 0.96,
+          total: (4.5 * 58.00) + (8.0 * 0.96),
+          status: 'Booked',
+          invoiced: false,
+          typeTag: 'In-home & Hydrotherapy',
+          notes: 'Hydro pool session scheduled for 11:30am. Ensure towel pack and hydration drink are ready.'
+        }
+      ];
+    }
+
+    // ==============================================================
+    // TAB NAVIGATION
+    // ==============================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-tab').forEach(el => {
+        el.classList.remove('theme-border-primary', 'theme-text-primary');
+        el.classList.add('border-transparent', 'text-stone-400');
+      });
+
+      const targetPane = document.getElementById(tabId);
+      if (targetPane) targetPane.classList.remove('hidden');
+
+      const targetBtn = document.getElementById('tab-btn-' + tabId.replace('tab-', ''));
+      if (targetBtn) {
+        targetBtn.classList.remove('border-transparent', 'text-stone-400');
+        targetBtn.classList.add('theme-border-primary', 'theme-text-primary');
+      }
+
+      if (tabId === 'tab-invoicing') {
+        renderLiveInvoice();
+        renderInvoiceArchive();
+      }
+      if (tabId === 'tab-resume') renderLiveResume();
+      if (tabId === 'tab-calendar') renderCalendar();
+    }
+
+    // ==============================================================
+    // CALENDAR SYSTEM
+    // ==============================================================
+    function renderCalendar() {
+      const year = calendarCurrentDate.getFullYear();
+      const month = calendarCurrentDate.getMonth();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('currentMonthYearLabel').textContent = `${monthNames[month]} ${year}`;
+
+      const firstDayOfMonth = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      let startingDay = firstDayOfMonth.getDay() - 1;
+      if (startingDay === -1) startingDay = 6;
+
+      const grid = document.getElementById('calendarDaysGrid');
+      grid.innerHTML = '';
+
+      for (let i = 0; i < startingDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'h-14 sm:h-16 theme-elevated border rounded-lg opacity-30';
+        grid.appendChild(emptyCell);
+      }
+
+      const todayIso = new Date().toISOString().split('T')[0];
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayShifts = appState.shifts.filter(s => s.date === dayString);
+
+        const isToday = dayString === todayIso;
+        const isSelected = dayString === calendarSelectedDate;
+
+        let cell = document.createElement('div');
+        cell.className = `h-14 sm:h-16 p-1 rounded-lg border transition cursor-pointer flex flex-col justify-between ${
+          isSelected 
+            ? 'theme-border-primary theme-tint-bg shadow-inner' 
+            : isToday 
+              ? 'border-stone-500 theme-elevated' 
+              : 'theme-card hover:border-stone-500'
+        }`;
+
+        let dayHeader = `
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="font-bold ${isToday ? 'theme-text-primary font-extrabold' : 'text-stone-300'}">${day}</span>
+            ${dayShifts.length > 0 ? `<span class="text-[9px] font-mono text-stone-400 font-bold">${dayShifts.length}</span>` : ''}
+          </div>
+        `;
+
+        let badgesHtml = '<div class="space-y-0.5 overflow-hidden">';
+        dayShifts.forEach(shift => {
+          let dotColor = 'bg-amber-400';
+          if (shift.status === 'Completed') dotColor = 'bg-emerald-400';
+          if (shift.status === 'Cancelled') dotColor = 'bg-red-400';
+
+          badgesHtml += `
+            <div class="text-[9px] truncate flex items-center gap-1 font-medium text-stone-200">
+              <span class="w-1.5 h-1.5 rounded-full ${dotColor} flex-shrink-0"></span>
+              <span class="truncate">${shift.client.split(' ')[0]}</span>
+            </div>
+          `;
+        });
+        badgesHtml += '</div>';
+
+        cell.innerHTML = dayHeader + badgesHtml;
+        cell.onclick = () => selectCalendarDay(dayString);
+        grid.appendChild(cell);
+      }
+    }
+
+    function prevMonth() {
+      calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() - 1);
+      renderCalendar();
+    }
+
+    function nextMonth() {
+      calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + 1);
+      renderCalendar();
+    }
+
+    function goToToday() {
+      calendarCurrentDate = new Date();
+      calendarSelectedDate = new Date().toISOString().split('T')[0];
+      selectCalendarDay(calendarSelectedDate);
+      renderCalendar();
+    }
+
+    function selectCalendarDay(dateIso) {
+      calendarSelectedDate = dateIso;
+      document.getElementById('shiftDateInput').value = dateIso;
+      document.getElementById('selectedDateBadge').textContent = `Date: ${dateIso}`;
+      document.getElementById('clearDateFilterBtn').classList.remove('hidden');
+      renderCalendar();
+      renderShiftsTable();
+    }
+
+    function clearDateFilter() {
+      calendarSelectedDate = null;
+      document.getElementById('selectedDateBadge').textContent = 'Date: All';
+      document.getElementById('clearDateFilterBtn').classList.add('hidden');
+      renderCalendar();
+      renderShiftsTable();
+    }
+
+    // ==============================================================
+    // SHIFT CALCULATIONS & MANAGEMENT
+    // ==============================================================
+    function calculateShiftDuration(start, end) {
+      if (!start || !end) return 0;
+      const [sH, sM] = start.split(':').map(Number);
+      const [eH, eM] = end.split(':').map(Number);
+      let diff = (eH * 60 + eM) - (sH * 60 + sM);
+      if (diff < 0) diff += 24 * 60;
+      return Math.round((diff / 60) * 100) / 100;
+    }
+
+    function applyEmployerDefaultRate(empName) {
+      const emp = appState.employers.find(e => e.name === empName);
+      if (emp && emp.rate) {
+        document.getElementById('shiftHourlyRate').value = emp.rate.toFixed(2);
+      }
+    }
+
+    function handleSaveShift(e) {
+      e.preventDefault();
+      const editId = document.getElementById('shiftEditId').value;
+      const date = document.getElementById('shiftDateInput').value;
+      const client = document.getElementById('shiftClientSelect').value;
+      const employer = document.getElementById('shiftEmployerSelect').value;
+      const start = document.getElementById('shiftStartTime').value;
+      const end = document.getElementById('shiftEndTime').value;
+      const rate = parseFloat(document.getElementById('shiftHourlyRate').value) || 0;
+      const status = document.getElementById('shiftStatusSelect').value;
+      const km = parseFloat(document.getElementById('shiftTravelKm').value) || 0;
+      const travelRate = parseFloat(document.getElementById('shiftTravelRate').value) || 0;
+      const typeTag = document.getElementById('shiftTypeTag').value.trim();
+      const notes = document.getElementById('shiftNotesMemo').value.trim();
+
+      const duration = calculateShiftDuration(start, end);
+      const shiftGross = (duration * rate) + (km * travelRate);
+
+      if (editId) {
+        const index = appState.shifts.findIndex(s => s.id === editId);
+        if (index !== -1) {
+          appState.shifts[index] = {
+            ...appState.shifts[index],
+            date, client, employer, start, end, duration, rate, status, km, travelRate, total: shiftGross, typeTag, notes
+          };
+        }
+      } else {
+        const newShift = {
+          id: 'shf_' + Date.now(),
+          date, client, employer, start, end, duration, rate, status, km, travelRate, total: shiftGross, typeTag, notes, invoiced: false
+        };
+        appState.shifts.unshift(newShift);
+      }
+
+      saveAppState();
+      resetShiftForm();
+      renderCalendar();
+      renderShiftsTable();
+      updateDashboardMetrics();
+    }
+
+    function editShift(id) {
+      const shift = appState.shifts.find(s => s.id === id);
+      if (!shift) return;
+
+      document.getElementById('shiftEditId').value = shift.id;
+      document.getElementById('shiftDateInput').value = shift.date;
+      document.getElementById('shiftClientSelect').value = shift.client;
+      document.getElementById('shiftEmployerSelect').value = shift.employer;
+      document.getElementById('shiftStartTime').value = shift.start;
+      document.getElementById('shiftEndTime').value = shift.end;
+      document.getElementById('shiftHourlyRate').value = shift.rate;
+      document.getElementById('shiftStatusSelect').value = shift.status;
+      document.getElementById('shiftTravelKm').value = shift.km;
+      document.getElementById('shiftTravelRate').value = shift.travelRate || 0.96;
+      document.getElementById('shiftTypeTag').value = shift.typeTag || '';
+      document.getElementById('shiftNotesMemo').value = shift.notes || '';
+
+      document.getElementById('saveShiftBtn').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Update Shift';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleShiftCompletion(id) {
+      const shift = appState.shifts.find(s => s.id === id);
+      if (!shift) return;
+      shift.status = shift.status === 'Completed' ? 'Booked' : 'Completed';
+      saveAppState();
+      renderCalendar();
+      renderShiftsTable();
+      updateDashboardMetrics();
+    }
+
+    function deleteShift(id) {
+      if (!confirm('Are you sure you want to delete this shift entry?')) return;
+      appState.shifts = appState.shifts.filter(s => s.id !== id);
+      saveAppState();
+      renderCalendar();
+      renderShiftsTable();
+      updateDashboardMetrics();
+    }
+
+    function resetShiftForm() {
+      document.getElementById('shiftEditId').value = '';
+      document.getElementById('shiftNotesMemo').value = '';
+      document.getElementById('shiftTypeTag').value = '';
+      document.getElementById('saveShiftBtn').innerHTML = '<i class="fa-solid fa-check"></i> Save Shift';
+      if (calendarSelectedDate) {
+        document.getElementById('shiftDateInput').value = calendarSelectedDate;
+      }
+    }
+
+    function filterShifts() {
+      renderShiftsTable();
+    }
+
+    function renderShiftsTable() {
+      const tbody = document.getElementById('shiftsTableBody');
+      const empFilter = document.getElementById('filterEmployerSelect').value;
+      const statusFilter = document.getElementById('filterStatusSelect').value;
+
+      let filtered = appState.shifts;
+
+      if (calendarSelectedDate) {
+        filtered = filtered.filter(s => s.date === calendarSelectedDate);
+        document.getElementById('shiftFilterLabel').textContent = `(${calendarSelectedDate})`;
+      } else {
+        document.getElementById('shiftFilterLabel').textContent = `(All logged dates)`;
+      }
+
+      if (empFilter !== 'ALL') {
+        filtered = filtered.filter(s => s.employer === empFilter);
+      }
+      if (statusFilter !== 'ALL') {
+        filtered = filtered.filter(s => s.status === statusFilter);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-8 text-center text-stone-500">
+              <i class="fa-regular fa-calendar-xmark text-2xl mb-1.5 opacity-40"></i>
+              <p>No shift records matching current filters.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(shift => {
+        let statusBadge = '';
+        if (shift.status === 'Completed') {
+          statusBadge = '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 text-[10px] font-semibold"><i class="fa-solid fa-check"></i> Completed</span>';
+        } else if (shift.status === 'Cancelled') {
+          statusBadge = '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-950/80 text-red-400 border border-red-800 text-[10px] font-semibold"><i class="fa-solid fa-ban"></i> Cancelled</span>';
+        } else {
+          statusBadge = '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-950/80 text-amber-300 border border-amber-800 text-[10px] font-semibold"><i class="fa-regular fa-clock"></i> Booked</span>';
+        }
+
+        const hasNotes = shift.notes && shift.notes.trim().length > 0;
+
+        return `
+          <tr class="hover:opacity-90 transition">
+            <td class="py-2.5 px-3 font-mono whitespace-nowrap text-stone-300">${shift.date}</td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-stone-100">${shift.client}</div>
+              <div class="text-[10px] theme-text-primary truncate max-w-[160px]">${shift.employer}</div>
+            </td>
+            <td class="py-2.5 px-3">
+              <div>${shift.start} - ${shift.end}</div>
+              <div class="text-[10px] text-stone-400 font-mono">${shift.duration} hrs ${shift.km > 0 ? `+ ${shift.km}km` : ''}</div>
+            </td>
+            <td class="py-2.5 px-3 font-semibold text-emerald-400 font-mono">
+              $${(shift.total || 0).toFixed(2)}
+            </td>
+            <td class="py-2.5 px-3">
+              <button onclick="toggleShiftCompletion('${shift.id}')" title="Click to toggle status" class="hover:opacity-80 transition cursor-pointer">
+                ${statusBadge}
+              </button>
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <button onclick="openShiftMemo('${shift.id}')" class="p-1 text-xs rounded hover:bg-stone-800 transition ${hasNotes ? 'text-amber-400' : 'text-stone-500'}" title="${hasNotes ? 'Read / Edit Memo' : 'Add Memo'}">
+                <i class="fa-${hasNotes ? 'solid' : 'regular'} fa-note-sticky text-sm"></i>
+              </button>
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              <button onclick="editShift('${shift.id}')" class="p-1 text-stone-400 hover:text-stone-200 transition mr-1" title="Edit">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+              <button onclick="deleteShift('${shift.id}')" class="p-1 text-stone-500 hover:text-red-400 transition" title="Delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openShiftMemo(id) {
+      activeMemoShiftId = id;
+      const shift = appState.shifts.find(s => s.id === id);
+      if (!shift) return;
+
+      document.getElementById('memoModalClientLabel').textContent = `${shift.client} (${shift.employer})`;
+      document.getElementById('memoModalDateLabel').textContent = `${shift.date} (${shift.start} - ${shift.end})`;
+      document.getElementById('memoModalText').value = shift.notes || '';
+      openModal('shiftMemoModal');
+    }
+
+    function saveModalMemo() {
+      if (!activeMemoShiftId) return;
+      const shift = appState.shifts.find(s => s.id === activeMemoShiftId);
+      if (shift) {
+        shift.notes = document.getElementById('memoModalText').value.trim();
+        saveAppState();
+        renderShiftsTable();
+        closeModal('shiftMemoModal');
+      }
+    }
+
+    function updateDashboardMetrics() {
+      const totalShifts = appState.shifts.length;
+      const completed = appState.shifts.filter(s => s.status === 'Completed');
+      const booked = appState.shifts.filter(s => s.status === 'Booked');
+
+      const completedHours = completed.reduce((sum, s) => sum + (s.duration || 0), 0);
+      const bookedHours = booked.reduce((sum, s) => sum + (s.duration || 0), 0);
+      const totalEarnings = appState.shifts.reduce((sum, s) => sum + (s.total || 0), 0);
+
+      document.getElementById('metricTotalShifts').textContent = totalShifts;
+      document.getElementById('metricCompletedHours').textContent = `${completedHours.toFixed(1)}h`;
+      document.getElementById('metricCompletedSubtitle').textContent = `${completed.length} shifts marked complete`;
+
+      document.getElementById('metricBookedHours').textContent = `${bookedHours.toFixed(1)}h`;
+      document.getElementById('metricBookedSubtitle').textContent = `${booked.length} shifts pending`;
+
+      document.getElementById('metricTotalEarnings').textContent = `$${totalEarnings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    // ==============================================================
+    // CLIENTS DIRECTORY
+    // ==============================================================
+    function handleSaveClient(e) {
+      e.preventDefault();
+      const editId = document.getElementById('clientEditId').value;
+      const name = document.getElementById('clientNameInput').value.trim();
+      const ndis = document.getElementById('clientNdisInput').value.trim();
+      const funding = document.getElementById('clientFundingType').value;
+      const phone = document.getElementById('clientPhoneInput').value.trim();
+      const emergency = document.getElementById('clientEmergencyInput').value.trim();
+      const address = document.getElementById('clientAddressInput').value.trim();
+      const sensory = document.getElementById('clientSensoryInput').value.trim();
+      const notes = document.getElementById('clientCareNotesInput').value.trim();
+
+      if (editId) {
+        const index = appState.clients.findIndex(c => c.id === editId);
+        if (index !== -1) {
+          appState.clients[index] = { ...appState.clients[index], name, ndis, funding, phone, emergency, address, sensory, notes };
+        }
+      } else {
+        const newClient = {
+          id: 'cli_' + Date.now(),
+          name, ndis, funding, phone, emergency, address, sensory, notes
+        };
+        appState.clients.push(newClient);
+      }
+
+      saveAppState();
+      renderClients();
+      e.target.reset();
+      document.getElementById('clientEditId').value = '';
+    }
+
+    function editClient(id) {
+      const c = appState.clients.find(item => item.id === id);
+      if (!c) return;
+      document.getElementById('clientEditId').value = c.id;
+      document.getElementById('clientNameInput').value = c.name;
+      document.getElementById('clientNdisInput').value = c.ndis || '';
+      document.getElementById('clientFundingType').value = c.funding || 'Plan-Managed';
+      document.getElementById('clientPhoneInput').value = c.phone || '';
+      document.getElementById('clientEmergencyInput').value = c.emergency || '';
+      document.getElementById('clientAddressInput').value = c.address || '';
+      document.getElementById('clientSensoryInput').value = c.sensory || '';
+      document.getElementById('clientCareNotesInput').value = c.notes || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteClient(id) {
+      if (!confirm('Remove this client from local records?')) return;
+      appState.clients = appState.clients.filter(c => c.id !== id);
+      saveAppState();
+      renderClients();
+    }
+
+    function renderClients() {
+      const container = document.getElementById('clientsCardsContainer');
+      const shiftSelect = document.getElementById('shiftClientSelect');
+      const invoiceTargetSelect = document.getElementById('invTargetClient');
+      document.getElementById('clientListCount').textContent = appState.clients.length;
+
+      shiftSelect.innerHTML = '<option value="">Select participant / client...</option>';
+      invoiceTargetSelect.innerHTML = '';
+
+      appState.clients.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = `${c.name} ${c.ndis ? `(NDIS: ${c.ndis})` : ''}`;
+        shiftSelect.appendChild(opt);
+
+        const invOpt = document.createElement('option');
+        invOpt.value = c.name;
+        invOpt.textContent = `${c.name} (${c.funding})`;
+        invoiceTargetSelect.appendChild(invOpt);
+      });
+
+      if (appState.clients.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-10 text-center text-stone-500 theme-card rounded-xl border border-dashed">
+            <i class="fa-solid fa-users text-3xl mb-2 opacity-40"></i>
+            <p>No clients registered. Fill in the client form to get started.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = appState.clients.map(c => `
+        <div class="theme-card border rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-sm hover:border-stone-500 transition">
+          <div>
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="font-bold text-stone-100 text-sm">${c.name}</h4>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="text-[11px] font-mono theme-text-primary">NDIS: ${c.ndis || 'Self/Private'}</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded theme-elevated text-stone-300 font-semibold border">${c.funding}</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1">
+                <button onclick="editClient('${c.id}')" class="p-1.5 text-stone-400 hover:text-stone-200 transition" title="Edit">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+                <button onclick="deleteClient('${c.id}')" class="p-1.5 text-stone-500 hover:text-red-400 transition" title="Delete">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-3 space-y-1 text-xs text-stone-300">
+              ${c.phone ? `<p><i class="fa-solid fa-phone w-4 text-stone-500"></i> ${c.phone}</p>` : ''}
+              ${c.emergency ? `<p><i class="fa-solid fa-truck-medical w-4 text-red-400"></i> ICE: <span class="font-medium text-stone-200">${c.emergency}</span></p>` : ''}
+              ${c.address ? `<p><i class="fa-solid fa-location-dot w-4 text-stone-500"></i> ${c.address}</p>` : ''}
+            </div>
+
+            ${c.sensory ? `
+              <div class="mt-3 theme-tint-bg border theme-border-primary rounded-lg p-2 text-[11px] text-stone-200">
+                <span class="font-bold block mb-0.5 theme-text-primary flex items-center gap-1"><i class="fa-solid fa-brain text-[10px]"></i> Sensory & Triggers:</span>
+                ${c.sensory}
+              </div>
+            ` : ''}
+
+            ${c.notes ? `
+              <div class="mt-2 theme-elevated border rounded-lg p-2 text-[11px] text-stone-300">
+                <span class="font-bold block mb-0.5 text-stone-400">Care Protocols:</span>
+                ${c.notes}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==============================================================
+    // EMPLOYERS / AGENCIES MANAGEMENT
+    // ==============================================================
+    function handleSaveEmployer(e) {
+      e.preventDefault();
+      const editId = document.getElementById('employerEditId').value;
+      const name = document.getElementById('empNameInput').value.trim();
+      const type = document.getElementById('empTypeSelect').value;
+      const rate = parseFloat(document.getElementById('empDefaultRate').value) || 65.00;
+      const contact = document.getElementById('empContactName').value.trim();
+      const phone = document.getElementById('empPhone').value.trim();
+      const email = document.getElementById('empEmail').value.trim();
+      const abn = document.getElementById('empAbn').value.trim();
+      const address = document.getElementById('empAddress').value.trim();
+      const notes = document.getElementById('empNotes').value.trim();
+
+      if (editId) {
+        const index = appState.employers.findIndex(emp => emp.id === editId);
+        if (index !== -1) {
+          appState.employers[index] = { ...appState.employers[index], name, type, rate, contact, phone, email, abn, address, notes };
+        }
+      } else {
+        const newEmp = {
+          id: 'emp_' + Date.now(),
+          name, type, rate, contact, phone, email, abn, address, notes
+        };
+        appState.employers.push(newEmp);
+      }
+
+      saveAppState();
+      renderEmployers();
+      renderLiveResume();
+      e.target.reset();
+      document.getElementById('employerEditId').value = '';
+    }
+
+    function editEmployer(id) {
+      const emp = appState.employers.find(e => e.id === id);
+      if (!emp) return;
+      document.getElementById('employerEditId').value = emp.id;
+      document.getElementById('empNameInput').value = emp.name;
+      document.getElementById('empTypeSelect').value = emp.type;
+      document.getElementById('empDefaultRate').value = emp.rate;
+      document.getElementById('empContactName').value = emp.contact || '';
+      document.getElementById('empPhone').value = emp.phone || '';
+      document.getElementById('empEmail').value = emp.email || '';
+      document.getElementById('empAbn').value = emp.abn || '';
+      document.getElementById('empAddress').value = emp.address || '';
+      document.getElementById('empNotes').value = emp.notes || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteEmployer(id) {
+      if (!confirm('Delete this employer profile?')) return;
+      appState.employers = appState.employers.filter(e => e.id !== id);
+      saveAppState();
+      renderEmployers();
+      renderLiveResume();
+    }
+
+    function renderEmployers() {
+      const container = document.getElementById('employersListContainer');
+      const shiftEmpSelect = document.getElementById('shiftEmployerSelect');
+      const filterEmpSelect = document.getElementById('filterEmployerSelect');
+      document.getElementById('employerCountBadge').textContent = appState.employers.length;
+
+      shiftEmpSelect.innerHTML = '<option value="">Select agency / employer...</option>';
+      filterEmpSelect.innerHTML = '<option value="ALL">All Employers</option>';
+
+      appState.employers.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value = e.name;
+        opt.textContent = `${e.name} ($${e.rate.toFixed(2)}/h)`;
+        shiftEmpSelect.appendChild(opt);
+
+        const filterOpt = document.createElement('option');
+        filterOpt.value = e.name;
+        filterOpt.textContent = e.name;
+        filterEmpSelect.appendChild(filterOpt);
+      });
+
+      if (appState.employers.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-10 text-center text-stone-500 theme-card rounded-xl border border-dashed">
+            <i class="fa-solid fa-briefcase text-3xl mb-2 opacity-40"></i>
+            <p>No employers or agencies listed yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = appState.employers.map(e => `
+        <div class="theme-card border rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-sm hover:border-stone-500 transition">
+          <div>
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="font-bold text-stone-100 text-sm">${e.name}</h4>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="text-[10px] px-2 py-0.5 rounded theme-elevated theme-text-primary border font-semibold">${e.type}</span>
+                  <span class="text-xs font-mono text-emerald-400 font-semibold">$${e.rate.toFixed(2)}/hr</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1">
+                <button onclick="editEmployer('${e.id}')" class="p-1.5 text-stone-400 hover:text-stone-200 transition" title="Edit">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+                <button onclick="deleteEmployer('${e.id}')" class="p-1.5 text-stone-500 hover:text-red-400 transition" title="Delete">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-3 space-y-1 text-xs text-stone-300">
+              ${e.contact ? `<p><i class="fa-solid fa-user-tie w-4 text-stone-500"></i> ${e.contact}</p>` : ''}
+              ${e.phone ? `<p><i class="fa-solid fa-phone w-4 text-stone-500"></i> ${e.phone}</p>` : ''}
+              ${e.email ? `<p><i class="fa-solid fa-envelope w-4 text-stone-500"></i> ${e.email}</p>` : ''}
+              ${e.abn ? `<p><i class="fa-solid fa-fingerprint w-4 text-stone-500"></i> ABN: <span class="font-mono">${e.abn}</span></p>` : ''}
+            </div>
+
+            ${e.notes ? `
+              <div class="mt-2 theme-elevated border rounded-lg p-2 text-[11px] text-stone-300">
+                <span class="font-bold block mb-0.5 text-stone-400">Payroll Instructions:</span>
+                ${e.notes}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==============================================================
+    // SINGLE-CLIENT INVOICING STUDIO & ARCHIVE
+    // ==============================================================
+    function toggleInvoiceMode(mode) {
+      const builder = document.getElementById('invoiceBuilderSection');
+      const archive = document.getElementById('invoiceArchiveSection');
+      const btnB = document.getElementById('btnToggleBuilder');
+      const btnA = document.getElementById('btnToggleArchive');
+
+      if (mode === 'builder') {
+        builder.classList.remove('hidden');
+        archive.classList.add('hidden');
+        btnB.className = "px-3 py-1.5 theme-btn-primary text-xs font-medium rounded-lg transition flex items-center gap-1.5";
+        btnA.className = "px-3 py-1.5 theme-elevated text-stone-300 text-xs font-medium rounded-lg transition border flex items-center gap-1.5";
+        renderLiveInvoice();
+      } else {
+        builder.classList.add('hidden');
+        archive.classList.remove('hidden');
+        btnA.className = "px-3 py-1.5 theme-btn-primary text-xs font-medium rounded-lg transition flex items-center gap-1.5";
+        btnB.className = "px-3 py-1.5 theme-elevated text-stone-300 text-xs font-medium rounded-lg transition border flex items-center gap-1.5";
+        renderInvoiceArchive();
+      }
+    }
+
+    function onInvoiceClientChange() {
+      pullClientCompletedShifts();
+    }
+
+    function pullClientCompletedShifts() {
+      const selectedClient = document.getElementById('invTargetClient').value;
+      if (!selectedClient) {
+        currentInvoiceItems = [];
+        renderInvoiceItemsTable();
+        renderLiveInvoice();
+        return;
+      }
+
+      // Filter shifts strictly for this individual client
+      const clientShifts = appState.shifts.filter(s => s.client === selectedClient && s.status === 'Completed');
+
+      currentInvoiceItems = [];
+      clientShifts.forEach(s => {
+        // Line Item 1: Hourly support hours
+        currentInvoiceItems.push({
+          id: 'item_' + Math.random().toString(36).substr(2, 9),
+          shiftId: s.id,
+          date: s.date,
+          description: `${s.typeTag || 'Individual Support Care'} (${s.start} - ${s.end})`,
+          quantity: s.duration,
+          rate: s.rate,
+          total: s.duration * s.rate
+        });
+
+        // Line Item 2: Travel Kilometers if recorded
+        if (s.km && s.km > 0) {
+          const travelRate = s.travelRate || 0.96;
+          currentInvoiceItems.push({
+            id: 'item_' + Math.random().toString(36).substr(2, 9),
+            shiftId: s.id,
+            date: s.date,
+            description: `Activity-Based Transport / Travel Allowance (${s.km} km)`,
+            quantity: s.km,
+            rate: travelRate,
+            total: s.km * travelRate
+          });
+        }
+      });
+
+      if (currentInvoiceItems.length === 0) {
+        addManualInvoiceItem();
+      } else {
+        renderInvoiceItemsTable();
+        renderLiveInvoice();
+      }
+    }
+
+    function addManualInvoiceItem() {
+      const today = new Date().toISOString().split('T')[0];
+      currentInvoiceItems.push({
+        id: 'item_' + Math.random().toString(36).substr(2, 9),
+        shiftId: null,
+        date: today,
+        description: '01_011_0107_1_1 - Assistance With Self-Care Activities - Standard Weekday Daytime',
+        quantity: 3.0,
+        rate: 65.00,
+        total: 195.00
+      });
+      renderInvoiceItemsTable();
+      renderLiveInvoice();
+    }
+
+    function removeInvoiceItem(id) {
+      currentInvoiceItems = currentInvoiceItems.filter(item => item.id !== id);
+      renderInvoiceItemsTable();
+      renderLiveInvoice();
+    }
+
+    function updateInvoiceItem(id, field, value) {
+      const item = currentInvoiceItems.find(i => i.id === id);
+      if (!item) return;
+
+      if (field === 'quantity' || field === 'rate') {
+        item[field] = parseFloat(value) || 0;
+        item.total = item.quantity * item.rate;
+      } else {
+        item[field] = value;
+      }
+      renderInvoiceItemsTable();
+      renderLiveInvoice();
+    }
+
+    function renderInvoiceItemsTable() {
+      const tbody = document.getElementById('invoiceLineItemsTableBody');
+      if (currentInvoiceItems.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-4 text-center text-stone-500">
+              No line items. Click "Add Custom Item" or "Auto-Load Uninvoiced Shifts".
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = currentInvoiceItems.map(item => `
+        <tr class="hover:bg-stone-800/40 transition">
+          <td class="py-1.5 px-2.5">
+            <input type="date" value="${item.date}" onchange="updateInvoiceItem('${item.id}', 'date', this.value)" class="theme-input border rounded px-1.5 py-1 text-xs text-stone-200">
+          </td>
+          <td class="py-1.5 px-2.5">
+            <input type="text" value="${item.description}" onchange="updateInvoiceItem('${item.id}', 'description', this.value)" class="w-full theme-input border rounded px-2 py-1 text-xs text-stone-200">
+          </td>
+          <td class="py-1.5 px-2.5 text-center">
+            <input type="number" step="0.25" value="${item.quantity}" onchange="updateInvoiceItem('${item.id}', 'quantity', this.value)" class="w-20 theme-input border rounded px-1.5 py-1 text-xs text-center text-stone-200 font-mono">
+          </td>
+          <td class="py-1.5 px-2.5 text-right">
+            <input type="number" step="0.5" value="${item.rate}" onchange="updateInvoiceItem('${item.id}', 'rate', this.value)" class="w-20 theme-input border rounded px-1.5 py-1 text-xs text-right text-stone-200 font-mono">
+          </td>
+          <td class="py-1.5 px-2.5 text-right font-mono text-emerald-400 font-bold">
+            $${(item.total || 0).toFixed(2)}
+          </td>
+          <td class="py-1.5 px-2.5 text-center">
+            <button onclick="removeInvoiceItem('${item.id}')" class="text-stone-500 hover:text-red-400">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderLiveInvoice() {
+      const preview = document.getElementById('printableInvoice');
+      const invNum = document.getElementById('invNumberInput').value || 'INV-2026-001';
+      const invDate = document.getElementById('invDateInput').value || new Date().toISOString().split('T')[0];
+      const dueDate = document.getElementById('invDueDateInput').value || 'Upon Receipt';
+      const targetClientName = document.getElementById('invTargetClient').value;
+      const applyGst = document.getElementById('invGstToggle').checked;
+
+      const client = appState.clients.find(c => c.name === targetClientName);
+      const sender = appState.invoiceProfile;
+
+      const subtotal = currentInvoiceItems.reduce((sum, item) => sum + (item.total || 0), 0);
+      const gst = applyGst ? subtotal * 0.10 : 0;
+      const grandTotal = subtotal + gst;
+
+      // Table items markup
+      const itemsHtml = currentInvoiceItems.map((item, idx) => `
+        <tr class="border-b border-stone-200 text-stone-800">
+          <td class="py-2.5 px-3 font-mono">${item.date}</td>
+          <td class="py-2.5 px-3">
+            <span class="font-bold text-stone-900">${item.description}</span>
+          </td>
+          <td class="py-2.5 px-3 text-center font-mono">${item.quantity.toFixed(2)}</td>
+          <td class="py-2.5 px-3 text-right font-mono">$${item.rate.toFixed(2)}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold">$${item.total.toFixed(2)}</td>
+        </tr>
+      `).join('');
+
+      // Recipient details
+      let recipientHtml = `
+        <p class="font-bold text-stone-900 text-sm">${targetClientName || 'Recipient / Participant'}</p>
+        ${client && client.ndis ? `<p class="font-mono text-stone-700">NDIS No: <strong>${client.ndis}</strong></p>` : ''}
+        ${client ? `<p class="text-stone-600">Funding: ${client.funding}</p>` : ''}
+        ${client && client.address ? `<p class="text-stone-600">${client.address}</p>` : ''}
+        ${client && client.emergency ? `<p class="text-stone-500 text-[11px]">Contact: ${client.emergency}</p>` : ''}
+      `;
+
+      preview.innerHTML = `
+        <div class="space-y-6">
+          
+          <!-- Top Header -->
+          <div class="flex justify-between items-start border-b-2 border-stone-800 pb-5">
+            <div>
+              <h1 class="text-2xl font-black text-stone-900 tracking-tight">${sender.senderName}</h1>
+              <p class="text-xs text-stone-600 font-mono mt-0.5">ABN: ${sender.abn || 'Registered Sole Trader'}</p>
+              <div class="text-[11px] text-stone-500 mt-2 space-y-0.5">
+                <p>${sender.address}</p>
+                <p>Email: ${sender.email} | Phone: ${sender.phone}</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="inline-block bg-stone-900 text-white font-bold tracking-widest text-xs uppercase px-3 py-1 rounded">TAX INVOICE</span>
+              <p class="text-sm font-bold font-mono text-stone-800 mt-2">${invNum}</p>
+              <p class="text-[11px] text-stone-500">Date: ${invDate}</p>
+              <p class="text-[11px] font-bold text-stone-700">Due: ${dueDate}</p>
+            </div>
+          </div>
+
+          <!-- Recipient & Bank Details -->
+          <div class="grid grid-cols-2 gap-4 text-xs">
+            <div class="p-3 bg-stone-50 rounded border border-stone-200">
+              <span class="text-[10px] uppercase font-bold text-stone-400 block mb-1">Invoiced Participant:</span>
+              ${recipientHtml}
+            </div>
+            <div class="p-3 bg-stone-50 rounded border border-stone-200">
+              <span class="text-[10px] uppercase font-bold text-stone-400 block mb-1">Direct Bank Remittance:</span>
+              <p class="font-bold text-stone-900">${sender.bankName}</p>
+              <p class="font-mono text-stone-800">BSB: <strong>${sender.bsb}</strong></p>
+              <p class="font-mono text-stone-800">Account: <strong>${sender.account}</strong></p>
+            </div>
+          </div>
+
+          <!-- Line Items Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-stone-100 text-stone-700 font-bold border-b border-stone-300">
+                <tr>
+                  <th class="py-2 px-3">Date</th>
+                  <th class="py-2 px-3">Description / Support Item</th>
+                  <th class="py-2 px-3 text-center">Qty / Hrs</th>
+                  <th class="py-2 px-3 text-right">Unit Rate</th>
+                  <th class="py-2 px-3 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemsHtml.length > 0 ? itemsHtml : '<tr><td colspan="5" class="py-6 text-center text-stone-400">No items on this invoice.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Totals -->
+          <div class="flex justify-end pt-2">
+            <div class="w-64 space-y-1.5 text-xs">
+              <div class="flex justify-between text-stone-600">
+                <span>Subtotal:</span>
+                <span class="font-mono font-bold">$${subtotal.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between text-stone-600">
+                <span>GST (${applyGst ? '10%' : '0%'}):</span>
+                <span class="font-mono">$${gst.toFixed(2)}</span>
+              </div>
+              <div class="flex justify-between text-base font-black text-stone-900 border-t-2 border-stone-800 pt-2">
+                <span>Total Due:</span>
+                <span class="font-mono text-stone-900">$${grandTotal.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Instructions -->
+          <div class="border-t border-stone-200 pt-4 text-[11px] text-stone-500 space-y-1">
+            <p class="font-bold text-stone-700">Remittance Note:</p>
+            <p>${sender.notes}</p>
+            <p class="text-[10px] text-stone-400 mt-2">Generated via SupportHub Control Panel • Verified Participant Statement</p>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // ARCHIVING ENGINE
+    function archiveCurrentInvoice() {
+      const invNum = document.getElementById('invNumberInput').value.trim();
+      const clientName = document.getElementById('invTargetClient').value;
+      const invDate = document.getElementById('invDateInput').value;
+      const dueDate = document.getElementById('invDueDateInput').value;
+      const applyGst = document.getElementById('invGstToggle').checked;
+
+      if (!clientName) {
+        alert('Please specify a client for this invoice.');
+        return;
+      }
+      if (currentInvoiceItems.length === 0) {
+        alert('Please add at least one line item to the invoice.');
+        return;
+      }
+
+      const subtotal = currentInvoiceItems.reduce((sum, item) => sum + (item.total || 0), 0);
+      const gst = applyGst ? subtotal * 0.10 : 0;
+      const grandTotal = subtotal + gst;
+
+      // Check if invoice number already archived
+      const existingIdx = appState.archivedInvoices.findIndex(inv => inv.number === invNum);
+      const invoiceRecord = {
+        id: 'inv_arch_' + Date.now(),
+        number: invNum,
+        client: clientName,
+        date: invDate,
+        dueDate: dueDate,
+        items: [...currentInvoiceItems],
+        subtotal: subtotal,
+        gst: gst,
+        total: grandTotal,
+        status: 'Sent',
+        archivedAt: new Date().toISOString()
+      };
+
+      if (existingIdx !== -1) {
+        appState.archivedInvoices[existingIdx] = invoiceRecord;
+      } else {
+        appState.archivedInvoices.unshift(invoiceRecord);
+      }
+
+      // Mark included shifts as invoiced
+      currentInvoiceItems.forEach(item => {
+        if (item.shiftId) {
+          const shift = appState.shifts.find(s => s.id === item.shiftId);
+          if (shift) shift.invoiced = true;
+        }
+      });
+
+      saveAppState();
+      renderInvoiceArchive();
+      
+      const note = document.getElementById('saveStatusNote');
+      note.textContent = `Invoice ${invNum} archived successfully!`;
+      setTimeout(() => { note.textContent = ''; }, 4000);
+
+      // Auto increment next invoice number
+      const numMatch = invNum.match(/\d+$/);
+      if (numMatch) {
+        const nextDigits = String(parseInt(numMatch[0]) + 1).padStart(numMatch[0].length, '0');
+        document.getElementById('invNumberInput').value = invNum.replace(/\d+$/, nextDigits);
+      }
+    }
+
+    function renderInvoiceArchive() {
+      const tbody = document.getElementById('invoiceArchiveTableBody');
+      const countBadge = document.getElementById('archiveCountBadge');
+      countBadge.textContent = appState.archivedInvoices.length;
+
+      if (appState.archivedInvoices.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-8 text-center text-stone-500">
+              <i class="fa-solid fa-box-archive text-2xl mb-1.5 opacity-40"></i>
+              <p>No invoices archived yet. Generate and click "Save & Archive Invoice" above.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = appState.archivedInvoices.map(inv => {
+        let statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] bg-sky-950 text-sky-300 border border-sky-800">Sent</span>';
+        if (inv.status === 'Paid') {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">Paid</span>';
+        } else if (inv.status === 'Cancelled') {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] bg-red-950 text-red-300 border border-red-800">Cancelled</span>';
+        }
+
+        return `
+          <tr class="hover:bg-stone-800/40 transition">
+            <td class="py-2.5 px-3 font-mono font-bold text-stone-200">${inv.number}</td>
+            <td class="py-2.5 px-3 font-semibold text-stone-100">${inv.client}</td>
+            <td class="py-2.5 px-3 font-mono text-stone-400">${inv.date}</td>
+            <td class="py-2.5 px-3 font-mono text-stone-400">${inv.dueDate}</td>
+            <td class="py-2.5 px-3 font-mono font-bold text-emerald-400">$${inv.total.toFixed(2)}</td>
+            <td class="py-2.5 px-3">
+              <button onclick="cycleInvoiceStatus('${inv.id}')" title="Click to toggle status (Sent / Paid)">
+                ${statusBadge}
+              </button>
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              <button onclick="loadArchivedInvoiceToPreview('${inv.id}')" class="p-1 theme-text-primary hover:underline text-xs mr-2" title="Load & View">
+                <i class="fa-regular fa-eye"></i> View
+              </button>
+              <button onclick="deleteArchivedInvoice('${inv.id}')" class="p-1 text-stone-500 hover:text-red-400" title="Delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function cycleInvoiceStatus(id) {
+      const inv = appState.archivedInvoices.find(i => i.id === id);
+      if (!inv) return;
+      if (inv.status === 'Sent') inv.status = 'Paid';
+      else if (inv.status === 'Paid') inv.status = 'Cancelled';
+      else inv.status = 'Sent';
+      saveAppState();
+      renderInvoiceArchive();
+    }
+
+    function loadArchivedInvoiceToPreview(id) {
+      const inv = appState.archivedInvoices.find(i => i.id === id);
+      if (!inv) return;
+      document.getElementById('invNumberInput').value = inv.number;
+      document.getElementById('invTargetClient').value = inv.client;
+      document.getElementById('invDateInput').value = inv.date;
+      document.getElementById('invDueDateInput').value = inv.dueDate;
+      document.getElementById('invGstToggle').checked = inv.gst > 0;
+      currentInvoiceItems = [...inv.items];
+      renderInvoiceItemsTable();
+      renderLiveInvoice();
+      toggleInvoiceMode('builder');
+    }
+
+    function deleteArchivedInvoice(id) {
+      if (!confirm('Are you sure you want to delete this invoice from archive?')) return;
+      appState.archivedInvoices = appState.archivedInvoices.filter(i => i.id !== id);
+      saveAppState();
+      renderInvoiceArchive();
+    }
+
+    function saveInvoiceProfile(e) {
+      e.preventDefault();
+      appState.invoiceProfile = {
+        senderName: document.getElementById('invSenderName').value.trim(),
+        abn: document.getElementById('invSenderAbn').value.trim(),
+        email: document.getElementById('invSenderEmail').value.trim(),
+        phone: document.getElementById('invSenderPhone').value.trim(),
+        address: document.getElementById('invSenderAddress').value.trim(),
+        bankName: document.getElementById('invBankName').value.trim(),
+        bsb: document.getElementById('invBankBsb').value.trim(),
+        account: document.getElementById('invBankAcc').value.trim(),
+        notes: document.getElementById('invSenderNotes').value.trim()
+      };
+      saveAppState();
+      renderLiveInvoice();
+      closeModal('invoiceConfigModal');
+    }
+
+    function downloadInvoicePDF() {
+      const element = document.getElementById('printableInvoice');
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `${document.getElementById('invNumberInput').value || 'Invoice'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+
+    function downloadInvoiceImage(format = 'png') {
+      const element = document.getElementById('printableInvoice');
+      html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `${document.getElementById('invNumberInput').value || 'Invoice'}.${format}`;
+        link.href = canvas.toDataURL(`image/${format}`, 0.95);
+        link.click();
+      });
+    }
+
+    // ==============================================================
+    // RESUME BUILDER MODULE
+    // ==============================================================
+    function renderLiveResume() {
+      const preview = document.getElementById('printableResume');
+      const p = appState.resumeProfile;
+      const skillPills = (p.skills || '').split(',').map(s => s.trim()).filter(Boolean);
+
+      const agencyHistory = appState.employers.map(emp => `
+        <div class="border-l-2 border-stone-800 pl-3 space-y-0.5">
+          <div class="flex justify-between font-bold text-stone-900">
+            <span>${emp.name}</span>
+            <span class="text-xs text-stone-600 font-mono">${emp.type}</span>
+          </div>
+          <p class="text-[11px] text-stone-600">${emp.address || 'Victoria, Australia'} • Base Rate: $${emp.rate.toFixed(2)}/hr</p>
+          ${emp.notes ? `<p class="text-[11px] text-stone-500 mt-1">${emp.notes}</p>` : ''}
+        </div>
+      `).join('');
+
+      const complianceList = appState.compliance.map(c => `
+        <li class="flex items-center justify-between text-xs text-stone-700 py-1 border-b border-stone-100">
+          <span class="font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-check-circle text-emerald-600 text-xs"></i> ${c.name}
+          </span>
+          <span class="font-mono text-[10px] text-stone-500">Exp: ${c.expiry || 'Current'}</span>
+        </li>
+      `).join('');
+
+      preview.innerHTML = `
+        <div class="space-y-5">
+          
+          <div class="border-b-2 border-stone-800 pb-4">
+            <h1 class="text-3xl font-black text-stone-900 tracking-tight">${p.fullName}</h1>
+            <p class="text-sm font-bold text-stone-700 mt-0.5 uppercase tracking-wide">${p.title}</p>
+            
+            <div class="flex flex-wrap gap-4 text-[11px] text-stone-600 mt-3">
+              <span><i class="fa-solid fa-envelope"></i> ${p.email}</span>
+              <span><i class="fa-solid fa-phone"></i> ${p.phone}</span>
+              <span><i class="fa-solid fa-location-dot"></i> ${p.location}</span>
+              <span><i class="fa-solid fa-car"></i> Driver's License & Fully Insured Vehicle</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider text-stone-900 border-b border-stone-200 pb-1 mb-2">
+              Professional Summary & Care Philosophy
+            </h3>
+            <p class="text-xs text-stone-700 leading-relaxed text-justify">
+              ${p.summary}
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider text-stone-900 border-b border-stone-200 pb-1 mb-2">
+              Key Care Competencies & High-Intensity Capabilities
+            </h3>
+            <div class="flex flex-wrap gap-1.5">
+              ${skillPills.map(s => `<span class="bg-stone-100 border border-stone-300 text-stone-800 text-[10px] px-2 py-0.5 rounded font-medium">${s}</span>`).join('')}
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider text-stone-900 border-b border-stone-200 pb-1 mb-2.5">
+              Support Employment & Contract Experience
+            </h3>
+            <div class="space-y-3">
+              ${agencyHistory.length > 0 ? agencyHistory : '<p class="text-xs text-stone-400">Add employers to list them in your work history.</p>'}
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider text-stone-900 border-b border-stone-200 pb-1 mb-2">
+              Verified Compliance, Clearances & Checks
+            </h3>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+              ${complianceList}
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider text-stone-900 border-b border-stone-200 pb-1 mb-2">
+              Education & Vocational Qualifications
+            </h3>
+            <p class="text-xs text-stone-700 whitespace-pre-line leading-relaxed">
+              ${p.education}
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-stone-200 text-center text-[10px] text-stone-400 font-mono">
+            Professional Profile Reference Available Upon Request • Verified SupportHub CV
+          </div>
+
+        </div>
+      `;
+    }
+
+    function saveResumeProfile(e) {
+      e.preventDefault();
+      appState.resumeProfile = {
+        fullName: document.getElementById('resFullName').value.trim(),
+        title: document.getElementById('resTitle').value.trim(),
+        email: document.getElementById('resEmail').value.trim(),
+        phone: document.getElementById('resPhone').value.trim(),
+        location: document.getElementById('resLocation').value.trim(),
+        summary: document.getElementById('resSummary').value.trim(),
+        skills: document.getElementById('resSkills').value.trim(),
+        education: document.getElementById('resEducation').value.trim()
+      };
+      saveAppState();
+      renderLiveResume();
+      closeModal('resumeEditModal');
+    }
+
+    function downloadResumePDF() {
+      const element = document.getElementById('printableResume');
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `${appState.resumeProfile.fullName.replace(/\s+/g, '_')}_CV.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+
+    function downloadResumeImage(format = 'png') {
+      const element = document.getElementById('printableResume');
+      html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `${appState.resumeProfile.fullName.replace(/\s+/g, '_')}_CV.${format}`;
+        link.href = canvas.toDataURL(`image/${format}`, 0.95);
+        link.click();
+      });
+    }
+
+    // ==============================================================
+    // COMPLIANCE & CERTIFICATIONS TRACKER
+    // ==============================================================
+    function renderComplianceGrid() {
+      const container = document.getElementById('complianceGridContainer');
+      const today = new Date();
+
+      container.innerHTML = appState.compliance.map(item => {
+        let badgeHtml = '<span class="text-[10px] px-2 py-0.5 rounded bg-stone-700 text-stone-400">Date Not Set</span>';
+        if (item.expiry) {
+          const exp = new Date(item.expiry);
+          const daysLeft = Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
+          if (daysLeft < 0) {
+            badgeHtml = '<span class="text-[10px] px-2 py-0.5 rounded bg-red-950 text-red-300 font-bold border border-red-800 animate-pulse"><i class="fa-solid fa-triangle-exclamation"></i> EXPIRED</span>';
+          } else if (daysLeft <= 30) {
+            badgeHtml = `<span class="text-[10px] px-2 py-0.5 rounded bg-amber-950 text-amber-300 font-bold border border-amber-800"><i class="fa-regular fa-clock"></i> Expiring in ${daysLeft}d</span>`;
+          } else {
+            badgeHtml = `<span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-800"><i class="fa-solid fa-check"></i> Valid (${daysLeft}d)</span>`;
+          }
+        }
+
+        return `
+          <div class="theme-card border rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-sm">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <span class="font-bold text-xs text-stone-100 leading-tight">${item.name}</span>
+                ${badgeHtml}
+              </div>
+              <div class="space-y-2 text-xs">
+                <div>
+                  <label class="block text-[10px] text-stone-400 mb-0.5">Expiration Date</label>
+                  <input type="date" value="${item.expiry}" onchange="updateComplianceItem('${item.id}', 'expiry', this.value)" class="w-full theme-input border rounded-lg px-2 py-1 text-stone-200 text-xs">
+                </div>
+                <div>
+                  <label class="block text-[10px] text-stone-400 mb-0.5">Issuing Provider / Registration #</label>
+                  <input type="text" value="${item.provider || ''}" placeholder="e.g. St John, NDIS Comm" onchange="updateComplianceItem('${item.id}', 'provider', this.value)" class="w-full theme-input border rounded-lg px-2 py-1 text-stone-200 text-xs">
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateComplianceItem(id, key, val) {
+      const item = appState.compliance.find(c => c.id === id);
+      if (item) {
+        item[key] = val;
+        saveAppState();
+        renderComplianceGrid();
+        renderLiveResume();
+      }
+    }
+
+    function addNewComplianceCheck() {
+      const name = prompt('Enter clearance or credential name:');
+      if (!name) return;
+      appState.compliance.push({
+        id: 'c_' + Date.now(),
+        name,
+        expiry: '',
+        provider: '',
+        status: 'valid'
+      });
+      saveAppState();
+      renderComplianceGrid();
+      renderLiveResume();
+    }
+
+    // ==============================================================
+    // JSON & CSV SNAPSHOTS
+    // ==============================================================
+    function exportDataJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const anchor = document.createElement('a');
+      anchor.setAttribute("href", dataStr);
+      anchor.setAttribute("download", `SupportHub_Backup_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+    }
+
+    function importDataJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && (imported.shifts || imported.clients || imported.employers)) {
+            appState = { ...appState, ...imported };
+            saveAppState();
+            initApp();
+            alert('Control Panel snapshot successfully restored!');
+          } else {
+            alert('Unrecognized JSON backup file format.');
+          }
+        } catch (err) {
+          alert('Failed to parse JSON file.');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function exportShiftsCSV() {
+      if (appState.shifts.length === 0) {
+        alert('No logged shifts available to export.');
+        return;
+      }
+
+      const headers = [
+        "Shift ID", "Date", "Client", "Employer", "Status",
+        "Start Time", "End Time", "Duration (Hours)", "Hourly Rate ($)",
+        "Travel Km", "Travel Rate ($/km)", "Total Billable ($)", "Invoiced", "Type", "Handover Memo"
+      ];
+
+      const rows = appState.shifts.map(s => [
+        s.id,
+        `"${s.date}"`,
+        `"${(s.client || '').replace(/"/g, '""')}"`,
+        `"${(s.employer || '').replace(/"/g, '""')}"`,
+        `"${s.status}"`,
+        `"${s.start}"`,
+        `"${s.end}"`,
+        s.duration,
+        s.rate,
+        s.km,
+        s.travelRate || 0.96,
+        s.total,
+        s.invoiced ? "YES" : "NO",
+        `"${(s.typeTag || '').replace(/"/g, '""')}"`,
+        `"${(s.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const anchor = document.createElement('a');
+      anchor.setAttribute("href", encodeURI(csvContent));
+      anchor.setAttribute("download", `SupportHub_Timesheet_Shifts_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+    }
+
+    // ==============================================================
+    // SOCIAL SHARING
+    // ==============================================================
+    function shareToPlatform(platform) {
+      const shareUrl = encodeURIComponent("https://supportcontrolpanel.com/");
+      const shareText = encodeURIComponent("SupportHub Control Panel - an offline-ready workspace for disability support workers and sole traders!");
+
+      let url = "";
+      if (platform === 'facebook') {
+        url = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+      } else if (platform === 'twitter') {
+        url = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+      } else if (platform === 'linkedin') {
+        url = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
+      } else if (platform === 'whatsapp') {
+        url = `https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`;
+      }
+
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer,width=600,height=450');
+      }
+    }
+
+    function copyShareText(text) {
+      const full = `${text} https://supportcontrolpanel.com/`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(full).then(() => {
+          alert('Caption copied to clipboard! You can paste it into Instagram or TikTok.');
+        });
+      } else {
+        const box = document.getElementById('shareUrlBox');
+        box.value = full;
+        box.select();
+        document.execCommand('copy');
+        alert('Caption copied to clipboard!');
+      }
+    }
+
+    function copyDirectUrl() {
+      const box = document.getElementById('shareUrlBox');
+      box.select();
+      document.execCommand('copy');
+      alert('Link copied to clipboard!');
+    }
+
+    // ==============================================================
+    // AFFILIATE DRAWER
+    // ==============================================================
+    let isAffiliateDrawerOpen = true;
+    function toggleAffiliateDrawer() {
+      isAffiliateDrawerOpen = !isAffiliateDrawerOpen;
+      const drawer = document.getElementById('affiliateDrawer');
+      const text = document.getElementById('affiliateToggleText');
+      const chevron = document.getElementById('affiliateChevron');
+
+      if (isAffiliateDrawerOpen) {
+        drawer.classList.remove('drawer-collapsed');
+        drawer.classList.add('drawer-expanded');
+        text.textContent = 'Tap to minimize partner offers';
+        chevron.classList.add('rotate-180');
+      } else {
+        drawer.classList.remove('drawer-expanded');
+        drawer.classList.add('drawer-collapsed');
+        text.textContent = 'Tap to expand partner offers';
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    // ==============================================================
+    // MODAL HELPERS
+    // ==============================================================
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      if (modalId === 'invoiceConfigModal') {
+        const s = appState.invoiceProfile;
+        document.getElementById('invSenderName').value = s.senderName || '';
+        document.getElementById('invSenderAbn').value = s.abn || '';
+        document.getElementById('invSenderEmail').value = s.email || '';
+        document.getElementById('invSenderPhone').value = s.phone || '';
+        document.getElementById('invSenderAddress').value = s.address || '';
+        document.getElementById('invBankName').value = s.bankName || '';
+        document.getElementById('invBankBsb').value = s.bsb || '';
+        document.getElementById('invBankAcc').value = s.account || '';
+        document.getElementById('invSenderNotes').value = s.notes || '';
+      }
+
+      if (modalId === 'resumeEditModal') {
+        const r = appState.resumeProfile;
+        document.getElementById('resFullName').value = r.fullName || '';
+        document.getElementById('resTitle').value = r.title || '';
+        document.getElementById('resEmail').value = r.email || '';
+        document.getElementById('resPhone').value = r.phone || '';
+        document.getElementById('resLocation').value = r.location || '';
+        document.getElementById('resSummary').value = r.summary || '';
+        document.getElementById('resSkills').value = r.skills || '';
+        document.getElementById('resEducation').value = r.education || '';
+      }
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    window.addEventListener('click', (e) => {
+      ['shiftMemoModal', 'socialShareModal', 'invoiceConfigModal', 'resumeEditModal', 'onboardingModal'].forEach(id => {
+        const m = document.getElementById(id);
+        if (e.target === m) closeModal(id);
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
 </body>
 </html>
-
-
-
-
