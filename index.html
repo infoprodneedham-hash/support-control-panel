@@ -1212,65 +1212,7 @@
     </div>
   </div>
 
-  <!-- 2. DEVELOPER FEEDBACK & BUG REPORT (FORMSPREE WITH CAPTCHA) -->
-  <div class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 sm:p-5 shadow-inner">
-    <div class="flex items-center justify-between mb-3">
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-lg bg-[var(--theme-primary)]/20 text-[var(--theme-primary)] flex items-center justify-center font-bold">
-          <i class="fa-solid fa-envelope-open-text"></i>
-        </div>
-        <div>
-          <h4 class="font-bold text-slate-100 text-sm">Developer Feedback & Inquiries</h4>
-          <p class="text-[11px] text-slate-400">Report a bug, suggest an enhancement, or send a note directly to the creator.</p>
-        </div>
-      </div>
-      <span class="text-[10px] bg-slate-800 text-slate-400 border border-slate-700 px-2 py-0.5 rounded-full font-mono">Formspree Integrated</span>
-    </div>
-
-    <!-- Replace YOUR_FORMSPREE_ID_HERE with your Formspree Form ID -->
-    <form action="https://formspree.io/f/mrpepjyk" method="POST" class="space-y-3 mt-3">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="block text-[11px] font-medium text-slate-300 mb-1">Feedback Category *</label>
-          <select name="category" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]">
-            <option value="Bug Report">🐛 Bug Report</option>
-            <option value="General Feedback">💡 General Feedback / Idea</option>
-            <option value="Praise">⭐ Praise / Compliment</option>
-            <option value="General Inquiry">❓ General Inquiry</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-medium text-slate-300 mb-1">Your Email (Optional, for reply)</label>
-          <input type="email" name="_replyto" placeholder="you@example.com" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]">
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-[11px] font-medium text-slate-300 mb-1">Message *</label>
-        <textarea name="message" rows="3" required placeholder="Describe the issue or share your thoughts (keep it concise)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]"></textarea>
-      </div>
-
-      <!-- Human Verification / Honeypot to block automated spambots -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-        <div>
-          <label class="block text-[11px] font-medium text-amber-400 mb-1">
-            <i class="fa-solid fa-robot mr-1"></i> Human Check: What is 4 + 3? *
-          </label>
-          <input type="text" pattern="[7]|seven|Seven" required title="Please enter 7" placeholder="Answer here" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-[var(--theme-primary)]">
-        </div>
-
-        <div class="flex items-end justify-end pt-2 sm:pt-0">
-          <!-- Honeypot anti-spam field hidden from humans -->
-          <input type="text" name="_gotcha" style="display:none">
-
-          <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-[var(--theme-primary)] hover:opacity-90 text-white font-medium rounded-lg text-xs transition flex items-center justify-center gap-1.5 shadow">
-            <i class="fa-solid fa-paper-plane"></i> Send Feedback
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
+ 
 
 </div>
 <!-- ========================================== -->
