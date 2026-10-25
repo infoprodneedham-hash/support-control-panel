@@ -165,6 +165,11 @@
             <option value="Corio">Corio / Norlane</option>
             <option value="Highton">Highton</option>
             <option value="Ocean Grove">Ocean Grove / Bellarine</option>
+            <option value="Newtown">Newtown</option>
+            <option value="Waurn Ponds">Waurn Ponds</option>
+            <option value="North Geelong">North Geelong</option>
+            <option value="South Geelong">South Geelong</option>
+            <option value="Leopold">Leopold</option>
           </select>
         </div>
 
@@ -186,6 +191,7 @@
             <option value="SEEK">SEEK</option>
             <option value="Indeed">Indeed</option>
             <option value="EthicalJobs">EthicalJobs</option>
+            <option value="Jora">Jora</option>
             <option value="Direct / Mable">Mable / Direct</option>
           </select>
         </div>
@@ -199,19 +205,34 @@
         </div>
       </div>
 
-      <!-- Quick Sub-Bar: Minimum Rate Slider & Status Details -->
+      <!-- Quick Sub-Bar: Date Range Filter, Minimum Rate Slider & Status Details -->
       <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100 gap-3">
-        <div class="flex items-center gap-3">
-          <label class="font-medium text-slate-700 flex items-center gap-1">
-            <span>Min Pay:</span>
-            <span id="rate-display" class="text-brand-700 font-semibold">$0/hr</span>
-          </label>
-          <input type="range" id="filter-min-rate" min="0" max="65" step="5" value="0" class="w-32 accent-brand-600 cursor-pointer">
+        <!-- Date Range Filter Pill Buttons -->
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="font-medium text-slate-700 mr-1 flex items-center gap-1">
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span>Posted:</span>
+          </span>
+          <button type="button" data-days="all" class="btn-date-filter px-2.5 py-1 rounded-md text-xs font-semibold bg-brand-600 text-white shadow-2xs transition-colors">All Time</button>
+          <button type="button" data-days="1" class="btn-date-filter px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">Last 24 Hours</button>
+          <button type="button" data-days="7" class="btn-date-filter px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">Last 7 Days</button>
+          <button type="button" data-days="14" class="btn-date-filter px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">Last 14 Days</button>
+          <button type="button" data-days="28" class="btn-date-filter px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">Last 28 Days</button>
         </div>
-        <div class="flex items-center gap-2">
-          <span>Last Synced: <strong id="lbl-last-synced" class="text-slate-700">Never</strong></span>
-          <span class="text-slate-300">•</span>
-          <button id="btn-reset-filters" class="text-slate-500 hover:text-brand-600 underline">Reset Filters</button>
+
+        <div class="flex items-center gap-4 flex-wrap">
+          <div class="flex items-center gap-2">
+            <label class="font-medium text-slate-700 flex items-center gap-1">
+              <span>Min Pay:</span>
+              <span id="rate-display" class="text-brand-700 font-semibold">$0/hr</span>
+            </label>
+            <input type="range" id="filter-min-rate" min="0" max="65" step="5" value="0" class="w-28 accent-brand-600 cursor-pointer">
+          </div>
+          <div class="flex items-center gap-2">
+            <span>Last Synced: <strong id="lbl-last-synced" class="text-slate-700">Never</strong></span>
+            <span class="text-slate-300">•</span>
+            <button id="btn-reset-filters" class="text-slate-500 hover:text-brand-600 underline">Reset</button>
+          </div>
         </div>
       </div>
     </section>
@@ -383,114 +404,309 @@
     /* ==========================================================================
        2. Seed Datasets & Daily Feed Simulator
        ========================================================================== */
+    // Helper to calculate realistic relative ISO date strings based on current date
+    function getPastISODate(daysAgo, hourOffset = 0) {
+      const d = new Date();
+      d.setDate(d.getDate() - daysAgo);
+      d.setHours(d.getHours() - hourOffset);
+      return d.toISOString().split('T')[0];
+    }
+
     const SEED_JOBS = [
+      // 0 - 1 days (Last 24 Hours)
       {
-        id: "seek-001",
-        title: "Disability Support Worker - Community & 1:1",
-        company: "The Companion Group",
+        id: "seek-mykare-01",
+        title: "Disability Support Worker - Community Engagement",
+        company: "MYKARE",
         suburb: "Geelong",
-        rateText: "$46.70 - $49.41 / hr",
-        rateNumeric: 46.70,
+        rateText: "$45.50 - $49.00 / hr",
+        rateNumeric: 45.50,
         type: "Casual",
         source: "SEEK",
-        postedDate: new Date().toISOString().split('T')[0],
+        postedDate: getPastISODate(0),
         url: "https://www.seek.com.au/disability-support-worker-jobs/in-Geelong-VIC-3220",
-        tags: ["Community Access", "1:1 Support", "Active Night"],
-        summary: "Person-centered daily living assistance, personal care, and social community access across Geelong and surrounding suburbs.",
+        tags: ["Community Access", "1:1 Support", "NDIS"],
+        summary: "Join MYKARE in delivering high-standard individualized disability care. Assist participants with social inclusion, skill development, and daily living routines.",
         saved: false
       },
       {
-        id: "seek-002",
-        title: "Complex Needs & Mental Health Support Worker (SIL)",
-        company: "Australia Wide Supports",
+        id: "seek-apexx-02",
+        title: "Disability Support Worker - High Intensity SIL",
+        company: "Apexx Support Services",
         suburb: "Belmont",
-        rateText: "$45.00 - $48.00 / hr",
-        rateNumeric: 45.00,
-        type: "Casual",
+        rateText: "$44.00 - $48.00 / hr",
+        rateNumeric: 44.00,
+        type: "Part-time",
         source: "SEEK",
-        postedDate: new Date().toISOString().split('T')[0],
+        postedDate: getPastISODate(0, 2),
         url: "https://www.seek.com.au/disability-support-worker-jobs/in-Belmont-VIC-3216",
-        tags: ["SIL", "Psychosocial", "PBSP"],
-        summary: "Supported Independent Living role supporting clients with complex psychosocial conditions. Valid NDIS Worker Screening required.",
+        tags: ["SIL", "High Intensity", "Behavior Support"],
+        summary: "Supported Independent Living team seeking compassionate workers. Involves active overnight support and behavioral strategy execution in Belmont residences.",
         saved: true
       },
       {
-        id: "ind-003",
-        title: "High-Intensity Pediatric Support Worker",
+        id: "ind-cdkl5-03",
+        title: "High-Intensity Pediatric Support Worker (2:1 Care)",
         company: "CDKL5 Research Foundation",
         suburb: "Hamlyn Heights",
         rateText: "$48.50 / hr + Super",
         rateNumeric: 48.50,
         type: "Part-time",
         source: "Indeed",
-        postedDate: new Date().toISOString().split('T')[0],
-        url: "https://au.indeed.com/jobs?q=Disability+Support+Worker&l=Geelong+VIC",
-        tags: ["Pediatric", "2:1 Support", "Epilepsy"],
-        summary: "Providing focused 2:1 care for a young participant with severe developmental condition. Training and mileage compensation provided.",
+        postedDate: getPastISODate(0, 5),
+        url: "https://au.indeed.com/jobs?q=Disability+Support+Worker&l=Hamlyn+Heights+VIC",
+        tags: ["Pediatric", "2:1 Support", "Epilepsy Management"],
+        summary: "Specialized 2:1 care for a young participant with CDKL5. Travel allowance, comprehensive manual handling, and medical protocol training provided.",
         saved: false
       },
       {
-        id: "ind-004",
-        title: "Support Worker - ABI & Mobility Specialist",
-        company: "Support Network Victoria",
-        suburb: "Grovedale",
-        rateText: "$44.00 - $46.50 / hr",
-        rateNumeric: 44.00,
-        type: "Casual",
-        source: "Indeed",
-        postedDate: "2026-10-24",
-        url: "https://au.indeed.com/jobs?q=Disability+Support+Worker&l=Grovedale+VIC",
-        tags: ["ABI", "Hoisting", "Physical Support"],
-        summary: "Assisting a male participant with Acquired Brain Injury with morning routines, meal prep, and wheelchair transfers.",
-        saved: false
-      },
-      {
-        id: "eth-005",
-        title: "Values-Led Disability Support Coach",
-        company: "Worker-Run NDIS Collective",
-        suburb: "Lara",
-        rateText: "$43.50 - $47.00 / hr",
-        rateNumeric: 43.50,
-        type: "Casual",
+        id: "eth-wathaurong-04",
+        title: "Aboriginal Disability Support & Wellbeing Worker",
+        company: "Wathaurong Aboriginal Co-Operative",
+        suburb: "North Geelong",
+        rateText: "$42.50 - $46.00 / hr + Packaging",
+        rateNumeric: 42.50,
+        type: "Full-time",
         source: "EthicalJobs",
-        postedDate: "2026-10-23",
+        postedDate: getPastISODate(0, 6),
         url: "https://www.ethicaljobs.com.au",
-        tags: ["Ethical Care", "Paid Admin", "Community"],
-        summary: "Support independent living and skill retention. We pay for all travel between participants and allocate 1 hour paid admin weekly.",
+        tags: ["First Nations", "Salary Packaging", "Cultural Safety"],
+        summary: "Deliver culturally safe, person-centered support to Aboriginal community members and NDIS participants across the Greater Geelong and Bellarine region.",
         saved: false
       },
       {
-        id: "mab-006",
-        title: "Independent Support Worker - Social & Gym Outings",
+        id: "mab-highton-05",
+        title: "Independent Support Worker - Hydrotherapy & Gym",
         company: "Direct Participant via Mable",
         suburb: "Highton",
         rateText: "$55.00 / hr (Flat rate)",
         rateNumeric: 55.00,
         type: "Contract",
         source: "Direct / Mable",
-        postedDate: new Date().toISOString().split('T')[0],
+        postedDate: getPastISODate(0, 8),
         url: "https://mable.com.au",
         tags: ["Direct Client", "ABN Required", "Hydrotherapy"],
-        summary: "Seeking a reliable support worker for Tuesday and Thursday afternoons to assist with fitness, gym sessions, and independent cooking.",
+        summary: "Seeking a reliable, active support worker for Tuesday and Thursday afternoons to assist with gym programs, swimming access, and light meal prep.",
+        saved: false
+      },
+
+      // 2 - 7 days (Last 7 Days)
+      {
+        id: "seek-firststep-06",
+        title: "Support Worker - Youth Community Participation",
+        company: "First Step Support Services",
+        suburb: "Grovedale",
+        rateText: "$43.50 - $46.00 / hr",
+        rateNumeric: 43.50,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(2),
+        url: "https://www.seek.com.au/disability-support-worker-jobs/in-Grovedale-VIC-3216",
+        tags: ["Youth Support", "Community Access", "Active Shifts"],
+        summary: "Mentoring adolescents with mild-to-moderate intellectual disabilities. Supporting social recreation, public transit confidence, and life skills.",
         saved: false
       },
       {
-        id: "seek-007",
-        title: "Community Care & Home Independence Assistant",
+        id: "ind-freebird-07",
+        title: "Disability Support Mentor - Social & Life Skills",
+        company: "Free Bird Support Services",
+        suburb: "Geelong",
+        rateText: "$44.80 - $47.50 / hr",
+        rateNumeric: 44.80,
+        type: "Casual",
+        source: "Indeed",
+        postedDate: getPastISODate(3),
+        url: "https://au.indeed.com/jobs?q=Disability+Support+Worker&l=Geelong+VIC",
+        tags: ["Mentorship", "Social Outings", "ADLs"],
+        summary: "Empower participants to achieve greater personal independence. Free Bird offers flexible shift allocations and comprehensive ongoing induction.",
+        saved: false
+      },
+      {
+        id: "seek-companion-08",
+        title: "Disability Support Worker - Community & In-Home",
+        company: "The Companion Group",
+        suburb: "Waurn Ponds",
+        rateText: "$46.70 - $49.41 / hr",
+        rateNumeric: 46.70,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(3),
+        url: "https://www.seek.com.au/disability-support-worker-jobs/in-Waurn-Ponds-VIC-3216",
+        tags: ["1:1 Care", "Flexible Hours", "Weekend Penalties"],
+        summary: "Compassionate workers needed to assist with community access, personal care, and domestic support across Waurn Ponds and surrounding estates.",
+        saved: false
+      },
+      {
+        id: "jora-callclare-09",
+        title: "Community Disability & Respite Worker",
+        company: "Call on Clare",
+        suburb: "Newtown",
+        rateText: "$43.00 - $45.50 / hr",
+        rateNumeric: 43.00,
+        type: "Casual",
+        source: "Jora",
+        postedDate: getPastISODate(4),
+        url: "https://au.jora.com/Disability-Support-Worker-Jobs-in-Geelong-VIC",
+        tags: ["In-Home Respite", "Personal Care", "Bellarine"],
+        summary: "Providing personalized in-home support, respite, and companionship. Reputable boutique service with strong focus on care continuity.",
+        saved: false
+      },
+      {
+        id: "seek-citygeelong-10",
+        title: "Community Care Worker (NDIS & HACC)",
         company: "City of Greater Geelong",
         suburb: "Geelong",
         rateText: "$43.41 / hr + Casual Loading",
         rateNumeric: 43.41,
         type: "Casual",
         source: "SEEK",
-        postedDate: "2026-10-22",
+        postedDate: getPastISODate(5),
         url: "https://www.geelongaustralia.com.au/careers/",
-        tags: ["Council", "Domestic Care", "Elderly & NDIS"],
-        summary: "Deliver personalized care, respite, and basic domestic assistance to vulnerable individuals living at home.",
+        tags: ["Council", "Domestic Care", "Personal Care"],
+        summary: "Deliver personalized care and domestic assistance to Geelong residents. Strong penalty rates, EBA conditions, and continuous training programs.",
         saved: false
       },
       {
-        id: "ind-008",
+        id: "ind-willowblue-11",
+        title: "Support Worker - Complex Physical Needs",
+        company: "Willow Blue",
+        suburb: "Corio",
+        rateText: "$45.00 - $48.20 / hr",
+        rateNumeric: 45.00,
+        type: "Part-time",
+        source: "Indeed",
+        postedDate: getPastISODate(6),
+        url: "https://au.indeed.com",
+        tags: ["Hoisting", "Complex Physical", "Medication"],
+        summary: "Experience with ceiling hoists, bowel care, and PEG feeding preferred. Regular set weekly rosters for 2 dedicated clients in Corio.",
+        saved: false
+      },
+      {
+        id: "eth-lionheart-12",
+        title: "Mental Health & Psychosocial Support Worker",
+        company: "Lionheart",
+        suburb: "Belmont",
+        rateText: "$44.00 - $47.00 / hr",
+        rateNumeric: 44.00,
+        type: "Casual",
+        source: "EthicalJobs",
+        postedDate: getPastISODate(6),
+        url: "https://www.ethicaljobs.com.au",
+        tags: ["Psychosocial", "Mental Health", "Recovery"],
+        summary: "Working alongside participants living with psychosocial disabilities to build recovery routines, emotional regulation, and social reconnection.",
+        saved: false
+      },
+
+      // 8 - 14 days (Last 14 Days)
+      {
+        id: "seek-mindhelp-13",
+        title: "Psychosocial Disability Recovery Worker",
+        company: "Mindhelp",
+        suburb: "Geelong",
+        rateText: "$46.00 - $49.50 / hr",
+        rateNumeric: 46.00,
+        type: "Part-time",
+        source: "SEEK",
+        postedDate: getPastISODate(8),
+        url: "https://www.seek.com.au",
+        tags: ["Recovery Coach", "NDIS Mental Health", "Trauma-Informed"],
+        summary: "Trauma-informed support worker focused on psychosocial empowerment, life coaching, and assisting participants navigate daily challenges.",
+        saved: false
+      },
+      {
+        id: "eth-cpsn-14",
+        title: "Personal Care Assistant - Cerebral Palsy Support",
+        company: "Cerebral Palsy Support Network",
+        suburb: "Grovedale",
+        rateText: "$45.20 / hr + Super",
+        rateNumeric: 45.20,
+        type: "Casual",
+        source: "EthicalJobs",
+        postedDate: getPastISODate(9),
+        url: "https://www.ethicaljobs.com.au",
+        tags: ["Cerebral Palsy", "Active Night", "Manual Handling"],
+        summary: "Provide morning and evening assistance including personal care, transfers, and meal preparation for clients with cerebral palsy.",
+        saved: true
+      },
+      {
+        id: "jora-ndicare-15",
+        title: "Support Worker - Independent Living Services",
+        company: "NDiCare",
+        suburb: "Lara",
+        rateText: "$42.00 - $45.00 / hr",
+        rateNumeric: 42.00,
+        type: "Casual",
+        source: "Jora",
+        postedDate: getPastISODate(10),
+        url: "https://au.jora.com",
+        tags: ["SIL", "Meal Prep", "Transport"],
+        summary: "Support participants with day-to-day household operations, personal hygiene, and community appointments in Lara.",
+        saved: false
+      },
+      {
+        id: "seek-landmark-16",
+        title: "Disability Support Professional - SIL Homes",
+        company: "Landmark Community Services",
+        suburb: "Hamlyn Heights",
+        rateText: "$43.50 - $46.50 / hr",
+        rateNumeric: 43.50,
+        type: "Full-time",
+        source: "SEEK",
+        postedDate: getPastISODate(11),
+        url: "https://www.seek.com.au",
+        tags: ["Full Time", "SIL", "Rostered Shifts"],
+        summary: "Permanent full-time opportunity within a modern 3-resident SIL house in Hamlyn Heights. Attractive salary packaging and overtime rates.",
+        saved: false
+      },
+      {
+        id: "ind-forbes-17",
+        title: "Community Rehabilitation & Support Assistant",
+        company: "Forbes Allied Services",
+        suburb: "Geelong",
+        rateText: "$45.00 - $48.00 / hr",
+        rateNumeric: 45.00,
+        type: "Casual",
+        source: "Indeed",
+        postedDate: getPastISODate(12),
+        url: "https://au.indeed.com",
+        tags: ["Rehabilitation", "Allied Health Assistant", "Physio Support"],
+        summary: "Work in tandem with physiotherapists and occupational therapists to carry out prescribed mobility and physical recovery plans.",
+        saved: false
+      },
+      {
+        id: "seek-relight-18",
+        title: "Disability Support Worker - Positive Behavior Support",
+        company: "Relight Your Care",
+        suburb: "Corio",
+        rateText: "$44.50 - $47.00 / hr",
+        rateNumeric: 44.50,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(13),
+        url: "https://www.seek.com.au",
+        tags: ["PBSP", "De-escalation", "Complex Behaviors"],
+        summary: "Implementing positive behavior strategies and de-escalation for clients living with autism and complex behavioral needs.",
+        saved: false
+      },
+
+      // 15 - 28 days (Last 28 Days)
+      {
+        id: "ind-supportnet-19",
+        title: "Support Worker - Acquired Brain Injury (ABI)",
+        company: "Support Network (Grovedale)",
+        suburb: "Grovedale",
+        rateText: "$44.00 - $46.50 / hr",
+        rateNumeric: 44.00,
+        type: "Casual",
+        source: "Indeed",
+        postedDate: getPastISODate(15),
+        url: "https://au.indeed.com",
+        tags: ["ABI", "Hoisting", "Physical Support"],
+        summary: "Assisting a male participant with Acquired Brain Injury with morning routines, meal prep, and wheelchair transfers.",
+        saved: false
+      },
+      {
+        id: "ind-alina-20",
         title: "Night & Weekend Support Mentor",
         company: "Alina Collective",
         suburb: "Ocean Grove",
@@ -498,10 +714,160 @@
         rateNumeric: 52.00,
         type: "Casual",
         source: "Indeed",
-        postedDate: new Date().toISOString().split('T')[0],
+        postedDate: getPastISODate(16),
         url: "https://au.indeed.com",
         tags: ["Weekend Shifts", "Sleepover", "Bellarine"],
-        summary: "Weekend sleepovers and active night shifts supporting two young adults in a modern coastal villa.",
+        summary: "Weekend sleepovers and active night shifts supporting two young adults in a modern coastal villa. High penalty rates.",
+        saved: false
+      },
+      {
+        id: "seek-prestige-21",
+        title: "Private In-Home Caregiver & Support Worker",
+        company: "Prestige Inhome Care",
+        suburb: "Newtown",
+        rateText: "$41.50 - $45.00 / hr",
+        rateNumeric: 41.50,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(17),
+        url: "https://www.seek.com.au",
+        tags: ["In-Home Care", "Private Client", "Dignity"],
+        summary: "Deliver premium private care to participants in Newtown and Geelong West. Tasks include companionship, transfers, and hygiene assistance.",
+        saved: false
+      },
+      {
+        id: "jora-brightsprings-22",
+        title: "Disability Support Worker - Day Outings",
+        company: "Bright Springs Care",
+        suburb: "Leopold",
+        rateText: "$43.00 - $46.00 / hr",
+        rateNumeric: 43.00,
+        type: "Part-time",
+        source: "Jora",
+        postedDate: getPastISODate(18),
+        url: "https://au.jora.com",
+        tags: ["Social Trips", "Transport", "Leopold"],
+        summary: "Accompany participants on local excursions, cinema trips, and beach walks around the Bellarine Peninsula.",
+        saved: false
+      },
+      {
+        id: "seek-odyssey-23",
+        title: "Supported Living Assistant - 24/7 Roster",
+        company: "OdysseyCare Solutions",
+        suburb: "Belmont",
+        rateText: "$45.00 - $49.00 / hr",
+        rateNumeric: 45.00,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(20),
+        url: "https://www.seek.com.au",
+        tags: ["Active Nights", "Overnight Respite", "Belmont"],
+        summary: "Multiple shift patterns available across weekday evenings and overnight wake shifts in a relaxed Belmont group home.",
+        saved: false
+      },
+      {
+        id: "eth-wintringham-24",
+        title: "Specialist Support Worker - Fragile & Aging Adults",
+        company: "Wintringham",
+        suburb: "Geelong",
+        rateText: "$43.80 / hr + Generous Packaging",
+        rateNumeric: 43.80,
+        type: "Full-time",
+        source: "EthicalJobs",
+        postedDate: getPastISODate(21),
+        url: "https://www.ethicaljobs.com.au",
+        tags: ["Aged & Disability", "Social Justice", "Packaging"],
+        summary: "Supporting individuals who are vulnerable, elderly, or living with disabilities who have experienced social hardship or housing instability.",
+        saved: false
+      },
+      {
+        id: "seek-stellarcare-25",
+        title: "Disability Support Worker - Active Life",
+        company: "Stellar Care",
+        suburb: "Waurn Ponds",
+        rateText: "$43.00 - $45.50 / hr",
+        rateNumeric: 43.00,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(22),
+        url: "https://www.seek.com.au",
+        tags: ["Daily Living", "Community Access", "Waurn Ponds"],
+        summary: "Person-centered daily assistance, domestic skills coaching, and local outings for adults in Waurn Ponds and Armstrong Creek.",
+        saved: false
+      },
+      {
+        id: "ind-equalout-26",
+        title: "Independence Support Worker - Autism Spectrum",
+        company: "Equal Outcomes",
+        suburb: "Hamlyn Heights",
+        rateText: "$46.00 - $48.50 / hr",
+        rateNumeric: 46.00,
+        type: "Casual",
+        source: "Indeed",
+        postedDate: getPastISODate(23),
+        url: "https://au.indeed.com",
+        tags: ["Autism", "Sensory Support", "Life Skills"],
+        summary: "Engage with young adults on the autism spectrum to practice daily independence skills, public transport routines, and study assistance.",
+        saved: false
+      },
+      {
+        id: "jora-onemind-27",
+        title: "Community Outreach & Support Specialist",
+        company: "Onemind",
+        suburb: "South Geelong",
+        rateText: "$44.00 / hr",
+        rateNumeric: 44.00,
+        type: "Part-time",
+        source: "Jora",
+        postedDate: getPastISODate(24),
+        url: "https://au.jora.com",
+        tags: ["Outreach", "Mental Health", "Community"],
+        summary: "Outreach shifts supporting clients in their private residences across South Geelong with budgeting, cooking, and social events.",
+        saved: false
+      },
+      {
+        id: "seek-abilitydn-28",
+        title: "Disability Support Worker - High Care Needs",
+        company: "Ability DN",
+        suburb: "Corio",
+        rateText: "$45.50 - $48.00 / hr",
+        rateNumeric: 45.50,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(25),
+        url: "https://www.seek.com.au",
+        tags: ["Tracheostomy", "Complex Physical", "Night Shifts"],
+        summary: "Seeking experienced support workers with tracheostomy or high-intensity feeding credentials for dedicated 1:1 participant care.",
+        saved: false
+      },
+      {
+        id: "ind-havilah-29",
+        title: "Personal Care Assistant / Support Worker",
+        company: "Havilah Support Services",
+        suburb: "Lara",
+        rateText: "$42.50 - $45.00 / hr",
+        rateNumeric: 42.50,
+        type: "Casual",
+        source: "Indeed",
+        postedDate: getPastISODate(26),
+        url: "https://au.indeed.com",
+        tags: ["Personal Care", "Manual Handling", "Lara"],
+        summary: "Assisting participants with morning hygiene, medication assistance, and community access appointments around Lara and Corio.",
+        saved: false
+      },
+      {
+        id: "seek-auswide-30",
+        title: "Mental Health & Disability Support Worker (SIL)",
+        company: "Australia Wide Supports",
+        suburb: "Belmont",
+        rateText: "$45.00 - $48.00 / hr",
+        rateNumeric: 45.00,
+        type: "Casual",
+        source: "SEEK",
+        postedDate: getPastISODate(27),
+        url: "https://www.seek.com.au",
+        tags: ["SIL", "Psychosocial", "NDIS Worker Screening"],
+        summary: "Supported Independent Living role supporting clients with complex psychosocial conditions in Belmont.",
         saved: false
       }
     ];
@@ -512,6 +878,7 @@
     const db = new JobDB();
     let allJobs = [];
     let savedOnlyFilter = false;
+    let selectedDateFilter = 'all'; // 'all', '1', '7', '14', '28'
 
     // Toast helper
     function showToast(message, type = 'info') {
@@ -570,12 +937,12 @@
         await db.open();
         allJobs = await db.getAllJobs();
 
-        // If newly initialized with 0 jobs, seed automatically
-        if (allJobs.length === 0) {
+        // If newly initialized or existing small dataset, upgrade with comprehensive dataset
+        if (allJobs.length < 20) {
           await db.upsertJobs(SEED_JOBS);
           await db.setMeta('last_synced', new Date().toISOString());
           allJobs = await db.getAllJobs();
-          showToast('Loaded initial Geelong disability jobs dataset', 'success');
+          showToast(`Loaded ${allJobs.length} active Geelong support worker positions`, 'success');
         }
 
         const lastSynced = await db.getMeta('last_synced');
@@ -602,6 +969,16 @@
     /* ==========================================================================
        4. Render & Stats Calculation
        ========================================================================== */
+    function getDaysDifference(postedDateStr) {
+      if (!postedDateStr) return 999;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const posted = new Date(postedDateStr);
+      posted.setHours(0, 0, 0, 0);
+      const diffTime = today - posted;
+      return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+
     function render() {
       const searchVal = document.getElementById('filter-search').value.toLowerCase().trim();
       const suburbVal = document.getElementById('filter-suburb').value;
@@ -623,7 +1000,15 @@
         const matchesRate = job.rateNumeric >= minRate;
         const matchesSaved = !savedOnlyFilter || job.saved;
 
-        return matchesSearch && matchesSuburb && matchesType && matchesSource && matchesRate && matchesSaved;
+        // Date Range Filtering
+        let matchesDate = true;
+        if (selectedDateFilter !== 'all') {
+          const maxDays = parseInt(selectedDateFilter, 10);
+          const daysAgo = getDaysDifference(job.postedDate);
+          matchesDate = daysAgo <= maxDays;
+        }
+
+        return matchesSearch && matchesSuburb && matchesType && matchesSource && matchesRate && matchesSaved && matchesDate;
       });
 
       // Update KPI Bar
@@ -651,7 +1036,7 @@
       document.getElementById('stat-saved').textContent = savedCount;
 
       const todayStr = new Date().toISOString().split('T')[0];
-      const todayCount = jobsList.filter(j => j.postedDate === todayStr).length;
+      const todayCount = jobsList.filter(j => getDaysDifference(j.postedDate) <= 1).length;
       document.getElementById('stat-today').textContent = todayCount;
 
       if (jobsList.length > 0) {
@@ -669,7 +1054,21 @@
       if (job.source.includes("SEEK")) sourceBadgeClass = "bg-pink-50 text-pink-700 border border-pink-200";
       else if (job.source.includes("Indeed")) sourceBadgeClass = "bg-indigo-50 text-indigo-700 border border-indigo-200";
       else if (job.source.includes("EthicalJobs")) sourceBadgeClass = "bg-teal-50 text-teal-700 border border-teal-200";
+      else if (job.source.includes("Jora")) sourceBadgeClass = "bg-purple-50 text-purple-700 border border-purple-200";
       else if (job.source.includes("Direct") || job.source.includes("Mable")) sourceBadgeClass = "bg-amber-50 text-amber-700 border border-amber-200";
+
+      // Relative Date Badge
+      const daysAgo = getDaysDifference(job.postedDate);
+      let dateBadge = '';
+      if (daysAgo === 0) {
+        dateBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white shadow-xs animate-pulse"><i data-lucide="sparkles" class="w-3 h-3"></i> Today</span>`;
+      } else if (daysAgo === 1) {
+        dateBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">1d ago</span>`;
+      } else if (daysAgo <= 7) {
+        dateBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200">${daysAgo}d ago</span>`;
+      } else {
+        dateBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">${daysAgo}d ago</span>`;
+      }
 
       return `
         <article class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs hover:shadow-md card-transition flex flex-col justify-between group relative">
@@ -683,6 +1082,7 @@
                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">
                   ${job.type}
                 </span>
+                ${dateBadge}
               </div>
               <button onclick="toggleBookmark('${job.id}')" title="${job.saved ? 'Remove Bookmark' : 'Bookmark Job'}" 
                       class="text-slate-400 hover:text-rose-500 transition-colors p-1 rounded-md hover:bg-slate-50">
@@ -795,7 +1195,7 @@
         // New mock batch that simulates newly discovered postings today in Geelong
         const freshDailyBatch = [
           {
-            id: "seek-fresh-" + Math.floor(Math.random() * 900 + 100),
+            id: "seek-fresh-gateways-" + Date.now(),
             title: "Day Programs Disability Support Worker",
             company: "Gateways Support Services",
             suburb: "Geelong",
@@ -803,14 +1203,14 @@
             rateNumeric: 45.80,
             type: "Casual",
             source: "SEEK",
-            postedDate: new Date().toISOString().split('T')[0],
-            url: "https://www.seek.com.au",
+            postedDate: getPastISODate(0),
+            url: "https://www.seek.com.au/disability-support-worker-jobs/in-Geelong-VIC-3220",
             tags: ["Day Program", "Art & Cooking", "NDIS"],
             summary: "Engage with clients in recreational art, community gardening, and daily living skills in central Geelong facility.",
             saved: false
           },
           {
-            id: "mab-fresh-" + Math.floor(Math.random() * 900 + 100),
+            id: "mab-fresh-ocean-" + Date.now(),
             title: "Support Worker / Companion - Saturday Outings",
             company: "Independent Client via Mable",
             suburb: "Ocean Grove",
@@ -818,7 +1218,7 @@
             rateNumeric: 58.00,
             type: "Contract",
             source: "Direct / Mable",
-            postedDate: new Date().toISOString().split('T')[0],
+            postedDate: getPastISODate(0),
             url: "https://mable.com.au",
             tags: ["Weekend", "Community Transport", "Social"],
             summary: "Looking for an energetic, non-smoking support worker to take a 24-year-old on community walks and beach cafes on Saturdays.",
@@ -991,6 +1391,22 @@
     document.getElementById('filter-type').addEventListener('change', render);
     document.getElementById('filter-source').addEventListener('change', render);
 
+    // Date Range Button Handlers
+    const dateFilterButtons = document.querySelectorAll('.btn-date-filter');
+    dateFilterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        dateFilterButtons.forEach(b => {
+          b.classList.remove('bg-brand-600', 'text-white', 'font-semibold', 'shadow-2xs');
+          b.classList.add('bg-slate-100', 'text-slate-600', 'font-medium');
+        });
+        btn.classList.remove('bg-slate-100', 'text-slate-600', 'font-medium');
+        btn.classList.add('bg-brand-600', 'text-white', 'font-semibold', 'shadow-2xs');
+
+        selectedDateFilter = btn.dataset.days;
+        render();
+      });
+    });
+
     const minRateSlider = document.getElementById('filter-min-rate');
     const rateDisplay = document.getElementById('rate-display');
     minRateSlider.addEventListener('input', (e) => {
@@ -1021,6 +1437,19 @@
       savedOnlyFilter = false;
       savedToggleBtn.classList.remove('bg-rose-50', 'text-rose-600', 'border-rose-200');
       savedToggleBtn.classList.add('bg-slate-50', 'text-slate-600', 'border-slate-200');
+
+      // Reset date pills to 'All Time'
+      selectedDateFilter = 'all';
+      dateFilterButtons.forEach(b => {
+        b.classList.remove('bg-brand-600', 'text-white', 'font-semibold', 'shadow-2xs');
+        b.classList.add('bg-slate-100', 'text-slate-600', 'font-medium');
+      });
+      const allBtn = document.querySelector('.btn-date-filter[data-days="all"]');
+      if (allBtn) {
+        allBtn.classList.remove('bg-slate-100', 'text-slate-600', 'font-medium');
+        allBtn.classList.add('bg-brand-600', 'text-white', 'font-semibold', 'shadow-2xs');
+      }
+
       render();
     });
 
