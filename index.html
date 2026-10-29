@@ -3252,5 +3252,290 @@
         info.biz.developer@gmail.com
 </span>
 </footer>
+  <!-- START: BillSaver Affiliate Drawer -->
+<div id="bs-drawer-root">
+  <style>
+    #bs-drawer-root {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    #bs-drawer-root *, #bs-drawer-root *::before, #bs-drawer-root *::after {
+      box-sizing: inherit;
+    }
+
+    /* Fixed container positioned off-canvas left by default, slid in when .is-open */
+    .bs-drawer {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%) translateX(-100%);
+      width: min(340px, 86vw);
+      background-color: #0d1117;
+      border: 1px solid #1f2937;
+      border-left: none;
+      border-radius: 0 16px 16px 0;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.75), 0 0 25px -5px rgba(16, 185, 129, 0.15);
+      z-index: 99999;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #e5e7eb;
+    }
+
+    .bs-drawer.is-open {
+      transform: translateY(-50%) translateX(0);
+    }
+
+    /* Pull tab trigger attached to right side of drawer */
+    .bs-toggle-tab {
+      position: absolute;
+      top: 50%;
+      right: -42px;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 104px;
+      background: #0d1117;
+      border: 1px solid #1f2937;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 6px;
+      box-shadow: 5px 0 15px -3px rgba(0, 0, 0, 0.4);
+      outline: none;
+      color: #10b981;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .bs-toggle-tab:hover {
+      background: #111827;
+      color: #34d399;
+    }
+
+    .bs-tab-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* Drawer content */
+    .bs-content {
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bs-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 9999px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .bs-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #10b981;
+      box-shadow: 0 0 6px #10b981;
+    }
+
+    .bs-close-btn {
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .bs-close-btn:hover {
+      color: #f3f4f6;
+      background: #1f2937;
+    }
+
+    .bs-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .bs-pitch {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #9ca3af;
+      margin: 0;
+    }
+
+    .bs-feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin: 2px 0;
+    }
+
+    .bs-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: #d1d5db;
+      line-height: 1.4;
+    }
+
+    .bs-check-icon {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      color: #10b981;
+      margin-top: 1px;
+    }
+
+    .bs-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #0284c7 100%);
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.2s ease;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      margin-top: 4px;
+    }
+
+    .bs-cta-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .bs-cta-btn:active {
+      transform: translateY(0);
+    }
+  </style>
+
+  <!-- Initialized with .is-open so it starts open on load -->
+  <div class="bs-drawer is-open" id="bsDrawer" aria-label="Bill Saver Promo">
+    <!-- Pull Tab Toggle -->
+    <button class="bs-toggle-tab" id="bsDrawerTab" aria-label="Toggle Bill Saver Drawer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+        <line x1="2" y1="10" x2="22" y2="10"></line>
+      </svg>
+      <span class="bs-tab-text">Bill Saver</span>
+    </button>
+
+    <div class="bs-content">
+      <div class="bs-header">
+        <span class="bs-badge"><span class="bs-badge-dot"></span> Smart Utility</span>
+        <button class="bs-close-btn" id="bsCloseBtn" aria-label="Close Drawer">&times;</button>
+      </div>
+
+      <h3 class="bs-title">Bill Saver</h3>
+
+      <p class="bs-pitch">
+        Never lose track of upcoming recurring subscriptions and billing monthly and yearly. A forgotten bill saved will pay for this app pro tier.
+      </p>
+
+      <div class="bs-feature-list">
+        <div class="bs-feature-item">
+          <svg class="bs-check-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span>One time only unlock full benefits.</span>
+        </div>
+        <div class="bs-feature-item">
+          <svg class="bs-check-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span>Free to use for up to 3 recurring expenses.</span>
+        </div>
+        <div class="bs-feature-item">
+          <svg class="bs-check-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span>No sign ups, locally stored in your browser so no sensitive data kept online.</span>
+        </div>
+      </div>
+
+      <a href="https://billsaver.app" target="_blank" rel="noopener noreferrer" class="bs-cta-btn">
+        <span>Visit billsaver.app now</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const drawer = document.getElementById('bsDrawer');
+      const tab = document.getElementById('bsDrawerTab');
+      const closeBtn = document.getElementById('bsCloseBtn');
+
+      function toggleDrawer(e) {
+        if (e) e.stopPropagation();
+        drawer.classList.toggle('is-open');
+      }
+
+      function closeDrawer() {
+        drawer.classList.remove('is-open');
+      }
+
+      tab.addEventListener('click', toggleDrawer);
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeDrawer();
+      });
+
+      // Close when clicking outside of drawer
+      document.addEventListener('click', function (event) {
+        if (drawer.classList.contains('is-open') && !drawer.contains(event.target)) {
+          closeDrawer();
+        }
+      });
+    })();
+  </script>
+</div>
+<!-- END: BillSaver Affiliate Drawer -->
 </body>
 </html>
